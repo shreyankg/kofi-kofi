@@ -93,6 +93,119 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Ethiopian Yirgacheffe"].exists)
     }
     
+    func testEditCoffee() throws {
+        // First add a coffee
+        testAddCoffee()
+        
+        // Navigate to Coffees tab
+        app.tabBars.buttons["Coffees"].tap()
+        
+        // Tap on the coffee to edit it
+        app.staticTexts["Ethiopian Yirgacheffe"].tap()
+        
+        // Verify we're in edit mode
+        XCTAssertTrue(app.navigationBars["Edit Coffee"].exists)
+        
+        // Edit the coffee name
+        let nameField = app.textFields["Coffee Name"]
+        XCTAssertTrue(nameField.exists)
+        nameField.clearAndTypeText("Updated Ethiopian Coffee")
+        
+        // Edit the roaster
+        let roasterField = app.textFields["Roaster"]
+        roasterField.clearAndTypeText("Counter Culture Coffee")
+        
+        // Change processing method (assuming we have a picker)
+        if app.buttons["Processing Method"].exists {
+            app.buttons["Processing Method"].tap()
+            if app.buttons["Natural"].exists {
+                app.buttons["Natural"].tap()
+            }
+        }
+        
+        // Save the changes
+        app.navigationBars.buttons["Save"].tap()
+        
+        // Verify we're back to the coffee list
+        XCTAssertTrue(app.navigationBars["Coffees"].exists)
+        
+        // Verify the updated information appears
+        XCTAssertTrue(app.staticTexts["Updated Ethiopian Coffee"].exists)
+        XCTAssertTrue(app.staticTexts["Counter Culture Coffee"].exists)
+    }
+    
+    func testAddCustomProcessingMethod() throws {
+        // Navigate to Coffees tab
+        app.tabBars.buttons["Coffees"].tap()
+        
+        // Tap add button
+        app.navigationBars["Coffees"].buttons["Add"].tap()
+        
+        // Fill basic coffee details
+        let nameField = app.textFields["Coffee Name"]
+        nameField.tap()
+        nameField.typeText("Test Coffee")
+        
+        let roasterField = app.textFields["Roaster"]
+        roasterField.tap()
+        roasterField.typeText("Test Roaster")
+        
+        // Tap "Add Custom Method" button
+        app.buttons["Add Custom Method"].tap()
+        
+        // Verify custom method sheet appears
+        XCTAssertTrue(app.navigationBars["Add Method"].exists)
+        
+        // Enter custom method name
+        let methodField = app.textFields["Method Name"]
+        XCTAssertTrue(methodField.exists)
+        methodField.tap()
+        methodField.typeText("Experimental Fermentation")
+        
+        // Save the custom method
+        app.navigationBars.buttons["Save"].tap()
+        
+        // Verify we're back to add coffee screen
+        XCTAssertTrue(app.navigationBars["Add Coffee"].exists)
+        
+        // Complete the coffee creation
+        app.navigationBars.buttons["Save"].tap()
+        
+        // Verify coffee was created
+        XCTAssertTrue(app.staticTexts["Test Coffee"].exists)
+    }
+    
+    func testRoastLevelSlider() throws {
+        // Navigate to Coffees tab
+        app.tabBars.buttons["Coffees"].tap()
+        
+        // Tap add button
+        app.navigationBars["Coffees"].buttons["Add"].tap()
+        
+        // Fill basic details
+        app.textFields["Coffee Name"].tap()
+        app.textFields["Coffee Name"].typeText("Slider Test Coffee")
+        
+        app.textFields["Roaster"].tap()
+        app.textFields["Roaster"].typeText("Test Roaster")
+        
+        // Find and interact with roast level slider
+        let slider = app.sliders.firstMatch
+        XCTAssertTrue(slider.exists)
+        
+        // Adjust slider to different position
+        slider.adjust(toNormalizedSliderPosition: 0.8) // Should be "Dark"
+        
+        // Verify the displayed roast level changed
+        XCTAssertTrue(app.staticTexts["Dark"].exists)
+        
+        // Save the coffee
+        app.navigationBars.buttons["Save"].tap()
+        
+        // Verify coffee was created
+        XCTAssertTrue(app.staticTexts["Slider Test Coffee"].exists)
+    }
+    
     // MARK: - Recipe Management Tests
     
     func testAddV60Recipe() throws {

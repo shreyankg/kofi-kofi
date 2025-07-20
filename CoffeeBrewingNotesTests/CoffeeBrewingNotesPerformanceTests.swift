@@ -20,13 +20,22 @@ final class CoffeeBrewingNotesPerformanceTests: XCTestCase {
     // MARK: - Data Creation Performance Tests
     
     func testCreateManyCofeesPerformance() throws {
+        // Seed processing methods first
+        let processingMethods = ["Washed", "Natural", "Honey", "Anaerobic"]
+        for method in processingMethods {
+            let processingMethod = ProcessingMethod(context: context)
+            processingMethod.name = method
+            processingMethod.usageCount = 0
+        }
+        try context.save()
+        
         measure {
             for i in 1...1000 {
                 let coffee = Coffee(context: context)
                 coffee.id = UUID()
                 coffee.name = "Coffee \(i)"
                 coffee.roaster = "Roaster \(i % 10)"
-                coffee.processing = Coffee.processingOptions[i % Coffee.processingOptions.count]
+                coffee.processing = processingMethods[i % processingMethods.count]
                 coffee.roastLevel = Coffee.roastLevelOptions[i % Coffee.roastLevelOptions.count]
                 coffee.origin = "Origin \(i % 20)"
                 coffee.dateAdded = Date()
@@ -275,6 +284,43 @@ final class CoffeeBrewingNotesPerformanceTests: XCTestCase {
         XCTAssertEqual(recipe.usageCount, 1000)
     }
     
+    func testProcessingMethodPerformance() throws {
+        measure {
+            for i in 1...1000 {
+                let method = ProcessingMethod(context: context)
+                method.id = UUID()
+                method.name = "Method \(i)"
+                method.usageCount = Int32(i % 100)
+                method.dateCreated = Date()
+            }
+            
+            do {
+                try context.save()
+            } catch {
+                XCTFail("Failed to save context: \(error)")
+            }
+        }
+    }
+    
+    func testProcessingMethodSortingPerformance() throws {
+        // Create many processing methods with random usage counts
+        for i in 1...1000 {
+            let method = ProcessingMethod(context: context)
+            method.name = "Method \(i)"
+            method.usageCount = Int32(arc4random_uniform(1000))
+        }
+        try context.save()
+        
+        measure {
+            let sortedMethods = ProcessingMethod.getAllSorted(context: context)
+            XCTAssertEqual(sortedMethods.count, 1000)
+            // Verify sorting is correct
+            if sortedMethods.count >= 2 {
+                XCTAssertGreaterThanOrEqual(sortedMethods[0].usageCount, sortedMethods[1].usageCount)
+            }
+        }
+    }
+    
     // MARK: - Extension Performance Tests
     
     func testBrewingNoteExtensionPerformance() throws {
@@ -339,11 +385,12 @@ final class CoffeeBrewingNotesPerformanceTests: XCTestCase {
     
     func testComplexQueryPerformance() throws {
         // Create complex test data
+        let processingMethods = ["Washed", "Natural", "Honey", "Anaerobic"]
         for i in 1...500 {
             let coffee = Coffee(context: context)
             coffee.name = "Coffee \(i)"
             coffee.roaster = "Roaster \(i % 10)"
-            coffee.processing = Coffee.processingOptions[i % Coffee.processingOptions.count]
+            coffee.processing = processingMethods[i % processingMethods.count]
             
             let recipe = Recipe(context: context)
             recipe.name = "Recipe \(i)"

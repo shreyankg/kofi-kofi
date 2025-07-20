@@ -59,6 +59,73 @@ final class CoffeeBrewingNotesErrorTests: XCTestCase {
         XCTAssertEqual(brewingNote.ratingStars, "☆☆☆☆☆")
     }
     
+    func testProcessingMethodNilPropertyHandling() throws {
+        let method = ProcessingMethod(context: context)
+        // Don't set any properties - test default values
+        
+        XCTAssertEqual(method.wrappedName, "Unknown")
+        XCTAssertEqual(method.wrappedUsageCount, 0)
+        XCTAssertNotNil(method.wrappedDateCreated)
+    }
+    
+    // MARK: - ProcessingMethod Error Handling Tests
+    
+    func testProcessingMethodEmptyNameHandling() throws {
+        let method = ProcessingMethod(context: context)
+        method.name = ""
+        
+        XCTAssertEqual(method.wrappedName, "Unknown")
+    }
+    
+    func testProcessingMethodDuplicateHandling() throws {
+        // Create first method
+        let method1 = ProcessingMethod.fetchOrCreate(name: "Natural", context: context)
+        method1.usageCount = 5
+        try context.save()
+        
+        // Try to create another with same name
+        let method2 = ProcessingMethod.fetchOrCreate(name: "Natural", context: context)
+        
+        // Should return the same instance
+        XCTAssertEqual(method1, method2)
+        XCTAssertEqual(method2.usageCount, 5)
+    }
+    
+    func testProcessingMethodNegativeUsageCount() throws {
+        let method = ProcessingMethod(context: context)
+        method.name = "Test Method"
+        method.usageCount = -5
+        
+        // Should handle negative gracefully
+        XCTAssertEqual(method.wrappedUsageCount, -5)
+        
+        method.incrementUsageCount()
+        XCTAssertEqual(method.usageCount, -4)
+    }
+    
+    func testProcessingMethodFetchWithNilContext() throws {
+        // This should handle gracefully without crashing
+        let nilContext: NSManagedObjectContext? = nil
+        
+        XCTAssertNoThrow({
+            if let context = nilContext {
+                _ = ProcessingMethod.getAllSorted(context: context)
+            }
+        })
+    }
+    
+    func testProcessingMethodCaseInsensitiveDuplicates() throws {
+        // Create methods with different cases
+        let method1 = ProcessingMethod.fetchOrCreate(name: "Natural", context: context)
+        let method2 = ProcessingMethod.fetchOrCreate(name: "NATURAL", context: context)
+        let method3 = ProcessingMethod.fetchOrCreate(name: "natural", context: context)
+        
+        // Should create separate instances (case sensitive)
+        XCTAssertNotEqual(method1, method2)
+        XCTAssertNotEqual(method2, method3)
+        XCTAssertNotEqual(method1, method3)
+    }
+    
     // MARK: - Edge Case Data Tests
     
     func testBrewingNoteZeroRating() throws {

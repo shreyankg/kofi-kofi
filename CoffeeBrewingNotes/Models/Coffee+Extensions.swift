@@ -64,16 +64,6 @@ extension Coffee {
     
     // MARK: - Static Options
     
-    static let processingOptions = [
-        "Washed",
-        "Honey", 
-        "Natural",
-        "Semi-Washed",
-        "Pulped Natural",
-        "Anaerobic",
-        "Carbonic Maceration"
-    ]
-    
     static let roastLevelOptions = [
         "Light",
         "Medium Light", 
@@ -82,4 +72,19 @@ extension Coffee {
         "Dark",
         "Extra Dark"
     ]
+    
+    // MARK: - Roast Level Slider Support
+    
+    var roastLevelIndex: Int {
+        get {
+            Coffee.roastLevelOptions.firstIndex(of: wrappedRoastLevel) ?? 2
+        }
+        set {
+            roastLevel = Coffee.roastLevelOptions[max(0, min(newValue, Coffee.roastLevelOptions.count - 1))]
+        }
+    }
+    
+    static func roastLevelFromIndex(_ index: Int) -> String {
+        roastLevelOptions[max(0, min(index, roastLevelOptions.count - 1))]
+    }
 }

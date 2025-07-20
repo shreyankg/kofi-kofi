@@ -48,12 +48,14 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertEqual(coffee.wrappedOrigin, "Unknown Origin")
     }
     
-    func testCoffeeProcessingOptions() throws {
-        let expectedOptions = [
-            "Washed", "Honey", "Natural", "Semi-Washed", "Pulped Natural", "Anaerobic", "Carbonic Maceration"
-        ]
+    func testCoffeeRoastLevelIndex() throws {
+        let coffee = Coffee(context: context)
+        coffee.roastLevel = "Medium Dark"
         
-        XCTAssertEqual(Coffee.processingOptions, expectedOptions)
+        XCTAssertEqual(coffee.roastLevelIndex, 3)
+        
+        coffee.roastLevelIndex = 1
+        XCTAssertEqual(coffee.roastLevel, "Medium Light")
     }
     
     func testCoffeeRoastLevelOptions() throws {
@@ -62,6 +64,84 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         ]
         
         XCTAssertEqual(Coffee.roastLevelOptions, expectedOptions)
+    }
+    
+    // MARK: - ProcessingMethod Tests
+    
+    func testProcessingMethodCreation() throws {
+        let method = ProcessingMethod(context: context)
+        method.id = UUID()
+        method.name = "Washed"
+        method.usageCount = 0
+        method.dateCreated = Date()
+        
+        try context.save()
+        
+        XCTAssertEqual(method.wrappedName, "Washed")
+        XCTAssertEqual(method.wrappedUsageCount, 0)
+        XCTAssertNotNil(method.wrappedDateCreated)
+    }
+    
+    func testProcessingMethodDefaults() throws {
+        let method = ProcessingMethod(context: context)
+        
+        XCTAssertEqual(method.wrappedName, "Unknown")
+        XCTAssertEqual(method.wrappedUsageCount, 0)
+    }
+    
+    func testProcessingMethodUsageIncrement() throws {
+        let method = ProcessingMethod(context: context)
+        method.name = "Natural"
+        method.usageCount = 2
+        
+        method.incrementUsageCount()
+        
+        XCTAssertEqual(method.usageCount, 3)
+    }
+    
+    func testProcessingMethodFetchOrCreate() throws {
+        // Test creating new method
+        let newMethod = ProcessingMethod.fetchOrCreate(name: "Honey", context: context)
+        XCTAssertEqual(newMethod.wrappedName, "Honey")
+        XCTAssertEqual(newMethod.wrappedUsageCount, 0)
+        
+        // Test fetching existing method
+        let existingMethod = ProcessingMethod.fetchOrCreate(name: "Honey", context: context)
+        XCTAssertEqual(newMethod, existingMethod)
+    }
+    
+    func testProcessingMethodSeedDefaults() throws {
+        ProcessingMethod.seedDefaultMethods(context: context)
+        
+        let request: NSFetchRequest<ProcessingMethod> = ProcessingMethod.fetchRequest()
+        let methods = try context.fetch(request)
+        
+        XCTAssertGreaterThanOrEqual(methods.count, 7)
+        
+        let methodNames = methods.map { $0.wrappedName }
+        XCTAssertTrue(methodNames.contains("Washed"))
+        XCTAssertTrue(methodNames.contains("Honey"))
+        XCTAssertTrue(methodNames.contains("Natural"))
+    }
+    
+    func testProcessingMethodSorting() throws {
+        // Create methods with different usage counts
+        let method1 = ProcessingMethod.fetchOrCreate(name: "Washed", context: context)
+        method1.usageCount = 5
+        
+        let method2 = ProcessingMethod.fetchOrCreate(name: "Natural", context: context)
+        method2.usageCount = 10
+        
+        let method3 = ProcessingMethod.fetchOrCreate(name: "Honey", context: context)
+        method3.usageCount = 2
+        
+        try context.save()
+        
+        let sortedMethods = ProcessingMethod.getAllSorted(context: context)
+        
+        XCTAssertEqual(sortedMethods[0].wrappedName, "Natural")  // Highest usage
+        XCTAssertEqual(sortedMethods[1].wrappedName, "Washed")   // Medium usage
+        XCTAssertEqual(sortedMethods[2].wrappedName, "Honey")    // Lowest usage
     }
     
     // MARK: - Recipe Tests
