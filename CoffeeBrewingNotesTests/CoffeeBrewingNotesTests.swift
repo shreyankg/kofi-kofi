@@ -264,6 +264,125 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertNotNil(brewingNote.dateCreated)
     }
     
+    // MARK: - Recipe Method-Specific Tests
+    
+    func testRecipeBrewingMethods() throws {
+        let expectedMethods = [
+            "V60-01", "V60-02", "V60-03", "Kalita Wave 155", "Kalita Wave 185", 
+            "Chemex 6-cup", "Chemex 8-cup", "Espresso", "French Press", "Aeropress"
+        ]
+        
+        XCTAssertEqual(Recipe.brewingMethods, expectedMethods)
+    }
+    
+    func testRecipeGrinders() throws {
+        let expectedGrinders = [
+            "Baratza Encore", "Baratza Virtuoso+", "Baratza Vario", "Comandante C40", 
+            "1Zpresso JX-Pro", "Hario Mini Mill", "Timemore C2", "Timemore C3", 
+            "Fellow Ode", "Wilfa Uniform", "Hand grinder", "Other"
+        ]
+        
+        XCTAssertEqual(Recipe.grinders, expectedGrinders)
+    }
+    
+    func testRecipeAeropressTypes() throws {
+        let expectedTypes = ["Normal", "Inverted"]
+        
+        XCTAssertEqual(Recipe.aeropressTypes, expectedTypes)
+    }
+    
+    func testRecipeMethodSpecificParameters() throws {
+        let recipe = Recipe(context: context)
+        recipe.brewingMethod = "V60-01"
+        recipe.bloomAmount = 40.0
+        recipe.bloomTime = 30
+        recipe.secondPour = 100.0
+        recipe.thirdPour = 180.0
+        recipe.fourthPour = 60.0
+        
+        XCTAssertTrue(recipe.isPourOver)
+        XCTAssertTrue(recipe.supportsPours)
+        XCTAssertTrue(recipe.supportsBloom)
+        XCTAssertEqual(recipe.bloomAmount, 40.0)
+        XCTAssertEqual(recipe.bloomTime, 30)
+        XCTAssertEqual(recipe.secondPour, 100.0)
+        XCTAssertEqual(recipe.thirdPour, 180.0)
+        XCTAssertEqual(recipe.fourthPour, 60.0)
+    }
+    
+    func testRecipeEspressoParameters() throws {
+        let recipe = Recipe(context: context)
+        recipe.brewingMethod = "Espresso"
+        recipe.waterOut = 36.0
+        
+        XCTAssertTrue(recipe.isEspresso)
+        XCTAssertFalse(recipe.supportsPours)
+        XCTAssertFalse(recipe.supportsBloom)
+        XCTAssertEqual(recipe.waterOut, 36.0)
+    }
+    
+    func testRecipeAeropressParameters() throws {
+        let recipe = Recipe(context: context)
+        recipe.brewingMethod = "Aeropress"
+        recipe.aeropressType = "Inverted"
+        recipe.plungeTime = 30
+        
+        XCTAssertTrue(recipe.isAeropress)
+        XCTAssertTrue(recipe.supportsPours)
+        XCTAssertTrue(recipe.supportsBloom)
+        XCTAssertEqual(recipe.wrappedAeropressType, "Inverted")
+        XCTAssertEqual(recipe.plungeTime, 30)
+    }
+    
+    // MARK: - BrewingNote Extension Tests
+    
+    func testBrewingNoteExtensions() throws {
+        let coffee = Coffee(context: context)
+        coffee.name = "Test Coffee"
+        coffee.roaster = "Test Roaster"
+        
+        let recipe = Recipe(context: context)
+        recipe.name = "Test Recipe"
+        recipe.brewingMethod = "V60-01"
+        
+        let brewingNote = BrewingNote(context: context)
+        brewingNote.notes = "Great brew with citrus notes"
+        brewingNote.rating = 4
+        brewingNote.dateCreated = Date()
+        brewingNote.coffee = coffee
+        brewingNote.recipe = recipe
+        
+        XCTAssertEqual(brewingNote.wrappedNotes, "Great brew with citrus notes")
+        XCTAssertEqual(brewingNote.wrappedCoffeeName, "Test Coffee")
+        XCTAssertEqual(brewingNote.wrappedRecipeName, "Test Recipe")
+        XCTAssertEqual(brewingNote.wrappedRoaster, "Test Roaster")
+        XCTAssertEqual(brewingNote.wrappedBrewingMethod, "V60-01")
+        XCTAssertTrue(brewingNote.hasRating)
+        XCTAssertTrue(brewingNote.hasNotes)
+        XCTAssertEqual(brewingNote.ratingStars, "★★★★☆")
+    }
+    
+    func testBrewingNoteSearchMatching() throws {
+        let coffee = Coffee(context: context)
+        coffee.name = "Ethiopian Yirgacheffe"
+        coffee.roaster = "Blue Bottle"
+        
+        let recipe = Recipe(context: context)
+        recipe.name = "V60 Recipe"
+        recipe.brewingMethod = "V60-01"
+        
+        let brewingNote = BrewingNote(context: context)
+        brewingNote.notes = "Bright citrus flavors"
+        brewingNote.coffee = coffee
+        brewingNote.recipe = recipe
+        
+        XCTAssertTrue(brewingNote.matchesSearchText("Ethiopian"))
+        XCTAssertTrue(brewingNote.matchesSearchText("Blue"))
+        XCTAssertTrue(brewingNote.matchesSearchText("V60"))
+        XCTAssertTrue(brewingNote.matchesSearchText("citrus"))
+        XCTAssertFalse(brewingNote.matchesSearchText("Jamaica"))
+    }
+    
     // MARK: - Relationship Tests
     
     func testCoffeeBrewingNotesRelationship() throws {
@@ -307,5 +426,49 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         let recipeNotes = recipe.brewingNotesArray
         XCTAssertEqual(recipeNotes.count, 1)
         XCTAssertEqual(recipeNotes[0], brewingNote)
+    }
+    
+    // MARK: - Coffee Analysis Tests
+    
+    func testCoffeeAverageRating() throws {
+        let coffee = Coffee(context: context)
+        coffee.name = "Test Coffee"
+        
+        let recipe = Recipe(context: context)
+        recipe.name = "Test Recipe"
+        
+        // Add brewing notes with ratings
+        let note1 = BrewingNote(context: context)
+        note1.coffee = coffee
+        note1.recipe = recipe
+        note1.rating = 4
+        
+        let note2 = BrewingNote(context: context)
+        note2.coffee = coffee
+        note2.recipe = recipe
+        note2.rating = 5
+        
+        let note3 = BrewingNote(context: context)
+        note3.coffee = coffee
+        note3.recipe = recipe
+        note3.rating = 0 // No rating
+        
+        try context.save()
+        
+        XCTAssertEqual(coffee.averageRating, 4.5)
+        XCTAssertTrue(coffee.hasRatings)
+        XCTAssertEqual(coffee.brewingNotesCount, 3)
+    }
+    
+    func testCoffeeDisplayHelpers() throws {
+        let coffee = Coffee(context: context)
+        coffee.name = "Ethiopian Yirgacheffe"
+        coffee.roaster = "Blue Bottle"
+        coffee.origin = "Ethiopia"
+        coffee.processing = "Washed"
+        coffee.roastLevel = "Light"
+        
+        XCTAssertEqual(coffee.displayName, "Ethiopian Yirgacheffe - Blue Bottle")
+        XCTAssertEqual(coffee.detailText, "Ethiopia • Washed • Light")
     }
 }

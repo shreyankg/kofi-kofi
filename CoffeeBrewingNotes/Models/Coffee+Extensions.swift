@@ -14,11 +14,11 @@ extension Coffee {
     }
     
     var wrappedProcessing: String {
-        processing ?? "Unknown Processing"
+        processing ?? "Unknown"
     }
     
     var wrappedRoastLevel: String {
-        roastLevel ?? "Unknown Roast"
+        roastLevel ?? "Medium"
     }
     
     var wrappedOrigin: String {
@@ -66,19 +66,19 @@ extension Coffee {
     
     static let processingOptions = [
         "Washed",
+        "Honey", 
         "Natural",
-        "Honey",
-        "Semi-washed",
+        "Semi-Washed",
         "Pulped Natural",
         "Anaerobic",
-        "Other"
+        "Carbonic Maceration"
     ]
     
     static let roastLevelOptions = [
         "Light",
-        "Medium-Light", 
+        "Medium Light", 
         "Medium",
-        "Medium-Dark",
+        "Medium Dark",
         "Dark",
         "Extra Dark"
     ]
