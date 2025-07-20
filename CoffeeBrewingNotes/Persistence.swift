@@ -115,6 +115,66 @@ extension PersistenceController {
         return recipe
     }
     
+    func createRecipeWithMethodSpecificParams(
+        name: String, 
+        brewingMethod: String, 
+        grinder: String, 
+        grindSize: Int32, 
+        waterTemp: Int32, 
+        dose: Double, 
+        brewTime: Int32,
+        bloomAmount: Double? = nil,
+        bloomTime: Int32? = nil,
+        secondPour: Double? = nil,
+        thirdPour: Double? = nil,
+        fourthPour: Double? = nil,
+        waterOut: Double? = nil,
+        aeropressType: String? = nil,
+        plungeTime: Int32? = nil
+    ) -> Recipe {
+        let context = container.viewContext
+        let recipe = Recipe(context: context)
+        recipe.id = UUID()
+        recipe.name = name
+        recipe.brewingMethod = brewingMethod
+        recipe.grinder = grinder
+        recipe.grindSize = grindSize
+        recipe.waterTemp = waterTemp
+        recipe.dose = dose
+        recipe.brewTime = brewTime
+        recipe.usageCount = 0
+        recipe.dateCreated = Date()
+        
+        // Set method-specific parameters
+        if let bloomAmount = bloomAmount {
+            recipe.bloomAmount = bloomAmount
+        }
+        if let bloomTime = bloomTime {
+            recipe.bloomTime = bloomTime
+        }
+        if let secondPour = secondPour {
+            recipe.secondPour = secondPour
+        }
+        if let thirdPour = thirdPour {
+            recipe.thirdPour = thirdPour
+        }
+        if let fourthPour = fourthPour {
+            recipe.fourthPour = fourthPour
+        }
+        if let waterOut = waterOut {
+            recipe.waterOut = waterOut
+        }
+        if let aeropressType = aeropressType {
+            recipe.aeropressType = aeropressType
+        }
+        if let plungeTime = plungeTime {
+            recipe.plungeTime = plungeTime
+        }
+        
+        save()
+        return recipe
+    }
+    
     func createBrewingNote(coffee: Coffee, recipe: Recipe, notes: String, rating: Int16) -> BrewingNote {
         let context = container.viewContext
         let brewingNote = BrewingNote(context: context)

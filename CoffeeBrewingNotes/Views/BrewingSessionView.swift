@@ -115,25 +115,16 @@ struct BrewingSessionView: View {
         guard let coffee = selectedCoffee,
               let recipe = selectedRecipe else { return }
         
-        let brewingNote = BrewingNote(context: viewContext)
-        brewingNote.id = UUID()
-        brewingNote.notes = notes
-        brewingNote.rating = Int16(rating)
-        brewingNote.dateCreated = Date()
-        brewingNote.coffee = coffee
-        brewingNote.recipe = recipe
+        let persistence = PersistenceController.shared
+        let _ = persistence.createBrewingNote(
+            coffee: coffee,
+            recipe: recipe,
+            notes: notes,
+            rating: Int16(rating)
+        )
         
-        recipe.incrementUsageCount()
-        
-        do {
-            try viewContext.save()
-            alertMessage = "Brewing session saved successfully!"
-            showingAlert = true
-        } catch {
-            let nsError = error as NSError
-            alertMessage = "Error saving brewing session: \(nsError.localizedDescription)"
-            showingAlert = true
-        }
+        alertMessage = "Brewing session saved successfully!"
+        showingAlert = true
     }
     
     private func resetForm() {
