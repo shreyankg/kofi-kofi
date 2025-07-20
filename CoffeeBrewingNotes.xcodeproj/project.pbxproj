@@ -7,34 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D0000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0000000000000000000001 /* CoffeeBrewingNotesApp.swift */; };
-		3D0000010000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0000000000000000000003 /* ContentView.swift */; };
-		3D0000010000000000000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D0000000000000000000005 /* Assets.xcassets */; };
-		3D0000010000000000000008 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D0000000000000000000008 /* Preview Assets.xcassets */; };
-		3D0000010000000000000010 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0000000000000000000010 /* Persistence.swift */; };
-		3D0000010000000000000013 /* CoffeeBrewingNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3D0000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */; };
-		3D0000010000000000000036 /* SimpleCoffeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0000000000000000000036 /* SimpleCoffeeListView.swift */; };
+		A10000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */; };
+		A10000010000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* ContentView.swift */; };
+		A10000010000000000000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* Assets.xcassets */; };
+		A10000010000000000000008 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000008 /* Preview Assets.xcassets */; };
+		A10000010000000000000010 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000010 /* Persistence.swift */; };
+		A10000010000000000000013 /* CoffeeBrewingNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */; };
+		A10000010000000000000036 /* SimpleCoffeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000036 /* SimpleCoffeeListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3D0000000000000000000000 /* CoffeeBrewingNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoffeeBrewingNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3D0000000000000000000001 /* CoffeeBrewingNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBrewingNotesApp.swift; sourceTree = "<group>"; };
-		3D0000000000000000000003 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		3D0000000000000000000005 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3D0000000000000000000008 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		3D0000000000000000000010 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		3D0000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoffeeBrewingNotes.xcdatamodel; sourceTree = "<group>"; };
-		3D0000000000000000000030 /* CoffeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeListView.swift; sourceTree = "<group>"; };
-		3D0000000000000000000031 /* AddCoffeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCoffeeView.swift; sourceTree = "<group>"; };
-		3D0000000000000000000032 /* RecipeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListView.swift; sourceTree = "<group>"; };
-		3D0000000000000000000033 /* AddRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecipeView.swift; sourceTree = "<group>"; };
-		3D0000000000000000000034 /* BrewingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrewingSessionView.swift; sourceTree = "<group>"; };
-		3D0000000000000000000035 /* NotesHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesHistoryView.swift; sourceTree = "<group>"; };
-		3D0000000000000000000036 /* SimpleCoffeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCoffeeListView.swift; sourceTree = "<group>"; };
+		A10000000000000000000000 /* CoffeeBrewingNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoffeeBrewingNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBrewingNotesApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000003 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A10000000000000000000005 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10000000000000000000008 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A10000000000000000000010 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		A10000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoffeeBrewingNotes.xcdatamodel; sourceTree = "<group>"; };
+		A10000000000000000000036 /* SimpleCoffeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCoffeeListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3D0000000000000000000100 /* Frameworks */ = {
+		A10000000000000000000100 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -44,62 +38,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3D0000000000000000000200 = {
+		A10000000000000000000200 = {
 			isa = PBXGroup;
 			children = (
-				3D0000000000000000000201 /* CoffeeBrewingNotes */,
-				3D0000000000000000000202 /* Products */,
+				A10000000000000000000201 /* CoffeeBrewingNotes */,
+				A10000000000000000000202 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		3D0000000000000000000201 /* CoffeeBrewingNotes */ = {
+		A10000000000000000000201 /* CoffeeBrewingNotes */ = {
 			isa = PBXGroup;
 			children = (
-				3D0000000000000000000001 /* CoffeeBrewingNotesApp.swift */,
-				3D0000000000000000000003 /* ContentView.swift */,
-				3D0000000000000000000010 /* Persistence.swift */,
-				3D0000000000000000000300 /* Models */,
-				3D0000000000000000000400 /* Views */,
-				3D0000000000000000000005 /* Assets.xcassets */,
-				3D0000000000000000000007 /* Preview Content */,
+				A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */,
+				A10000000000000000000003 /* ContentView.swift */,
+				A10000000000000000000010 /* Persistence.swift */,
+				A10000000000000000000300 /* Models */,
+				A10000000000000000000400 /* Views */,
+				A10000000000000000000005 /* Assets.xcassets */,
+				A10000000000000000000007 /* Preview Content */,
 			);
 			path = CoffeeBrewingNotes;
 			sourceTree = "<group>";
 		};
-		3D0000000000000000000202 /* Products */ = {
+		A10000000000000000000202 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3D0000000000000000000000 /* CoffeeBrewingNotes.app */,
+				A10000000000000000000000 /* CoffeeBrewingNotes.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3D0000000000000000000007 /* Preview Content */ = {
+		A10000000000000000000007 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				3D0000000000000000000008 /* Preview Assets.xcassets */,
+				A10000000000000000000008 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		3D0000000000000000000300 /* Models */ = {
+		A10000000000000000000300 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3D0000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */,
+				A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		3D0000000000000000000400 /* Views */ = {
+		A10000000000000000000400 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3D0000000000000000000030 /* CoffeeListView.swift */,
-				3D0000000000000000000031 /* AddCoffeeView.swift */,
-				3D0000000000000000000032 /* RecipeListView.swift */,
-				3D0000000000000000000033 /* AddRecipeView.swift */,
-				3D0000000000000000000034 /* BrewingSessionView.swift */,
-				3D0000000000000000000035 /* NotesHistoryView.swift */,
-				3D0000000000000000000036 /* SimpleCoffeeListView.swift */,
+				A10000000000000000000036 /* SimpleCoffeeListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -107,13 +95,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3D0000000000000000000500 /* CoffeeBrewingNotes */ = {
+		A10000000000000000000500 /* CoffeeBrewingNotes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3D0000000000000000000600 /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotes" */;
+			buildConfigurationList = A10000000000000000000600 /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotes" */;
 			buildPhases = (
-				3D0000000000000000000510 /* Sources */,
-				3D0000000000000000000100 /* Frameworks */,
-				3D0000000000000000000520 /* Resources */,
+				A10000000000000000000510 /* Sources */,
+				A10000000000000000000100 /* Frameworks */,
+				A10000000000000000000520 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -121,25 +109,25 @@
 			);
 			name = CoffeeBrewingNotes;
 			productName = CoffeeBrewingNotes;
-			productReference = 3D0000000000000000000000 /* CoffeeBrewingNotes.app */;
+			productReference = A10000000000000000000000 /* CoffeeBrewingNotes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		3D0000000000000000000700 /* Project object */ = {
+		A10000000000000000000700 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
-					3D0000000000000000000500 = {
+					A10000000000000000000500 = {
 						CreatedOnToolsVersion = 16.0;
 					};
 				};
 			};
-			buildConfigurationList = 3D0000000000000000000800 /* Build configuration list for PBXProject "CoffeeBrewingNotes" */;
+			buildConfigurationList = A10000000000000000000800 /* Build configuration list for PBXProject "CoffeeBrewingNotes" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -147,50 +135,50 @@
 				en,
 				Base,
 			);
-			mainGroup = 3D0000000000000000000200;
-			productRefGroup = 3D0000000000000000000202 /* Products */;
+			mainGroup = A10000000000000000000200;
+			productRefGroup = A10000000000000000000202 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3D0000000000000000000500 /* CoffeeBrewingNotes */,
+				A10000000000000000000500 /* CoffeeBrewingNotes */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		3D0000000000000000000520 /* Resources */ = {
+		A10000000000000000000520 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D0000010000000000000008 /* Preview Assets.xcassets in Resources */,
-				3D0000010000000000000005 /* Assets.xcassets in Resources */,
+				A10000010000000000000008 /* Preview Assets.xcassets in Resources */,
+				A10000010000000000000005 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3D0000000000000000000510 /* Sources */ = {
+		A10000000000000000000510 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D0000010000000000000010 /* Persistence.swift in Sources */,
-				3D0000010000000000000003 /* ContentView.swift in Sources */,
-				3D0000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */,
-				3D0000010000000000000013 /* CoffeeBrewingNotes.xcdatamodeld in Sources */,
-				3D0000010000000000000036 /* SimpleCoffeeListView.swift in Sources */,
+				A10000010000000000000010 /* Persistence.swift in Sources */,
+				A10000010000000000000003 /* ContentView.swift in Sources */,
+				A10000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */,
+				A10000010000000000000013 /* CoffeeBrewingNotes.xcdatamodeld in Sources */,
+				A10000010000000000000036 /* SimpleCoffeeListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCVersionGroup section */
-		3D0000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */ = {
+		A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				3D0000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */,
+				A10000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */,
 			);
-			currentVersion = 3D0000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */;
+			currentVersion = A10000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */;
 			path = CoffeeBrewingNotes.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
@@ -198,7 +186,7 @@
 /* End XCVersionGroup section */
 
 /* Begin XCBuildConfiguration section */
-		3D0000000000000000000900 /* Debug */ = {
+		A10000000000000000000900 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -261,7 +249,7 @@
 			};
 			name = Debug;
 		};
-		3D0000000000000000000901 /* Release */ = {
+		A10000000000000000000901 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -317,7 +305,7 @@
 			};
 			name = Release;
 		};
-		3D0000000000000000000902 /* Debug */ = {
+		A10000000000000000000902 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -345,7 +333,7 @@
 			};
 			name = Debug;
 		};
-		3D0000000000000000000903 /* Release */ = {
+		A10000000000000000000903 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -376,25 +364,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3D0000000000000000000800 /* Build configuration list for PBXProject "CoffeeBrewingNotes" */ = {
+		A10000000000000000000800 /* Build configuration list for PBXProject "CoffeeBrewingNotes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3D0000000000000000000900 /* Debug */,
-				3D0000000000000000000901 /* Release */,
+				A10000000000000000000900 /* Debug */,
+				A10000000000000000000901 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3D0000000000000000000600 /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotes" */ = {
+		A10000000000000000000600 /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3D0000000000000000000902 /* Debug */,
-				3D0000000000000000000903 /* Release */,
+				A10000000000000000000902 /* Debug */,
+				A10000000000000000000903 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 3D0000000000000000000700 /* Project object */;
+	rootObject = A10000000000000000000700 /* Project object */;
 }
