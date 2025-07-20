@@ -1,8 +1,8 @@
-# Coffee Brewing Notes - Developer Documentation
+# Kofi Kofi - Developer Documentation
 
 ## Project Overview
 
-The Coffee Brewing Notes app is an iOS application built with SwiftUI and Core Data to help coffee enthusiasts track their brewing experiments and manage their coffee inventory. 
+The Kofi Kofi app is an iOS application built with SwiftUI and Core Data to help coffee enthusiasts track their brewing experiments and manage their coffee inventory. 
 
 **Current Status: ✅ FULLY FUNCTIONAL WITH COMPREHENSIVE TESTING**  
 The app is complete with all four main features implemented and working. All three development phases have been successfully completed, including comprehensive testing infrastructure with 73 test methods covering unit, UI, performance, and error scenarios.
@@ -510,4 +510,4 @@ Tests/
 - **Error Tests**: 22 test methods for edge cases and error scenarios
 - **Total Test Coverage**: 73 test methods ensuring comprehensive validation
 
-This documentation provides a comprehensive overview of the application architecture, implementation details, and development guidelines for maintaining and extending the Coffee Brewing Notes app.
+This documentation provides a comprehensive overview of the application architecture, implementation details, and development guidelines for maintaining and extending the Kofi Kofi app.

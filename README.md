@@ -1,4 +1,4 @@
-# Coffee Brewing Notes iOS App
+# Kofi Kofi iOS App
 
 A comprehensive iOS app for coffee enthusiasts to track their brewing experiments, manage coffee inventory, and maintain detailed brewing notes.
 
@@ -121,7 +121,7 @@ This project is licensed under the MIT License - see below for details.
 ```
 MIT License
 
-Copyright (c) 2025 Coffee Brewing Notes
+Copyright (c) 2025 Kofi Kofi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
