@@ -4,25 +4,25 @@ import CoreData
 struct ContentView: View {
     var body: some View {
         TabView {
-            CoffeeListView()
+            SimpleCoffeeListView()
                 .tabItem {
                     Image(systemName: "cup.and.saucer")
                     Text("Coffees")
                 }
             
-            RecipeListView()
+            Text("Recipes - Coming Soon")
                 .tabItem {
                     Image(systemName: "list.bullet.rectangle")
                     Text("Recipes")
                 }
             
-            BrewingSessionView()
+            Text("Brew - Coming Soon")
                 .tabItem {
                     Image(systemName: "plus.circle")
                     Text("Brew")
                 }
             
-            NotesHistoryView()
+            Text("Notes - Coming Soon")
                 .tabItem {
                     Image(systemName: "book")
                     Text("Notes")

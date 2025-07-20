@@ -125,7 +125,7 @@ extension PersistenceController {
         brewingNote.coffee = coffee
         brewingNote.recipe = recipe
         
-        recipe.incrementUsageCount()
+        recipe.usageCount += 1
         
         save()
         return brewingNote
