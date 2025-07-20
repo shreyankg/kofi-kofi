@@ -1,0 +1,7 @@
+Coffee
+====
+ - Name (String)
+ - Roaster (String)
+ - Processing (Washed / Honey / Natural / etc..)
+ - Roast level (Light / Medium light / Medium / Medium dark / Dark / Extra dark)
+ - Origin (String)

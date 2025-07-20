@@ -1,0 +1,91 @@
+V60-01
+====
+ - Grinder (Baraza Encore / 1Zpresso J Ultra / DF64)
+ - Grind size (positive int)
+ - Water temp (positive int, Celcius)
+ - Dose (Grams)
+ - Pours
+  - Bloom (Grams)
+  - Bloom time (Seconds)
+  - 2nd pour (Grams)
+  - 3rd pour (Grams)
+  ...
+ - Brew time (Seconds)
+
+V60-02
+====
+ - Grinder (Baraza Encore / 1Zpresso J Ultra / DF64)
+ - Grind size (positive int)
+ - Water temp (positive int, Celcius)
+ - Dose (Grams)
+ - Pours
+  - Bloom (Grams)
+  - Bloom time (Seconds)
+  - 2nd pour (Grams)
+  - 3rd pour (Grams)
+  ...
+ - Brew time (Second)
+
+Kalita Wave-01
+====
+ - Grinder (Baraza Encore / 1Zpresso J Ultra / DF64)
+ - Grind size (positive int)
+ - Water temp (positive int, Celcius)
+ - Dose (Grams)
+ - Pours
+  - Bloom (Grams)
+  - Bloom time (Seconds)
+  - 2nd pour (Grams)
+  - 3rd pour (Grams)
+  ...
+ - Brew time (Second)
+
+
+Espresso - Gaggia Classic Pro
+====
+ - Grinder (1Zpresso J Ultra / DF64)
+ - Grind size (positive int)
+ - Water temp (positive int, Celcius)
+ - Dose (Grams)
+ - Water out (Grams)
+ - Brew time (Seconds)
+
+French Press - 01
+====
+ - Grinder (Baraza Encore / 1Zpresso J Ultra / DF64)
+ - Grind size (positive int)
+ - Water temp (positive int, Celcius)
+ - Dose (Grams)
+ - Pours
+  - Bloom (Grams)
+  - Bloom time (Seconds)
+  - 2nd pour (Grams)
+ - Brew time (Seconds)
+
+French Press - 02
+====
+ - Grinder (Baraza Encore / 1Zpresso J Ultra / DF64)
+ - Grind size (positive int)
+ - Water temp (positive int, Celcius)
+ - Dose (Grams)
+ - Pours
+  - Bloom (Grams)
+  - Bloom time (Seconds)
+  - 2nd pour (Grams)
+ - Brew time (Seconds)
+
+ Aeropress
+ ====
+ - Grinder (Baraza Encore / 1Zpresso J Ultra / DF64)
+ - Grind size (positive int)
+ - Water temp (positive int, Celcius)
+ - Dose (Grams)
+ - Type (Normal / Inverted)
+ - Pours
+  - Bloom (Grams)
+  - Bloom time (Seconds)
+  - 2nd pour (Grams)
+  - Plunge time (Seconds)
+ - Brew time (Seconds)
+
+
