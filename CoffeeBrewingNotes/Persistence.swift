@@ -23,7 +23,7 @@ struct PersistenceController {
         sampleRecipe.name = "My V60 Recipe"
         sampleRecipe.brewingMethod = "V60-01"
         sampleRecipe.grinder = "Baratza Encore"
-        sampleRecipe.grindSize = 20
+        sampleRecipe.grindSize = "20"
         sampleRecipe.waterTemp = 93
         sampleRecipe.dose = 20.0
         sampleRecipe.brewTime = 240
@@ -97,7 +97,7 @@ extension PersistenceController {
         return coffee
     }
     
-    func createRecipe(name: String, brewingMethod: String, grinder: String, grindSize: Int32, waterTemp: Int32, dose: Double, brewTime: Int32) -> Recipe {
+    func createRecipe(name: String, brewingMethod: String, grinder: String, grindSize: String, waterTemp: Int32, dose: Double, brewTime: Int32) -> Recipe {
         let context = container.viewContext
         let recipe = Recipe(context: context)
         recipe.id = UUID()
@@ -119,7 +119,7 @@ extension PersistenceController {
         name: String, 
         brewingMethod: String, 
         grinder: String, 
-        grindSize: Int32, 
+        grindSize: String, 
         waterTemp: Int32, 
         dose: Double, 
         brewTime: Int32,

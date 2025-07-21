@@ -45,6 +45,8 @@ struct RecipeTabView: View {
     private var recipes: FetchedResults<Recipe>
     
     @State private var showingAddRecipe = false
+    @State private var showingEditRecipe = false
+    @State private var selectedRecipe: Recipe? = nil
     @State private var searchText = ""
     
     var filteredRecipes: [Recipe] {
@@ -63,6 +65,10 @@ struct RecipeTabView: View {
             List {
                 ForEach(filteredRecipes, id: \.self) { recipe in
                     RecipeRowView(recipe: recipe)
+                        .onTapGesture {
+                            selectedRecipe = recipe
+                            showingEditRecipe = true
+                        }
                 }
                 .onDelete(perform: deleteRecipes)
             }
@@ -77,6 +83,11 @@ struct RecipeTabView: View {
             }
             .sheet(isPresented: $showingAddRecipe) {
                 AddRecipeTabView()
+            }
+            .sheet(isPresented: $showingEditRecipe) {
+                if let recipe = selectedRecipe {
+                    EditRecipeTabView(recipe: recipe)
+                }
             }
         }
     }
@@ -98,23 +109,12 @@ struct RecipeTabView: View {
 struct RecipeRowView: View {
     let recipe: Recipe
     
-    var wrappedName: String {
-        recipe.name ?? "Unknown Recipe"
-    }
-    
-    var wrappedBrewingMethod: String {
-        recipe.brewingMethod ?? "Unknown Method"
-    }
-    
-    var wrappedGrinder: String {
-        recipe.grinder ?? "Unknown Grinder"
-    }
-    
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(wrappedName)
+                Text(recipe.wrappedBrewingMethod)
                     .font(.headline)
+                    .lineLimit(1)
                 Spacer()
                 Text("\(recipe.usageCount) uses")
                     .font(.caption)
@@ -124,39 +124,27 @@ struct RecipeRowView: View {
                     .cornerRadius(4)
             }
             
-            Text(wrappedBrewingMethod)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+            HStack {
+                Text("\(recipe.wrappedGrindSize) • \(recipe.wrappedGrinder)")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text("\(recipe.dose, specifier: "%.1f")g")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
             
             HStack {
-                Text("\(recipe.grindSize) grind")
-                    .font(.caption)
+                Text("→ \(recipe.finalWeightString)")
+                    .font(.subheadline)
                     .foregroundColor(.secondary)
-                
-                Text("•")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                Text("\(recipe.waterTemp)°C")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                Text("•")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                Text("\(recipe.dose, specifier: "%.1f")g")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
                 Spacer()
-                
                 Text("\(recipe.brewTime)s")
-                    .font(.caption)
+                    .font(.subheadline)
                     .foregroundColor(.secondary)
             }
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, 4)
     }
 }
 
@@ -165,10 +153,9 @@ struct AddRecipeTabView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var preferencesManager = PreferencesManager.shared
     
-    @State private var name = ""
     @State private var brewingMethod = ""
     @State private var grinder = ""
-    @State private var grindSize: Int = 0
+    @State private var grindSize = ""
     @State private var waterTemp: Int = 0
     @State private var dose: Double = 0.0
     @State private var brewTime: Int = 0
@@ -211,8 +198,6 @@ struct AddRecipeTabView: View {
         NavigationView {
             Form {
                 Section(header: Text("Recipe Details")) {
-                    TextField("Recipe Name", text: $name)
-                    
                     Picker("Brewing Method", selection: $brewingMethod) {
                         ForEach(brewingMethods, id: \.self) { method in
                             Text(method).tag(method)
@@ -230,10 +215,9 @@ struct AddRecipeTabView: View {
                     HStack {
                         Text("Grind Size")
                         Spacer()
-                        TextField("Grind Size", value: $grindSize, format: .number)
-                            .keyboardType(.numberPad)
+                        TextField("e.g. 20, 3.2, coarse", text: $grindSize)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 80)
+                            .frame(width: 120)
                     }
                     
                     HStack {
@@ -316,7 +300,7 @@ struct AddRecipeTabView: View {
                     Button("Save") {
                         saveRecipe()
                     }
-                    .disabled(name.isEmpty)
+                    .disabled(brewingMethod.isEmpty || grinder.isEmpty || grindSize.isEmpty || dose <= 0 || hasValidationErrors)
                 }
             }
         }
@@ -330,18 +314,258 @@ struct AddRecipeTabView: View {
         preferencesManager.enabledGrinders
     }
     
+    private var hasValidationErrors: Bool {
+        if supportsPours {
+            if secondPour > 0 && secondPour <= bloomAmount { return true }
+            if thirdPour > 0 && thirdPour <= secondPour { return true }
+            if fourthPour > 0 && fourthPour <= thirdPour { return true }
+        }
+        return false
+    }
+    
+    private var supportsPours: Bool {
+        isPourOver || isFrenchPress || isAeropress
+    }
+    
     private func saveRecipe() {
         let recipe = Recipe(context: viewContext)
         recipe.id = UUID()
-        recipe.name = name
+        recipe.name = nil // Name is now auto-generated
         recipe.brewingMethod = brewingMethod
         recipe.grinder = grinder
-        recipe.grindSize = Int32(grindSize)
+        recipe.grindSize = grindSize
         recipe.waterTemp = Int32(waterTemp)
         recipe.dose = dose
         recipe.brewTime = Int32(brewTime)
         recipe.usageCount = 0
         recipe.dateCreated = Date()
+        
+        // Set method-specific attributes
+        if isPourOver || isFrenchPress || isAeropress {
+            recipe.bloomAmount = bloomAmount
+            recipe.bloomTime = Int32(bloomTime)
+            recipe.secondPour = secondPour
+        }
+        
+        if isPourOver {
+            recipe.thirdPour = thirdPour
+            recipe.fourthPour = fourthPour
+        }
+        
+        if isEspresso {
+            recipe.waterOut = waterOut
+        }
+        
+        if isAeropress {
+            recipe.aeropressType = aeropressType
+            recipe.plungeTime = Int32(plungeTime)
+        }
+        
+        do {
+            try viewContext.save()
+            dismiss()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+}
+
+struct EditRecipeTabView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var preferencesManager = PreferencesManager.shared
+    
+    let recipe: Recipe
+    
+    @State private var brewingMethod = ""
+    @State private var grinder = ""
+    @State private var grindSize = ""
+    @State private var waterTemp: Int = 0
+    @State private var dose: Double = 0.0
+    @State private var brewTime: Int = 0
+    
+    // Pour-over specific
+    @State private var bloomAmount: Double = 0.0
+    @State private var bloomTime: Int = 0
+    @State private var secondPour: Double = 0.0
+    @State private var thirdPour: Double = 0.0
+    @State private var fourthPour: Double = 0.0
+    
+    // Espresso specific
+    @State private var waterOut: Double = 0.0
+    
+    // Aeropress specific
+    @State private var aeropressType = "Normal"
+    @State private var plungeTime: Int = 0
+    
+    private var selectedMethod: String {
+        brewingMethod
+    }
+    
+    private var isPourOver: Bool {
+        selectedMethod.contains("V60") || selectedMethod.contains("Kalita")
+    }
+    
+    private var isEspresso: Bool {
+        selectedMethod.contains("Espresso")
+    }
+    
+    private var isFrenchPress: Bool {
+        selectedMethod.contains("French Press")
+    }
+    
+    private var isAeropress: Bool {
+        selectedMethod.contains("Aeropress")
+    }
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Recipe Details")) {
+                    Picker("Brewing Method", selection: $brewingMethod) {
+                        ForEach(brewingMethods, id: \.self) { method in
+                            Text(method).tag(method)
+                        }
+                    }
+                }
+                
+                Section(header: Text("Basic Parameters")) {
+                    Picker("Grinder", selection: $grinder) {
+                        ForEach(grinders, id: \.self) { grinder in
+                            Text(grinder).tag(grinder)
+                        }
+                    }
+                    
+                    HStack {
+                        Text("Grind Size")
+                        Spacer()
+                        TextField("e.g. 20, 3.2, coarse", text: $grindSize)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 120)
+                    }
+                    
+                    HStack {
+                        Text("Water Temp (°C)")
+                        Spacer()
+                        TextField("°C", value: $waterTemp, format: .number)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 80)
+                    }
+                    
+                    HStack {
+                        Text("Dose (g)")
+                        Spacer()
+                        TextField("Grams", value: $dose, format: .number)
+                            .keyboardType(.decimalPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 80)
+                    }
+                    
+                    HStack {
+                        Text("Brew Time (s)")
+                        Spacer()
+                        TextField("Seconds", value: $brewTime, format: .number)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 80)
+                    }
+                }
+                
+                // Method-specific sections
+                if isPourOver {
+                    PourOverTabSection(
+                        bloomAmount: $bloomAmount,
+                        bloomTime: $bloomTime,
+                        secondPour: $secondPour,
+                        thirdPour: $thirdPour,
+                        fourthPour: $fourthPour
+                    )
+                } else if isEspresso {
+                    EspressoTabSection(waterOut: $waterOut)
+                } else if isFrenchPress {
+                    FrenchPressTabSection(
+                        bloomAmount: $bloomAmount,
+                        bloomTime: $bloomTime,
+                        secondPour: $secondPour
+                    )
+                } else if isAeropress {
+                    AeropressTabSection(
+                        aeropressType: $aeropressType,
+                        bloomAmount: $bloomAmount,
+                        bloomTime: $bloomTime,
+                        secondPour: $secondPour,
+                        plungeTime: $plungeTime
+                    )
+                }
+            }
+            .navigationTitle("Edit Recipe")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                // Load recipe values
+                brewingMethod = recipe.brewingMethod ?? ""
+                grinder = recipe.grinder ?? ""
+                grindSize = recipe.grindSize ?? ""
+                waterTemp = Int(recipe.waterTemp)
+                dose = recipe.dose
+                brewTime = Int(recipe.brewTime)
+                
+                // Method-specific values
+                bloomAmount = recipe.bloomAmount
+                bloomTime = Int(recipe.bloomTime)
+                secondPour = recipe.secondPour
+                thirdPour = recipe.thirdPour
+                fourthPour = recipe.fourthPour
+                waterOut = recipe.waterOut
+                aeropressType = recipe.aeropressType ?? "Normal"
+                plungeTime = Int(recipe.plungeTime)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        saveRecipe()
+                    }
+                    .disabled(brewingMethod.isEmpty || grinder.isEmpty || grindSize.isEmpty || dose <= 0 || hasValidationErrors)
+                }
+            }
+        }
+    }
+    
+    private var brewingMethods: [String] {
+        preferencesManager.enabledBrewingMethods
+    }
+    
+    private var grinders: [String] {
+        preferencesManager.enabledGrinders
+    }
+    
+    private var hasValidationErrors: Bool {
+        if supportsPours {
+            if secondPour > 0 && secondPour <= bloomAmount { return true }
+            if thirdPour > 0 && thirdPour <= secondPour { return true }
+            if fourthPour > 0 && fourthPour <= thirdPour { return true }
+        }
+        return false
+    }
+    
+    private var supportsPours: Bool {
+        isPourOver || isFrenchPress || isAeropress
+    }
+    
+    private func saveRecipe() {
+        recipe.brewingMethod = brewingMethod
+        recipe.grinder = grinder
+        recipe.grindSize = grindSize
+        recipe.waterTemp = Int32(waterTemp)
+        recipe.dose = dose
+        recipe.brewTime = Int32(brewTime)
         
         // Set method-specific attributes
         if isPourOver || isFrenchPress || isAeropress {
@@ -550,7 +774,7 @@ struct RecipeDetailsTabSection: View {
                     Text("Grinder:")
                         .fontWeight(.semibold)
                     Spacer()
-                    Text("\(wrappedGrinder) - \(recipe.grindSize)")
+                    Text("\(wrappedGrinder) - \(recipe.wrappedGrindSize)")
                 }
                 
                 HStack {
@@ -641,6 +865,24 @@ struct PourOverTabSection: View {
     @Binding var thirdPour: Double
     @Binding var fourthPour: Double
     
+    private var validationErrors: [String] {
+        var errors: [String] = []
+        
+        if secondPour > 0 && secondPour <= bloomAmount {
+            errors.append("2nd pour must be greater than bloom (\(String(format: "%.0f", bloomAmount))g)")
+        }
+        
+        if thirdPour > 0 && thirdPour <= secondPour {
+            errors.append("3rd pour must be greater than 2nd pour (\(String(format: "%.0f", secondPour))g)")
+        }
+        
+        if fourthPour > 0 && fourthPour <= thirdPour {
+            errors.append("4th pour must be greater than 3rd pour (\(String(format: "%.0f", thirdPour))g)")
+        }
+        
+        return errors
+    }
+    
     var body: some View {
         Section(header: Text("Pour Schedule")) {
             HStack {
@@ -687,6 +929,13 @@ struct PourOverTabSection: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 80)
             }
+            
+            // Display validation errors
+            ForEach(validationErrors, id: \.self) { error in
+                Text(error)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
         }
     }
 }
@@ -712,6 +961,16 @@ struct FrenchPressTabSection: View {
     @Binding var bloomAmount: Double
     @Binding var bloomTime: Int
     @Binding var secondPour: Double
+    
+    private var validationErrors: [String] {
+        var errors: [String] = []
+        
+        if secondPour > 0 && secondPour <= bloomAmount {
+            errors.append("2nd pour must be greater than bloom (\(String(format: "%.0f", bloomAmount))g)")
+        }
+        
+        return errors
+    }
     
     var body: some View {
         Section(header: Text("French Press Pour Schedule")) {
@@ -741,6 +1000,13 @@ struct FrenchPressTabSection: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 80)
             }
+            
+            // Display validation errors
+            ForEach(validationErrors, id: \.self) { error in
+                Text(error)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
         }
     }
 }
@@ -754,6 +1020,16 @@ struct AeropressTabSection: View {
     
     private var aeropressTypes: [String] {
         ["Normal", "Inverted"]
+    }
+    
+    private var validationErrors: [String] {
+        var errors: [String] = []
+        
+        if secondPour > 0 && secondPour <= bloomAmount {
+            errors.append("2nd pour must be greater than bloom (\(String(format: "%.0f", bloomAmount))g)")
+        }
+        
+        return errors
     }
     
     var body: some View {
@@ -798,6 +1074,13 @@ struct AeropressTabSection: View {
                     .keyboardType(.numberPad)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 80)
+            }
+            
+            // Display validation errors
+            ForEach(validationErrors, id: \.self) { error in
+                Text(error)
+                    .font(.caption)
+                    .foregroundColor(.red)
             }
         }
     }

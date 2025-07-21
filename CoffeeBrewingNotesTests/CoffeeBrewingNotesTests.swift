@@ -202,7 +202,7 @@ final class CoffeeBrewingNotesTests: XCTestCase {
             name: "Test Recipe",
             brewingMethod: "V60-01",
             grinder: "Baratza Encore",
-            grindSize: 20,
+            grindSize: "20",
             waterTemp: 93,
             dose: 20.0,
             brewTime: 240

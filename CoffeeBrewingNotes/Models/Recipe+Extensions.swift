@@ -6,7 +6,10 @@ extension Recipe {
     // MARK: - Safe Property Accessors
     
     var wrappedName: String {
-        name ?? "Unknown Recipe"
+        // Generate automatic name based on brewing method and grinder
+        let method = wrappedBrewingMethod
+        let grinder = wrappedGrinder
+        return "\(method) - \(grinder)"
     }
     
     var wrappedBrewingMethod: String {
@@ -15,6 +18,10 @@ extension Recipe {
     
     var wrappedGrinder: String {
         grinder ?? "Unknown Grinder"
+    }
+    
+    var wrappedGrindSize: String {
+        grindSize ?? "—"
     }
     
     var wrappedAeropressType: String {
@@ -46,6 +53,32 @@ extension Recipe {
     
     var supportsBloom: Bool {
         supportsPours
+    }
+    
+    // MARK: - Calculated Properties
+    
+    var finalWeight: Double {
+        if isEspresso {
+            return waterOut
+        } else if supportsPours {
+            // Find the maximum (final) pour weight
+            var maxWeight: Double = bloomAmount
+            if secondPour > 0 { maxWeight = max(maxWeight, secondPour) }
+            if thirdPour > 0 { maxWeight = max(maxWeight, thirdPour) }
+            if fourthPour > 0 { maxWeight = max(maxWeight, fourthPour) }
+            return maxWeight
+        } else {
+            // For other methods, use dose * ratio assumption
+            return dose * 15.0 // 1:15 ratio assumption
+        }
+    }
+    
+    var finalWeightString: String {
+        if finalWeight > 0 {
+            return String(format: "%.0fg", finalWeight)
+        } else {
+            return "—"
+        }
     }
     
     // MARK: - Usage Tracking
