@@ -249,9 +249,8 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         // Save recipe
         app.navigationBars.buttons["Save"].tap()
         
-        // Verify recipe appears in list
-        XCTAssertTrue(app.staticTexts["V60-01"].exists)
-        XCTAssertTrue(app.staticTexts["V60-01"].exists)
+        // Verify recipe appears in list with auto-generated name
+        XCTAssertTrue(app.staticTexts.containing(.staticText, identifier:"V60-01").firstMatch.exists)
     }
     
     func testAddEspressoRecipe() throws {
@@ -292,9 +291,8 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         // Save recipe
         app.navigationBars.buttons["Save"].tap()
         
-        // Verify recipe appears in list
-        XCTAssertTrue(app.staticTexts["Espresso"].exists)
-        XCTAssertTrue(app.staticTexts["Espresso"].exists)
+        // Verify recipe appears in list with auto-generated name
+        XCTAssertTrue(app.staticTexts.containing(.staticText, identifier:"Espresso").firstMatch.exists)
     }
     
     // MARK: - Brewing Session Tests
@@ -313,7 +311,9 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         
         // Select recipe
         app.buttons["Select a recipe"].tap()
-        app.buttons["V60-01"].tap()
+        // Look for auto-generated recipe name (V60-01 - DefaultGrinder)
+        let recipeButton = app.buttons.containing(.staticText, identifier:"V60-01").firstMatch
+        recipeButton.tap()
         
         // Add notes
         let notesEditor = app.textViews.firstMatch
@@ -347,7 +347,8 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         
         // Verify brewing note appears
         XCTAssertTrue(app.staticTexts["Ethiopian Yirgacheffe"].exists)
-        XCTAssertTrue(app.staticTexts["V60-01"].exists)
+        // Auto-generated recipe name will contain V60-01 - GrinderName
+        XCTAssertTrue(app.staticTexts.containing(.staticText, identifier:"V60-01").firstMatch.exists)
         XCTAssertTrue(app.staticTexts["Great brew today! Sweet and bright with citrus notes."].exists)
         XCTAssertTrue(app.staticTexts["★★★★☆"].exists)
     }
@@ -403,7 +404,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Ethiopian Yirgacheffe"].exists)
         
         app.tabBars.buttons["Recipes"].tap()
-        XCTAssertTrue(app.staticTexts["V60-01"].exists)
+        XCTAssertTrue(app.staticTexts.containing(.staticText, identifier:"V60-01").firstMatch.exists)
     }
     
     // MARK: - End-to-End Workflow Tests
@@ -443,7 +444,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         // Step 4: Verify in history
         app.tabBars.buttons["Notes"].tap()
         XCTAssertTrue(app.staticTexts["Ethiopian Yirgacheffe"].exists)
-        XCTAssertTrue(app.staticTexts["V60-01"].exists)
+        XCTAssertTrue(app.staticTexts.containing(.staticText, identifier:"V60-01").firstMatch.exists)
         XCTAssertTrue(app.staticTexts.containing(.staticText, identifier: "★★★★★").firstMatch.exists)
     }
     
@@ -491,7 +492,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         let recipeSearch = app.searchFields["Search recipes..."]
         recipeSearch.tap()
         recipeSearch.typeText("V60")
-        XCTAssertTrue(app.staticTexts["V60-01"].exists)
+        XCTAssertTrue(app.staticTexts.containing(.staticText, identifier:"V60-01").firstMatch.exists)
         
         // Test search in Notes
         app.tabBars.buttons["Notes"].tap()

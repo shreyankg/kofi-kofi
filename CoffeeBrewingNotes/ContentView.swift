@@ -54,8 +54,9 @@ struct RecipeTabView: View {
             return Array(recipes)
         } else {
             return recipes.filter { recipe in
-                (recipe.name ?? "").localizedCaseInsensitiveContains(searchText) ||
-                (recipe.brewingMethod ?? "").localizedCaseInsensitiveContains(searchText)
+                recipe.wrappedName.localizedCaseInsensitiveContains(searchText) ||
+                (recipe.brewingMethod ?? "").localizedCaseInsensitiveContains(searchText) ||
+                (recipe.grinder ?? "").localizedCaseInsensitiveContains(searchText)
             }
         }
     }
@@ -644,7 +645,7 @@ struct BrewingTabView: View {
                             Text("Select a recipe").tag(Recipe?.none)
                             ForEach(Array(recipes), id: \.self) { recipe in
                                 VStack(alignment: .leading) {
-                                    Text("\(recipe.name ?? "Unknown")")
+                                    Text(recipe.wrappedName)
                                         .font(.headline)
                                     Text("\(recipe.brewingMethod ?? "Unknown") - Used \(recipe.usageCount) times")
                                         .font(.caption)
@@ -671,7 +672,12 @@ struct BrewingTabView: View {
                         HStack {
                             ForEach(1...5, id: \.self) { star in
                                 Button(action: {
-                                    rating = star
+                                    // If tapping the same star that's already selected, clear the rating
+                                    if rating == star {
+                                        rating = 0
+                                    } else {
+                                        rating = star
+                                    }
                                 }) {
                                     Image(systemName: star <= rating ? "star.fill" : "star")
                                         .foregroundColor(star <= rating ? .yellow : .gray)
@@ -1104,7 +1110,7 @@ struct NotesHistoryTabView: View {
         if !searchText.isEmpty {
             notes = notes.filter { note in
                 (note.coffee?.name ?? "").localizedCaseInsensitiveContains(searchText) ||
-                (note.recipe?.name ?? "").localizedCaseInsensitiveContains(searchText) ||
+                (note.recipe?.wrappedName ?? "").localizedCaseInsensitiveContains(searchText) ||
                 (note.recipe?.brewingMethod ?? "").localizedCaseInsensitiveContains(searchText) ||
                 (note.notes ?? "").localizedCaseInsensitiveContains(searchText)
             }
@@ -1177,7 +1183,7 @@ struct BrewingNoteRowView: View {
     }
     
     private var recipeName: String {
-        note.recipe?.name ?? "Unknown Recipe"
+        note.recipe?.wrappedName ?? "Unknown Recipe"
     }
     
     private var brewingMethod: String {
