@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34B439042E2E1E63000F6166 /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439032E2E1E63000F6166 /* PreferencesManager.swift */; };
 		A10000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */; };
 		A10000010000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* ContentView.swift */; };
 		A10000010000000000000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		34B439032E2E1E63000F6166 /* PreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
 		A10000000000000000000000 /* CoffeeBrewingNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoffeeBrewingNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBrewingNotesApp.swift; sourceTree = "<group>"; };
 		A10000000000000000000003 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -38,6 +40,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A10000000000000000000007 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000008 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		A10000000000000000000200 = {
 			isa = PBXGroup;
 			children = (
@@ -49,6 +59,7 @@
 		A10000000000000000000201 /* CoffeeBrewingNotes */ = {
 			isa = PBXGroup;
 			children = (
+				34B439032E2E1E63000F6166 /* PreferencesManager.swift */,
 				A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */,
 				A10000000000000000000003 /* ContentView.swift */,
 				A10000000000000000000010 /* Persistence.swift */,
@@ -66,14 +77,6 @@
 				A10000000000000000000000 /* CoffeeBrewingNotes.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A10000000000000000000007 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				A10000000000000000000008 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		A10000000000000000000300 /* Models */ = {
@@ -162,6 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34B439042E2E1E63000F6166 /* PreferencesManager.swift in Sources */,
 				A10000010000000000000010 /* Persistence.swift in Sources */,
 				A10000010000000000000003 /* ContentView.swift in Sources */,
 				A10000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */,
@@ -171,19 +175,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin XCVersionGroup section */
-		A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				A10000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */,
-			);
-			currentVersion = A10000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */;
-			path = CoffeeBrewingNotes.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A10000000000000000000900 /* Debug */ = {
@@ -366,15 +357,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A10000000000000000000800 /* Build configuration list for PBXProject "CoffeeBrewingNotes" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A10000000000000000000900 /* Debug */,
-				A10000000000000000000901 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		A10000000000000000000600 /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -384,7 +366,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A10000000000000000000800 /* Build configuration list for PBXProject "CoffeeBrewingNotes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000900 /* Debug */,
+				A10000000000000000000901 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A10000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */,
+			);
+			currentVersion = A10000000000000000000012 /* CoffeeBrewingNotes.xcdatamodel */;
+			path = CoffeeBrewingNotes.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A10000000000000000000700 /* Project object */;
 }

@@ -15,13 +15,14 @@ A comprehensive iOS app for coffee enthusiasts to track their brewing experiment
 
 ### Recipe Management
 - Create brewing recipes with method-specific parameters
-- Supported brewing methods:
-  - **V60 (01, 02, 03)**: Multi-stage pour schedule with bloom timing
-  - **Kalita Wave (155, 185)**: Pour-over with controlled flow rate
-  - **Chemex (6-cup, 8-cup)**: Large batch pour-over brewing
-  - **Espresso**: Water out ratio and extraction timing
+- Supported brewing methods (user-customizable):
+  - **V60 (01, 02)**: Multi-stage pour schedule with bloom timing
+  - **Kalita Wave (155)**: Pour-over with controlled flow rate
+  - **Chemex (6-cup)**: Large batch pour-over brewing  
+  - **Espresso (Gaggia Classic Pro)**: Water out ratio and extraction timing with specific machine support
   - **French Press**: Simplified pour schedule with steeping time
   - **Aeropress**: Normal/Inverted methods with plunge timing
+  - **Custom Methods**: Users can add their own brewing methods
 - Recipe sorting by usage count (most used recipes appear first)
 - Comprehensive parameter tracking:
   - Grinder type and grind size
@@ -42,6 +43,15 @@ A comprehensive iOS app for coffee enthusiasts to track their brewing experiment
 - Filter by star ratings (1-5 stars or show all)
 - Visual rating display with stars
 - Swipe-to-delete functionality
+
+### Equipment Preferences
+- **Customizable Equipment Lists**: Enable/disable brewing methods and grinders based on your actual equipment
+- **Personal Equipment Setup**: Pre-configured for specific user equipment (Baratza Encore, Turin DF64, 1Zpresso J-Ultra, Gaggia Classic Pro)
+- **Custom Equipment**: Add your own brewing methods and grinders through the settings interface
+- **Configurable Defaults**: Set your preferred default water temperature
+- **Smart Validation**: Prevents disabling all equipment to ensure app functionality
+- **Proper Units**: All measurements display appropriate units (grams, °Celsius, seconds)
+- **No Preset Values**: Recipe forms start blank except for your preferred temperature, encouraging intentional brewing
 
 ## Technical Details
 
@@ -72,10 +82,12 @@ The app intelligently adapts the recipe form based on the selected brewing metho
 
 ## Usage
 
-1. **Add Coffees**: Start by adding coffee beans to your collection
-2. **Create Recipes**: Build brewing recipes for your preferred methods
-3. **Brew Sessions**: Select a coffee and recipe, then add your tasting notes
-4. **Track History**: Review past sessions and refine your brewing technique
+1. **Configure Equipment**: Visit Settings to enable/disable your brewing methods and grinders, set default temperature
+2. **Add Coffees**: Start by adding coffee beans to your collection
+3. **Create Recipes**: Build brewing recipes using your enabled methods and equipment
+4. **Brew Sessions**: Select a coffee and recipe, then add your tasting notes
+5. **Track History**: Review past sessions and refine your brewing technique
+6. **Customize**: Add custom brewing methods or grinders as your setup evolves
 
 ## Development
 

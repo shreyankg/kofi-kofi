@@ -27,6 +27,12 @@ struct ContentView: View {
                     Image(systemName: "book")
                     Text("Notes")
                 }
+            
+            PreferencesView()
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
         }
     }
 }
@@ -157,28 +163,29 @@ struct RecipeRowView: View {
 struct AddRecipeTabView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var preferencesManager = PreferencesManager.shared
     
     @State private var name = ""
-    @State private var brewingMethod = "V60-01"
-    @State private var grinder = "Baratza Encore"
-    @State private var grindSize: Int = 20
-    @State private var waterTemp: Int = 93
-    @State private var dose: Double = 20.0
-    @State private var brewTime: Int = 240
+    @State private var brewingMethod = ""
+    @State private var grinder = ""
+    @State private var grindSize: Int = 0
+    @State private var waterTemp: Int = 0
+    @State private var dose: Double = 0.0
+    @State private var brewTime: Int = 0
     
     // Pour-over specific
-    @State private var bloomAmount: Double = 40.0
-    @State private var bloomTime: Int = 30
-    @State private var secondPour: Double = 100.0
-    @State private var thirdPour: Double = 180.0
+    @State private var bloomAmount: Double = 0.0
+    @State private var bloomTime: Int = 0
+    @State private var secondPour: Double = 0.0
+    @State private var thirdPour: Double = 0.0
     @State private var fourthPour: Double = 0.0
     
     // Espresso specific
-    @State private var waterOut: Double = 40.0
+    @State private var waterOut: Double = 0.0
     
     // Aeropress specific
     @State private var aeropressType = "Normal"
-    @State private var plungeTime: Int = 30
+    @State private var plungeTime: Int = 0
     
     private var selectedMethod: String {
         brewingMethod
@@ -230,7 +237,7 @@ struct AddRecipeTabView: View {
                     }
                     
                     HStack {
-                        Text("Water Temperature")
+                        Text("Water Temp (°C)")
                         Spacer()
                         TextField("°C", value: $waterTemp, format: .number)
                             .keyboardType(.numberPad)
@@ -239,7 +246,7 @@ struct AddRecipeTabView: View {
                     }
                     
                     HStack {
-                        Text("Dose")
+                        Text("Dose (g)")
                         Spacer()
                         TextField("Grams", value: $dose, format: .number)
                             .keyboardType(.decimalPad)
@@ -248,7 +255,7 @@ struct AddRecipeTabView: View {
                     }
                     
                     HStack {
-                        Text("Brew Time")
+                        Text("Brew Time (s)")
                         Spacer()
                         TextField("Seconds", value: $brewTime, format: .number)
                             .keyboardType(.numberPad)
@@ -286,6 +293,18 @@ struct AddRecipeTabView: View {
             }
             .navigationTitle("Add Recipe")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                // Initialize defaults from preferences
+                if brewingMethod.isEmpty && !brewingMethods.isEmpty {
+                    brewingMethod = brewingMethods.first ?? ""
+                }
+                if grinder.isEmpty && !grinders.isEmpty {
+                    grinder = grinders.first ?? ""
+                }
+                if waterTemp == 0 {
+                    waterTemp = preferencesManager.defaultWaterTemp
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -304,11 +323,11 @@ struct AddRecipeTabView: View {
     }
     
     private var brewingMethods: [String] {
-        ["V60-01", "V60-02", "V60-03", "Kalita Wave 155", "Kalita Wave 185", "Chemex 6-cup", "Chemex 8-cup", "Espresso", "French Press", "Aeropress"]
+        preferencesManager.enabledBrewingMethods
     }
     
     private var grinders: [String] {
-        ["Baratza Encore", "Baratza Virtuoso+", "Baratza Vario", "Comandante C40", "1Zpresso JX-Pro", "Hario Mini Mill", "Timemore C2", "Timemore C3", "Fellow Ode", "Wilfa Uniform", "Hand grinder", "Other"]
+        preferencesManager.enabledGrinders
     }
     
     private func saveRecipe() {
@@ -625,7 +644,7 @@ struct PourOverTabSection: View {
     var body: some View {
         Section(header: Text("Pour Schedule")) {
             HStack {
-                Text("Bloom Amount")
+                Text("Bloom (g)")
                 Spacer()
                 TextField("Grams", value: $bloomAmount, format: .number)
                     .keyboardType(.decimalPad)
@@ -634,7 +653,7 @@ struct PourOverTabSection: View {
             }
             
             HStack {
-                Text("Bloom Time")
+                Text("Bloom Time (s)")
                 Spacer()
                 TextField("Seconds", value: $bloomTime, format: .number)
                     .keyboardType(.numberPad)
@@ -643,7 +662,7 @@ struct PourOverTabSection: View {
             }
             
             HStack {
-                Text("2nd Pour")
+                Text("2nd Pour (g)")
                 Spacer()
                 TextField("Grams", value: $secondPour, format: .number)
                     .keyboardType(.decimalPad)
@@ -652,7 +671,7 @@ struct PourOverTabSection: View {
             }
             
             HStack {
-                Text("3rd Pour")
+                Text("3rd Pour (g)")
                 Spacer()
                 TextField("Grams", value: $thirdPour, format: .number)
                     .keyboardType(.decimalPad)
@@ -661,7 +680,7 @@ struct PourOverTabSection: View {
             }
             
             HStack {
-                Text("4th Pour (Optional)")
+                Text("4th Pour (g)")
                 Spacer()
                 TextField("Grams", value: $fourthPour, format: .number)
                     .keyboardType(.decimalPad)
@@ -678,7 +697,7 @@ struct EspressoTabSection: View {
     var body: some View {
         Section(header: Text("Espresso Parameters")) {
             HStack {
-                Text("Water Out")
+                Text("Water Out (g)")
                 Spacer()
                 TextField("Grams", value: $waterOut, format: .number)
                     .keyboardType(.decimalPad)
@@ -697,7 +716,7 @@ struct FrenchPressTabSection: View {
     var body: some View {
         Section(header: Text("French Press Pour Schedule")) {
             HStack {
-                Text("Bloom Amount")
+                Text("Bloom (g)")
                 Spacer()
                 TextField("Grams", value: $bloomAmount, format: .number)
                     .keyboardType(.decimalPad)
@@ -706,7 +725,7 @@ struct FrenchPressTabSection: View {
             }
             
             HStack {
-                Text("Bloom Time")
+                Text("Bloom Time (s)")
                 Spacer()
                 TextField("Seconds", value: $bloomTime, format: .number)
                     .keyboardType(.numberPad)
@@ -715,7 +734,7 @@ struct FrenchPressTabSection: View {
             }
             
             HStack {
-                Text("2nd Pour")
+                Text("2nd Pour (g)")
                 Spacer()
                 TextField("Grams", value: $secondPour, format: .number)
                     .keyboardType(.decimalPad)
@@ -746,7 +765,7 @@ struct AeropressTabSection: View {
             }
             
             HStack {
-                Text("Bloom Amount")
+                Text("Bloom (g)")
                 Spacer()
                 TextField("Grams", value: $bloomAmount, format: .number)
                     .keyboardType(.decimalPad)
@@ -755,7 +774,7 @@ struct AeropressTabSection: View {
             }
             
             HStack {
-                Text("Bloom Time")
+                Text("Bloom Time (s)")
                 Spacer()
                 TextField("Seconds", value: $bloomTime, format: .number)
                     .keyboardType(.numberPad)
@@ -764,7 +783,7 @@ struct AeropressTabSection: View {
             }
             
             HStack {
-                Text("2nd Pour")
+                Text("2nd Pour (g)")
                 Spacer()
                 TextField("Grams", value: $secondPour, format: .number)
                     .keyboardType(.decimalPad)
@@ -773,7 +792,7 @@ struct AeropressTabSection: View {
             }
             
             HStack {
-                Text("Plunge Time")
+                Text("Plunge Time (s)")
                 Spacer()
                 TextField("Seconds", value: $plungeTime, format: .number)
                     .keyboardType(.numberPad)
@@ -1026,6 +1045,119 @@ struct FilterOptionsView: View {
                         dismiss()
                     }
                 }
+            }
+        }
+    }
+}
+
+struct PreferencesView: View {
+    @StateObject private var preferencesManager = PreferencesManager.shared
+    @State private var showingAddBrewingMethod = false
+    @State private var showingAddGrinder = false
+    @State private var newBrewingMethod = ""
+    @State private var newGrinder = ""
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                // Default Temperature Section
+                Section(header: Text("Default Settings")) {
+                    HStack {
+                        Text("Default Water Temp (°C)")
+                        Spacer()
+                        TextField("Temperature", value: $preferencesManager.defaultWaterTemp, format: .number)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 80)
+                            .onChange(of: preferencesManager.defaultWaterTemp) { _ in
+                                preferencesManager.saveDefaultWaterTemp()
+                            }
+                    }
+                }
+                
+                // Brewing Methods Section
+                Section(header: Text("Brewing Methods")) {
+                    ForEach(preferencesManager.allAvailableBrewingMethods, id: \.self) { method in
+                        HStack {
+                            Text(method)
+                            Spacer()
+                            if preferencesManager.customBrewingMethods.contains(method) {
+                                Button("Remove") {
+                                    preferencesManager.removeCustomBrewingMethod(method)
+                                }
+                                .foregroundColor(.red)
+                                .font(.caption)
+                            }
+                            Toggle("", isOn: Binding(
+                                get: { preferencesManager.isBrewingMethodEnabled(method) },
+                                set: { _ in preferencesManager.toggleBrewingMethod(method) }
+                            ))
+                        }
+                    }
+                    
+                    Button("Add Custom Brewing Method") {
+                        showingAddBrewingMethod = true
+                    }
+                    .foregroundColor(.blue)
+                }
+                
+                // Grinders Section
+                Section(header: Text("Grinders")) {
+                    ForEach(preferencesManager.allAvailableGrinders, id: \.self) { grinder in
+                        HStack {
+                            Text(grinder)
+                            Spacer()
+                            if preferencesManager.customGrinders.contains(grinder) {
+                                Button("Remove") {
+                                    preferencesManager.removeCustomGrinder(grinder)
+                                }
+                                .foregroundColor(.red)
+                                .font(.caption)
+                            }
+                            Toggle("", isOn: Binding(
+                                get: { preferencesManager.isGrinderEnabled(grinder) },
+                                set: { _ in preferencesManager.toggleGrinder(grinder) }
+                            ))
+                        }
+                    }
+                    
+                    Button("Add Custom Grinder") {
+                        showingAddGrinder = true
+                    }
+                    .foregroundColor(.blue)
+                }
+                
+                // Information Section
+                Section(header: Text("Information")) {
+                    Text("At least one brewing method and one grinder must remain enabled.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .navigationTitle("Settings")
+            .alert("Add Brewing Method", isPresented: $showingAddBrewingMethod) {
+                TextField("Method name", text: $newBrewingMethod)
+                Button("Add") {
+                    preferencesManager.addCustomBrewingMethod(newBrewingMethod)
+                    newBrewingMethod = ""
+                }
+                Button("Cancel", role: .cancel) {
+                    newBrewingMethod = ""
+                }
+            } message: {
+                Text("Enter a new brewing method name")
+            }
+            .alert("Add Grinder", isPresented: $showingAddGrinder) {
+                TextField("Grinder name", text: $newGrinder)
+                Button("Add") {
+                    preferencesManager.addCustomGrinder(newGrinder)
+                    newGrinder = ""
+                }
+                Button("Cancel", role: .cancel) {
+                    newGrinder = ""
+                }
+            } message: {
+                Text("Enter a new grinder name")
             }
         }
     }

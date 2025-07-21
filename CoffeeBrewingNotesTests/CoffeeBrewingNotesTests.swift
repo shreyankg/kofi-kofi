@@ -348,8 +348,8 @@ final class CoffeeBrewingNotesTests: XCTestCase {
     
     func testRecipeBrewingMethods() throws {
         let expectedMethods = [
-            "V60-01", "V60-02", "V60-03", "Kalita Wave 155", "Kalita Wave 185", 
-            "Chemex 6-cup", "Chemex 8-cup", "Espresso", "French Press", "Aeropress"
+            "V60-01", "V60-02", "Kalita Wave 155", 
+            "Chemex 6-cup", "Espresso (Gaggia Classic Pro)", "French Press", "Aeropress"
         ]
         
         XCTAssertEqual(Recipe.brewingMethods, expectedMethods)
@@ -357,9 +357,7 @@ final class CoffeeBrewingNotesTests: XCTestCase {
     
     func testRecipeGrinders() throws {
         let expectedGrinders = [
-            "Baratza Encore", "Baratza Virtuoso+", "Baratza Vario", "Comandante C40", 
-            "1Zpresso JX-Pro", "Hario Mini Mill", "Timemore C2", "Timemore C3", 
-            "Fellow Ode", "Wilfa Uniform", "Hand grinder", "Other"
+            "Baratza Encore", "Turin DF64", "1Zpresso J-Ultra", "Other"
         ]
         
         XCTAssertEqual(Recipe.grinders, expectedGrinders)
@@ -550,5 +548,231 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         
         XCTAssertEqual(coffee.displayName, "Ethiopian Yirgacheffe - Blue Bottle")
         XCTAssertEqual(coffee.detailText, "Ethiopia • Washed • Light")
+    }
+    
+    // MARK: - PreferencesManager Tests
+    
+    func testPreferencesManagerInitialization() throws {
+        // Clear existing defaults for clean test
+        UserDefaults.standard.removeObject(forKey: "hasInitializedDefaults")
+        UserDefaults.standard.removeObject(forKey: "enabledBrewingMethods")
+        UserDefaults.standard.removeObject(forKey: "enabledGrinders")
+        UserDefaults.standard.removeObject(forKey: "defaultWaterTemp")
+        UserDefaults.standard.removeObject(forKey: "customBrewingMethods")
+        UserDefaults.standard.removeObject(forKey: "customGrinders")
+        
+        let preferencesManager = PreferencesManager()
+        
+        // Test that defaults are properly initialized
+        XCTAssertFalse(preferencesManager.enabledBrewingMethods.isEmpty)
+        XCTAssertFalse(preferencesManager.enabledGrinders.isEmpty)
+        XCTAssertEqual(preferencesManager.defaultWaterTemp, 93)
+        XCTAssertTrue(preferencesManager.customBrewingMethods.isEmpty)
+        XCTAssertTrue(preferencesManager.customGrinders.isEmpty)
+    }
+    
+    func testBrewingMethodToggling() throws {
+        let preferencesManager = PreferencesManager()
+        
+        // Ensure we have multiple methods enabled
+        if preferencesManager.enabledBrewingMethods.count < 2 {
+            preferencesManager.addCustomBrewingMethod("Test Method")
+        }
+        
+        let initialCount = preferencesManager.enabledBrewingMethods.count
+        let firstMethod = preferencesManager.enabledBrewingMethods.first!
+        
+        // Test disabling a method
+        preferencesManager.toggleBrewingMethod(firstMethod)
+        XCTAssertEqual(preferencesManager.enabledBrewingMethods.count, initialCount - 1)
+        XCTAssertFalse(preferencesManager.isBrewingMethodEnabled(firstMethod))
+        
+        // Test re-enabling the method
+        preferencesManager.toggleBrewingMethod(firstMethod)
+        XCTAssertEqual(preferencesManager.enabledBrewingMethods.count, initialCount)
+        XCTAssertTrue(preferencesManager.isBrewingMethodEnabled(firstMethod))
+    }
+    
+    func testLastBrewingMethodCannotBeDisabled() throws {
+        let preferencesManager = PreferencesManager()
+        
+        // Disable all but one brewing method
+        let allMethods = preferencesManager.allAvailableBrewingMethods
+        for method in allMethods.dropFirst() {
+            if preferencesManager.isBrewingMethodEnabled(method) {
+                preferencesManager.toggleBrewingMethod(method)
+            }
+        }
+        
+        // Try to disable the last method
+        let lastMethod = preferencesManager.enabledBrewingMethods.first!
+        preferencesManager.toggleBrewingMethod(lastMethod)
+        
+        // Should still have one method enabled
+        XCTAssertEqual(preferencesManager.enabledBrewingMethods.count, 1)
+        XCTAssertTrue(preferencesManager.isBrewingMethodEnabled(lastMethod))
+    }
+    
+    func testGrinderToggling() throws {
+        let preferencesManager = PreferencesManager()
+        
+        // Ensure we have multiple grinders enabled
+        if preferencesManager.enabledGrinders.count < 2 {
+            preferencesManager.addCustomGrinder("Test Grinder")
+        }
+        
+        let initialCount = preferencesManager.enabledGrinders.count
+        let firstGrinder = preferencesManager.enabledGrinders.first!
+        
+        // Test disabling a grinder
+        preferencesManager.toggleGrinder(firstGrinder)
+        XCTAssertEqual(preferencesManager.enabledGrinders.count, initialCount - 1)
+        XCTAssertFalse(preferencesManager.isGrinderEnabled(firstGrinder))
+        
+        // Test re-enabling the grinder
+        preferencesManager.toggleGrinder(firstGrinder)
+        XCTAssertEqual(preferencesManager.enabledGrinders.count, initialCount)
+        XCTAssertTrue(preferencesManager.isGrinderEnabled(firstGrinder))
+    }
+    
+    func testLastGrinderCannotBeDisabled() throws {
+        let preferencesManager = PreferencesManager()
+        
+        // Disable all but one grinder
+        let allGrinders = preferencesManager.allAvailableGrinders
+        for grinder in allGrinders.dropFirst() {
+            if preferencesManager.isGrinderEnabled(grinder) {
+                preferencesManager.toggleGrinder(grinder)
+            }
+        }
+        
+        // Try to disable the last grinder
+        let lastGrinder = preferencesManager.enabledGrinders.first!
+        preferencesManager.toggleGrinder(lastGrinder)
+        
+        // Should still have one grinder enabled
+        XCTAssertEqual(preferencesManager.enabledGrinders.count, 1)
+        XCTAssertTrue(preferencesManager.isGrinderEnabled(lastGrinder))
+    }
+    
+    func testCustomBrewingMethodAddition() throws {
+        let preferencesManager = PreferencesManager()
+        let initialCount = preferencesManager.customBrewingMethods.count
+        
+        preferencesManager.addCustomBrewingMethod("Custom V60")
+        
+        XCTAssertEqual(preferencesManager.customBrewingMethods.count, initialCount + 1)
+        XCTAssertTrue(preferencesManager.customBrewingMethods.contains("Custom V60"))
+        XCTAssertTrue(preferencesManager.isBrewingMethodEnabled("Custom V60"))
+        XCTAssertTrue(preferencesManager.allAvailableBrewingMethods.contains("Custom V60"))
+    }
+    
+    func testCustomGrinderAddition() throws {
+        let preferencesManager = PreferencesManager()
+        let initialCount = preferencesManager.customGrinders.count
+        
+        preferencesManager.addCustomGrinder("Custom Grinder")
+        
+        XCTAssertEqual(preferencesManager.customGrinders.count, initialCount + 1)
+        XCTAssertTrue(preferencesManager.customGrinders.contains("Custom Grinder"))
+        XCTAssertTrue(preferencesManager.isGrinderEnabled("Custom Grinder"))
+        XCTAssertTrue(preferencesManager.allAvailableGrinders.contains("Custom Grinder"))
+    }
+    
+    func testCustomBrewingMethodRemoval() throws {
+        let preferencesManager = PreferencesManager()
+        
+        // Add a custom method first
+        preferencesManager.addCustomBrewingMethod("Test Method")
+        XCTAssertTrue(preferencesManager.customBrewingMethods.contains("Test Method"))
+        
+        // Remove it
+        preferencesManager.removeCustomBrewingMethod("Test Method")
+        XCTAssertFalse(preferencesManager.customBrewingMethods.contains("Test Method"))
+        XCTAssertFalse(preferencesManager.isBrewingMethodEnabled("Test Method"))
+        XCTAssertFalse(preferencesManager.allAvailableBrewingMethods.contains("Test Method"))
+    }
+    
+    func testCustomGrinderRemoval() throws {
+        let preferencesManager = PreferencesManager()
+        
+        // Add a custom grinder first
+        preferencesManager.addCustomGrinder("Test Grinder")
+        XCTAssertTrue(preferencesManager.customGrinders.contains("Test Grinder"))
+        
+        // Remove it
+        preferencesManager.removeCustomGrinder("Test Grinder")
+        XCTAssertFalse(preferencesManager.customGrinders.contains("Test Grinder"))
+        XCTAssertFalse(preferencesManager.isGrinderEnabled("Test Grinder"))
+        XCTAssertFalse(preferencesManager.allAvailableGrinders.contains("Test Grinder"))
+    }
+    
+    func testDuplicateCustomMethodsPrevention() throws {
+        let preferencesManager = PreferencesManager()
+        let initialCount = preferencesManager.customBrewingMethods.count
+        
+        preferencesManager.addCustomBrewingMethod("Unique Method")
+        preferencesManager.addCustomBrewingMethod("Unique Method") // Try to add duplicate
+        
+        XCTAssertEqual(preferencesManager.customBrewingMethods.count, initialCount + 1)
+    }
+    
+    func testDuplicateCustomGrindersPrevention() throws {
+        let preferencesManager = PreferencesManager()
+        let initialCount = preferencesManager.customGrinders.count
+        
+        preferencesManager.addCustomGrinder("Unique Grinder")
+        preferencesManager.addCustomGrinder("Unique Grinder") // Try to add duplicate
+        
+        XCTAssertEqual(preferencesManager.customGrinders.count, initialCount + 1)
+    }
+    
+    func testDefaultTemperatureSetting() throws {
+        let preferencesManager = PreferencesManager()
+        
+        preferencesManager.defaultWaterTemp = 95
+        preferencesManager.saveDefaultWaterTemp()
+        
+        // Create new instance to test persistence
+        let newPreferencesManager = PreferencesManager()
+        XCTAssertEqual(newPreferencesManager.defaultWaterTemp, 95)
+    }
+    
+    func testPreventDefaultMethodDuplication() throws {
+        let preferencesManager = PreferencesManager()
+        let initialCount = preferencesManager.customBrewingMethods.count
+        
+        // Try to add a method that already exists in defaults
+        preferencesManager.addCustomBrewingMethod("V60-01")
+        
+        // Should not be added to custom methods
+        XCTAssertEqual(preferencesManager.customBrewingMethods.count, initialCount)
+        XCTAssertFalse(preferencesManager.customBrewingMethods.contains("V60-01"))
+    }
+    
+    func testPreventDefaultGrinderDuplication() throws {
+        let preferencesManager = PreferencesManager()
+        let initialCount = preferencesManager.customGrinders.count
+        
+        // Try to add a grinder that already exists in defaults
+        preferencesManager.addCustomGrinder("Baratza Encore")
+        
+        // Should not be added to custom grinders
+        XCTAssertEqual(preferencesManager.customGrinders.count, initialCount)
+        XCTAssertFalse(preferencesManager.customGrinders.contains("Baratza Encore"))
+    }
+    
+    func testEmptyStringHandling() throws {
+        let preferencesManager = PreferencesManager()
+        let initialMethodCount = preferencesManager.customBrewingMethods.count
+        let initialGrinderCount = preferencesManager.customGrinders.count
+        
+        preferencesManager.addCustomBrewingMethod("")
+        preferencesManager.addCustomBrewingMethod("   ")
+        preferencesManager.addCustomGrinder("")
+        preferencesManager.addCustomGrinder("   ")
+        
+        XCTAssertEqual(preferencesManager.customBrewingMethods.count, initialMethodCount)
+        XCTAssertEqual(preferencesManager.customGrinders.count, initialGrinderCount)
     }
 }

@@ -22,12 +22,13 @@ The app is complete with all four main features implemented and working. All thr
 ```
 CoffeeBrewingNotes/
 ├── CoffeeBrewingNotesApp.swift          # Main app entry point
-├── ContentView.swift                    # Consolidated UI with all views
+├── ContentView.swift                    # Consolidated UI with all views + PreferencesView
 ├── Persistence.swift                    # Core Data stack and utilities
+├── PreferencesManager.swift             # User preferences and equipment management
 ├── Models/                              # Data layer
 │   ├── CoffeeBrewingNotes.xcdatamodeld # Core Data model
 │   ├── Coffee+Extensions.swift         # Coffee entity extensions
-│   ├── Recipe+Extensions.swift         # Recipe entity extensions
+│   ├── Recipe+Extensions.swift         # Recipe entity extensions (updated equipment lists)
 │   └── BrewingNote+Extensions.swift    # BrewingNote entity extensions
 ├── Views/                               # Legacy UI files (not in build)
 │   ├── CoffeeListView.swift            # Unused - consolidated into ContentView
@@ -41,7 +42,7 @@ CoffeeBrewingNotes/
 └── Preview Content/                     # SwiftUI preview assets
 
 Tests/
-├── CoffeeBrewingNotesTests/            # Unit, performance, and error tests
+├── CoffeeBrewingNotesTests/            # Unit, performance, and error tests + PreferencesManager tests
 └── CoffeeBrewingNotesUITests/          # UI automation tests
 ```
 
@@ -117,6 +118,31 @@ Links coffee and recipe with user feedback and ratings. Complete UI implementati
 
 **Status:** Complete implementation with brewing session creation and comprehensive history viewing
 
+### ✅ Equipment Preferences System (NEW)
+Complete UserDefaults-based preferences management system for customizing brewing equipment.
+
+**Core Features:**
+- **PreferencesManager Singleton**: Centralized preferences management with ObservableObject support
+- **Equipment Filtering**: Enable/disable individual brewing methods and grinders
+- **Custom Equipment**: Add user-defined brewing methods and grinders with duplicate prevention
+- **Configurable Defaults**: User-customizable default water temperature
+- **Validation**: Prevents disabling all equipment (at least one method and grinder must remain)
+
+**Default Equipment Lists (User's Actual Equipment):**
+- **Brewing Methods**: V60-01, V60-02, Kalita Wave 155, Chemex 6-cup, Espresso (Gaggia Classic Pro), French Press, Aeropress
+- **Grinders**: Baratza Encore, Turin DF64, 1Zpresso J-Ultra, Other
+
+**UI Integration:**
+- **Preferences Tab**: New settings tab with toggle switches for equipment
+- **Dynamic Forms**: AddRecipeTabView uses preference-filtered equipment lists
+- **Form Units**: Proper measurement units displayed (g, °C, s) with no default values except configurable temperature
+- **Custom Equipment UI**: Add/remove custom brewing methods and grinders through alerts
+
+**Data Persistence:**
+- UserDefaults-based storage for immediate availability across app launches
+- Backward compatibility with existing recipes using deprecated equipment
+- Safe property accessors prevent crashes from missing equipment
+
 ## Current Implementation Status
 
 ### ✅ Implemented and Working
@@ -157,11 +183,12 @@ Links coffee and recipe with user feedback and ratings. Complete UI implementati
 ## View Architecture
 
 ### ContentView ✅ FULLY IMPLEMENTED
-Root tab bar controller with four main sections, all fully functional:
+Root tab bar controller with five main sections, all fully functional:
 - **Coffees**: ✅ Complete coffee inventory management (SimpleCoffeeListView)
-- **Recipes**: ✅ Complete recipe management (RecipeTabView)
-- **Brew**: ✅ Complete brewing session interface (BrewingTabView)
+- **Recipes**: ✅ Complete recipe management (RecipeTabView) - now uses dynamic preferences
+- **Brew**: ✅ Complete brewing session interface (BrewingTabView) - now uses dynamic preferences
 - **Notes**: ✅ Complete brewing history (NotesHistoryTabView)
+- **Settings**: ✅ Complete preferences management (PreferencesView) - NEW
 
 **Implementation Strategy**: All views consolidated directly into ContentView.swift to ensure proper build target inclusion and avoid Xcode project configuration issues.
 

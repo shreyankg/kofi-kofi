@@ -61,33 +61,22 @@ extension Recipe {
         return set.sorted { $0.dateCreated ?? Date() > $1.dateCreated ?? Date() }
     }
     
-    // MARK: - Static Options
+    // MARK: - Static Options (Legacy - Use PreferencesManager for current lists)
     
     static let brewingMethods = [
         "V60-01",
         "V60-02",
-        "V60-03",
         "Kalita Wave 155",
-        "Kalita Wave 185",
         "Chemex 6-cup",
-        "Chemex 8-cup",
-        "Espresso",
+        "Espresso (Gaggia Classic Pro)",
         "French Press",
         "Aeropress"
     ]
     
     static let grinders = [
         "Baratza Encore",
-        "Baratza Virtuoso+",
-        "Baratza Vario",
-        "Comandante C40",
-        "1Zpresso JX-Pro",
-        "Hario Mini Mill",
-        "Timemore C2",
-        "Timemore C3",
-        "Fellow Ode",
-        "Wilfa Uniform",
-        "Hand grinder",
+        "Turin DF64",
+        "1Zpresso J-Ultra",
         "Other"
     ]
     

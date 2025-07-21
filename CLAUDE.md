@@ -41,8 +41,9 @@ Kofi Kofi is a SwiftUI iOS app for tracking coffee brewing experiments. The app 
 ```
 CoffeeBrewingNotes/
 ├── CoffeeBrewingNotesApp.swift    # App entry point
-├── ContentView.swift              # All UI consolidated here
+├── ContentView.swift              # All UI consolidated here (includes PreferencesView)
 ├── Persistence.swift              # Core Data stack
+├── PreferencesManager.swift       # User preferences and equipment management
 ├── Models/
 │   ├── CoffeeBrewingNotes.xcdatamodeld
 │   ├── Coffee+Extensions.swift
@@ -64,11 +65,17 @@ CoffeeBrewingNotes/
 - In-memory store for previews and testing
 
 ### Method-Specific Recipe Forms
-The app supports 6 brewing methods with dynamic forms:
-- **Pour-over** (V60, Kalita, Chemex): Multi-stage pour scheduling
-- **Espresso**: Water output ratios
+The app supports user-configurable brewing methods with dynamic forms:
+- **Pour-over** (V60-01, V60-02, Kalita Wave 155, Chemex 6-cup): Multi-stage pour scheduling
+- **Espresso (Gaggia Classic Pro)**: Water output ratios with specific machine support
 - **French Press**: Simplified bloom + pour schedule  
 - **Aeropress**: Normal/Inverted with plunge timing
+
+### Equipment Customization
+- **Preferences System**: UserDefaults-based preferences management via PreferencesManager
+- **Configurable Equipment**: Users can enable/disable brewing methods and grinders
+- **Custom Equipment**: Users can add custom brewing methods and grinders
+- **Default Temperature**: Configurable default water temperature instead of hardcoded values
 
 ### Search and Filtering
 - **Coffee**: Search by name, roaster, origin
@@ -97,11 +104,23 @@ The app supports 6 brewing methods with dynamic forms:
 
 ## Common Development Tasks
 
-### Adding New Brewing Methods
-1. Add method to `Recipe.brewingMethodOptions`
-2. Create method-specific section in `AddRecipeTabView`
-3. Update `Recipe` extensions for method detection
+### Managing Equipment Preferences
+1. Use `PreferencesManager.shared` to access enabled brewing methods and grinders
+2. Users can enable/disable equipment in Preferences tab
+3. Users can add custom brewing methods and grinders through the UI
+4. Default water temperature is configurable per user preference
+5. At least one brewing method and grinder must remain enabled for app functionality
+
+### Adding New Brewing Methods (Programmatically)
+1. Add method to `PreferencesManager.defaultBrewingMethods` for built-in methods
+2. Create method-specific section in `AddRecipeTabView` 
+3. Update `Recipe` extensions for method detection (isPourOver, isEspresso, etc.)
 4. Add method-specific attributes to Core Data model if needed
+
+### User-Added Custom Equipment
+- Custom brewing methods and grinders are stored in UserDefaults
+- Custom equipment can be removed by users through the Preferences interface
+- Custom equipment is automatically enabled when added
 
 ### Modifying Core Data Schema
 1. Open `CoffeeBrewingNotes.xcdatamodeld`
