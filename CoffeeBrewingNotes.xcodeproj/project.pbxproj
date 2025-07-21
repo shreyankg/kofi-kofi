@@ -8,6 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		34B439042E2E1E63000F6166 /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439032E2E1E63000F6166 /* PreferencesManager.swift */; };
+		34B439092E2E1E63000F6167 /* Coffee+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439052E2E1E63000F6167 /* Coffee+Extensions.swift */; };
+		34B43909AE2E1E63000F6167 /* Coffee+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439052E2E1E63000F6167 /* Coffee+Extensions.swift */; };
+		34B43910AE2E1E63000F6168 /* Recipe+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439062E2E1E63000F6168 /* Recipe+Extensions.swift */; };
+		34B43910BE2E1E63000F6168 /* Recipe+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439062E2E1E63000F6168 /* Recipe+Extensions.swift */; };
+		34B43911AE2E1E63000F6169 /* BrewingNote+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439072E2E1E63000F6169 /* BrewingNote+Extensions.swift */; };
+		34B43911BE2E1E63000F6169 /* BrewingNote+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439072E2E1E63000F6169 /* BrewingNote+Extensions.swift */; };
+		34B43912AE2E1E63000F616A /* ProcessingMethod+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439082E2E1E63000F616A /* ProcessingMethod+Extensions.swift */; };
+		34B43912BE2E1E63000F616A /* ProcessingMethod+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B439082E2E1E63000F616A /* ProcessingMethod+Extensions.swift */; };
+		34C11CB92E2E69AA00FBA17E /* CoffeeBrewingNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C11CBA2E2E69AA00FBA17E /* CoffeeBrewingNotesTests.swift */; };
+		34C11CBF2E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C11CC02E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.swift */; };
+		34C11CC12E2E69BA00FBA17E /* CoffeeBrewingNotesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C11CC22E2E69BA00FBA17E /* CoffeeBrewingNotesUITestsLaunchTests.swift */; };
+		A10000010000000000000013T /* CoffeeBrewingNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */; };
+		A10000010000000000000040T /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000010 /* Persistence.swift */; };
 		A10000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */; };
 		A10000010000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* ContentView.swift */; };
 		A10000010000000000000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* Assets.xcassets */; };
@@ -19,6 +32,15 @@
 
 /* Begin PBXFileReference section */
 		34B439032E2E1E63000F6166 /* PreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
+		34B439052E2E1E63000F6167 /* Coffee+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Coffee+Extensions.swift"; sourceTree = "<group>"; };
+		34B439062E2E1E63000F6168 /* Recipe+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recipe+Extensions.swift"; sourceTree = "<group>"; };
+		34B439072E2E1E63000F6169 /* BrewingNote+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrewingNote+Extensions.swift"; sourceTree = "<group>"; };
+		34B439082E2E1E63000F616A /* ProcessingMethod+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessingMethod+Extensions.swift"; sourceTree = "<group>"; };
+		34C11CB72E2E69AA00FBA17E /* CoffeeBrewingNotesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoffeeBrewingNotesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		34C11CB82E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoffeeBrewingNotesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		34C11CBA2E2E69AA00FBA17E /* CoffeeBrewingNotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBrewingNotesTests.swift; sourceTree = "<group>"; };
+		34C11CC02E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBrewingNotesUITests.swift; sourceTree = "<group>"; };
+		34C11CC22E2E69BA00FBA17E /* CoffeeBrewingNotesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBrewingNotesUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000000 /* CoffeeBrewingNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoffeeBrewingNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBrewingNotesApp.swift; sourceTree = "<group>"; };
 		A10000000000000000000003 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -30,6 +52,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		34C11CC32E2E69AA00FBA17E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34C11CC42E2E69BA00FBA17E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A10000000000000000000100 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -48,9 +84,28 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		34C11CC52E2E69AA00FBA17E /* CoffeeBrewingNotesTests */ = {
+			isa = PBXGroup;
+			children = (
+				34C11CBA2E2E69AA00FBA17E /* CoffeeBrewingNotesTests.swift */,
+			);
+			path = CoffeeBrewingNotesTests;
+			sourceTree = "<group>";
+		};
+		34C11CC62E2E69BA00FBA17E /* CoffeeBrewingNotesUITests */ = {
+			isa = PBXGroup;
+			children = (
+				34C11CC02E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.swift */,
+				34C11CC22E2E69BA00FBA17E /* CoffeeBrewingNotesUITestsLaunchTests.swift */,
+			);
+			path = CoffeeBrewingNotesUITests;
+			sourceTree = "<group>";
+		};
 		A10000000000000000000200 = {
 			isa = PBXGroup;
 			children = (
+				34C11CC62E2E69BA00FBA17E /* CoffeeBrewingNotesUITests */,
+				34C11CC52E2E69AA00FBA17E /* CoffeeBrewingNotesTests */,
 				A10000000000000000000201 /* CoffeeBrewingNotes */,
 				A10000000000000000000202 /* Products */,
 			);
@@ -75,6 +130,8 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000000 /* CoffeeBrewingNotes.app */,
+				34C11CB72E2E69AA00FBA17E /* CoffeeBrewingNotesTests.xctest */,
+				34C11CB82E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +140,10 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */,
+				34B439052E2E1E63000F6167 /* Coffee+Extensions.swift */,
+				34B439062E2E1E63000F6168 /* Recipe+Extensions.swift */,
+				34B439072E2E1E63000F6169 /* BrewingNote+Extensions.swift */,
+				34B439082E2E1E63000F616A /* ProcessingMethod+Extensions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -98,6 +159,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		34C11CC72E2E69AA00FBA17E /* CoffeeBrewingNotesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34C11CC82E2E69AA00FBA17E /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotesTests" */;
+			buildPhases = (
+				34C11CC92E2E69AA00FBA17E /* Sources */,
+				34C11CC32E2E69AA00FBA17E /* Frameworks */,
+				34C11CCA2E2E69AA00FBA17E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				34C11CCB2E2E69AA00FBA17E /* PBXTargetDependency */,
+			);
+			name = CoffeeBrewingNotesTests;
+			productName = CoffeeBrewingNotesTests;
+			productReference = 34C11CB72E2E69AA00FBA17E /* CoffeeBrewingNotesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		34C11CCC2E2E69BA00FBA17E /* CoffeeBrewingNotesUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34C11CCD2E2E69BA00FBA17E /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotesUITests" */;
+			buildPhases = (
+				34C11CCE2E2E69BA00FBA17E /* Sources */,
+				34C11CC42E2E69BA00FBA17E /* Frameworks */,
+				34C11CCF2E2E69BA00FBA17E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				34C11CD02E2E69BA00FBA17E /* PBXTargetDependency */,
+			);
+			name = CoffeeBrewingNotesUITests;
+			productName = CoffeeBrewingNotesUITests;
+			productReference = 34C11CB82E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		A10000000000000000000500 /* CoffeeBrewingNotes */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A10000000000000000000600 /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotes" */;
@@ -125,6 +222,14 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					34C11CC72E2E69AA00FBA17E = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = A10000000000000000000500;
+					};
+					34C11CCC2E2E69BA00FBA17E = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = A10000000000000000000500;
+					};
 					A10000000000000000000500 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -144,11 +249,44 @@
 			projectRoot = "";
 			targets = (
 				A10000000000000000000500 /* CoffeeBrewingNotes */,
+				34C11CC72E2E69AA00FBA17E /* CoffeeBrewingNotesTests */,
+				34C11CCC2E2E69BA00FBA17E /* CoffeeBrewingNotesUITests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXContainerItemProxy section */
+		34C11CD12E2E69AA00FBA17E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000700 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000500;
+			remoteInfo = CoffeeBrewingNotes;
+		};
+		34C11CD22E2E69BA00FBA17E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000700 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000500;
+			remoteInfo = CoffeeBrewingNotes;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
+		34C11CCA2E2E69AA00FBA17E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34C11CCF2E2E69BA00FBA17E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A10000000000000000000520 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -161,6 +299,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		34C11CC92E2E69AA00FBA17E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34C11CB92E2E69AA00FBA17E /* CoffeeBrewingNotesTests.swift in Sources */,
+				34B43909AE2E1E63000F6167 /* Coffee+Extensions.swift in Sources */,
+				34B43910AE2E1E63000F6168 /* Recipe+Extensions.swift in Sources */,
+				34B43911AE2E1E63000F6169 /* BrewingNote+Extensions.swift in Sources */,
+				34B43912AE2E1E63000F616A /* ProcessingMethod+Extensions.swift in Sources */,
+				A10000010000000000000013T /* CoffeeBrewingNotes.xcdatamodeld in Sources */,
+				A10000010000000000000040T /* Persistence.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34C11CCE2E2E69BA00FBA17E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34C11CBF2E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.swift in Sources */,
+				34C11CC12E2E69BA00FBA17E /* CoffeeBrewingNotesUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A10000000000000000000510 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -171,10 +332,27 @@
 				A10000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */,
 				A10000010000000000000013 /* CoffeeBrewingNotes.xcdatamodeld in Sources */,
 				A10000010000000000000036 /* SimpleCoffeeListView.swift in Sources */,
+				34B439092E2E1E63000F6167 /* Coffee+Extensions.swift in Sources */,
+				34B43910BE2E1E63000F6168 /* Recipe+Extensions.swift in Sources */,
+				34B43911BE2E1E63000F6169 /* BrewingNote+Extensions.swift in Sources */,
+				34B43912BE2E1E63000F616A /* ProcessingMethod+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		34C11CCB2E2E69AA00FBA17E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000500 /* CoffeeBrewingNotes */;
+			targetProxy = 34C11CD12E2E69AA00FBA17E /* PBXContainerItemProxy */;
+		};
+		34C11CD02E2E69BA00FBA17E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000500 /* CoffeeBrewingNotes */;
+			targetProxy = 34C11CD22E2E69BA00FBA17E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A10000000000000000000900 /* Debug */ = {
@@ -354,6 +532,76 @@
 			};
 			name = Release;
 		};
+		34C11CD32E2E69AA00FBA17E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoffeeBrewingNotes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CoffeeBrewingNotes";
+			};
+			name = Debug;
+		};
+		34C11CD42E2E69AA00FBA17E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoffeeBrewingNotes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CoffeeBrewingNotes";
+			};
+			name = Release;
+		};
+		34C11CD52E2E69BA00FBA17E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CoffeeBrewingNotes;
+			};
+			name = Debug;
+		};
+		34C11CD62E2E69BA00FBA17E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CoffeeBrewingNotes;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -371,6 +619,24 @@
 			buildConfigurations = (
 				A10000000000000000000900 /* Debug */,
 				A10000000000000000000901 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34C11CC82E2E69AA00FBA17E /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34C11CD32E2E69AA00FBA17E /* Debug */,
+				34C11CD42E2E69AA00FBA17E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34C11CCD2E2E69BA00FBA17E /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotesUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34C11CD52E2E69BA00FBA17E /* Debug */,
+				34C11CD62E2E69BA00FBA17E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

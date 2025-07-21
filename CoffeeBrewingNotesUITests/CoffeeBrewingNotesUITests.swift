@@ -78,7 +78,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testSearchCoffees() throws {
         // First add a coffee to search for
-        testAddCoffee()
+        try testAddCoffee()
         
         // Navigate to Coffees tab
         app.tabBars.buttons["Coffees"].tap()
@@ -95,7 +95,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testEditCoffee() throws {
         // First add a coffee
-        testAddCoffee()
+        try testAddCoffee()
         
         // Navigate to Coffees tab
         app.tabBars.buttons["Coffees"].tap()
@@ -246,7 +246,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         brewTimeField.clearAndTypeText("240")
         
         // Fill in pour schedule (V60 specific) - should appear after selecting V60 method
-        let bloomAmountField = app.textFields.matching(identifier: "Grams").element(boundBy: 1)
+        let bloomAmountField = app.textFields.matching(identifier: "Grams").allElementsBoundByIndex[1]
         if bloomAmountField.exists {
             bloomAmountField.tap()
             bloomAmountField.clearAndTypeText("40")
@@ -294,7 +294,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         brewTimeField.clearAndTypeText("28")
         
         // Fill in espresso-specific parameter (water out)
-        let waterOutField = app.textFields.matching(identifier: "Grams").element(boundBy: 1)
+        let waterOutField = app.textFields.matching(identifier: "Grams").allElementsBoundByIndex[1]
         if waterOutField.exists {
             waterOutField.tap()
             waterOutField.clearAndTypeText("36")
@@ -312,8 +312,8 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testBrewingSession() throws {
         // First add a coffee and recipe
-        testAddCoffee()
-        testAddV60Recipe()
+        try testAddCoffee()
+        try testAddV60Recipe()
         
         // Navigate to Brew tab
         app.tabBars.buttons["Brew"].tap()
@@ -333,7 +333,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         notesEditor.typeText("Great brew today! Sweet and bright with citrus notes.")
         
         // Add rating
-        app.buttons["star"].element(boundBy: 3).tap() // 4 stars
+        app.buttons.matching(identifier: "star").allElementsBoundByIndex[3].tap() // 4 stars
         
         // Save brewing session
         app.buttons["Save Brewing Session"].tap()
@@ -351,7 +351,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testNotesHistory() throws {
         // First create a brewing session
-        testBrewingSession()
+        try testBrewingSession()
         
         // Navigate to Notes tab
         app.tabBars.buttons["Notes"].tap()
@@ -365,7 +365,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testSearchNotes() throws {
         // First create a brewing session
-        testBrewingSession()
+        try testBrewingSession()
         
         // Navigate to Notes tab
         app.tabBars.buttons["Notes"].tap()
@@ -382,7 +382,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testNotesFiltering() throws {
         // First create a brewing session
-        testBrewingSession()
+        try testBrewingSession()
         
         // Navigate to Notes tab
         app.tabBars.buttons["Notes"].tap()
@@ -402,8 +402,8 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testDataPersistence() throws {
         // Add coffee and recipe
-        testAddCoffee()
-        testAddV60Recipe()
+        try testAddCoffee()
+        try testAddV60Recipe()
         
         // Terminate and relaunch app
         app.terminate()
@@ -423,10 +423,10 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         // Complete workflow: Add coffee -> Add recipe -> Brew session -> View history
         
         // Step 1: Add coffee
-        testAddCoffee()
+        try testAddCoffee()
         
         // Step 2: Add recipe
-        testAddV60Recipe()
+        try testAddV60Recipe()
         
         // Step 3: Create brewing session
         app.tabBars.buttons["Brew"].tap()
@@ -445,7 +445,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         notesEditor.typeText("Excellent brew with bright acidity and floral notes.")
         
         // Rate 5 stars
-        app.buttons["star"].element(boundBy: 4).tap() // 5th star
+        app.buttons.matching(identifier: "star").allElementsBoundByIndex[4].tap() // 5th star
         
         // Save session
         app.buttons["Save Brewing Session"].tap()
@@ -460,8 +460,8 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testRecipeUsageTracking() throws {
         // Add coffee and recipe
-        testAddCoffee()
-        testAddV60Recipe()
+        try testAddCoffee()
+        try testAddV60Recipe()
         
         // Create multiple brewing sessions with same recipe
         for i in 1...3 {
@@ -488,7 +488,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     
     func testSearchAcrossAllTabs() throws {
         // Create complete data set
-        testCompleteBrewingWorkflow()
+        try testCompleteBrewingWorkflow()
         
         // Test search in Coffees
         app.tabBars.buttons["Coffees"].tap()

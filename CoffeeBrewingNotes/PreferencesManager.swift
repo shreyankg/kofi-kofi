@@ -46,6 +46,22 @@ class PreferencesManager: ObservableObject {
         loadPreferences()
     }
     
+    // MARK: - Testing
+    // Public initializer for testing purposes
+    init(testing: Bool = false) {
+        if testing {
+            // For testing, use a clean state
+            enabledBrewingMethods = Self.defaultBrewingMethods
+            enabledGrinders = Self.defaultGrinders
+            defaultWaterTemp = 93
+            customBrewingMethods = []
+            customGrinders = []
+        } else {
+            initializeDefaultsIfNeeded()
+            loadPreferences()
+        }
+    }
+    
     // MARK: - Initialization
     private func initializeDefaultsIfNeeded() {
         if !UserDefaults.standard.bool(forKey: Keys.hasInitializedDefaults) {
