@@ -20,18 +20,18 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         // Test all tabs are accessible and have correct titles
         XCTAssertTrue(app.tabBars.buttons["Coffees"].exists)
         XCTAssertTrue(app.tabBars.buttons["Recipes"].exists)
-        XCTAssertTrue(app.tabBars.buttons["Brew"].exists)
-        XCTAssertTrue(app.tabBars.buttons["Notes"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Brewing"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Settings"].exists)
         
         // Test navigation between tabs
         app.tabBars.buttons["Recipes"].tap()
         XCTAssertTrue(app.navigationBars["Recipes"].exists)
         
-        app.tabBars.buttons["Brew"].tap()
-        XCTAssertTrue(app.navigationBars["New Brew Session"].exists)
+        app.tabBars.buttons["Brewing"].tap()
+        XCTAssertTrue(app.navigationBars["Brewing Notes"].exists)
         
-        app.tabBars.buttons["Notes"].tap()
-        XCTAssertTrue(app.navigationBars["Brewing History"].exists)
+        app.tabBars.buttons["Settings"].tap()
+        XCTAssertTrue(app.navigationBars["Settings"].exists)
         
         app.tabBars.buttons["Coffees"].tap()
         XCTAssertTrue(app.navigationBars["Coffees"].exists)
@@ -125,25 +125,46 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
     }
     
     func testCompleteBrewingWorkflow() throws {
-        // Very basic test - just verify tabs work
+        // Test unified Brewing tab functionality
         
-        // Navigate to Brew tab
-        app.tabBars.buttons["Brew"].tap()
-        XCTAssertTrue(app.tabBars.buttons["Brew"].isSelected, "Brew tab should be selected")
+        // Navigate to Brewing tab
+        app.tabBars.buttons["Brewing"].tap()
+        XCTAssertTrue(app.tabBars.buttons["Brewing"].isSelected, "Brewing tab should be selected")
         
         // Wait for view to load
         Thread.sleep(forTimeInterval: 2)
         
-        // Navigate to Notes tab
-        app.tabBars.buttons["Notes"].tap()
-        XCTAssertTrue(app.tabBars.buttons["Notes"].isSelected, "Notes tab should be selected")
+        // Check for expected UI elements in unified view
+        let addButton = app.buttons["plus"]
+        let filterButton = app.buttons.matching(NSPredicate(format: "label CONTAINS 'decrease.circle'")).firstMatch
         
-        // Navigate back to Brew tab
-        app.tabBars.buttons["Brew"].tap()
-        XCTAssertTrue(app.tabBars.buttons["Brew"].isSelected, "Should be able to navigate back to Brew")
+        // Verify basic UI exists
+        XCTAssertTrue(addButton.exists || filterButton.exists, "Should have either add or filter button available")
+        
+        // Test adding a new brewing note if add button exists
+        if addButton.exists {
+            addButton.tap()
+            
+            // Check if Add Brewing Note sheet appears
+            let addBrewingSheet = app.navigationBars["New Brew Session"]
+            if addBrewingSheet.waitForExistence(timeout: 3) {
+                // Cancel to return to main view
+                let cancelButton = app.navigationBars["New Brew Session"].buttons["Cancel"]
+                if cancelButton.exists {
+                    cancelButton.tap()
+                }
+            }
+        }
+        
+        // Navigate to other tabs and back to verify navigation
+        app.tabBars.buttons["Coffees"].tap()
+        XCTAssertTrue(app.tabBars.buttons["Coffees"].isSelected, "Should be able to navigate to Coffees")
+        
+        app.tabBars.buttons["Brewing"].tap()
+        XCTAssertTrue(app.tabBars.buttons["Brewing"].isSelected, "Should be able to navigate back to Brewing")
         
         // Basic brewing tab functionality verified
-        XCTAssertTrue(true, "Brewing tab navigation works correctly")
+        XCTAssertTrue(true, "Unified Brewing tab navigation works correctly")
     }
     
     func testDataPersistenceAndUsageTracking() throws {
@@ -173,8 +194,8 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         // Verify app state is preserved after restart
         XCTAssertTrue(app.tabBars.buttons["Coffees"].exists, "Coffees tab should exist after restart")
         XCTAssertTrue(app.tabBars.buttons["Recipes"].exists, "Recipes tab should exist after restart")
-        XCTAssertTrue(app.tabBars.buttons["Brew"].exists, "Brew tab should exist after restart")
-        XCTAssertTrue(app.tabBars.buttons["Notes"].exists, "Notes tab should exist after restart")
+        XCTAssertTrue(app.tabBars.buttons["Brewing"].exists, "Brewing tab should exist after restart")
+        XCTAssertTrue(app.tabBars.buttons["Settings"].exists, "Settings tab should exist after restart")
         
         // Verify navigation works after restart
         app.tabBars.buttons["Coffees"].tap()
@@ -183,11 +204,11 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         app.tabBars.buttons["Recipes"].tap()
         XCTAssertTrue(app.navigationBars["Recipes"].waitForExistence(timeout: 5), "Recipes navigation should work after restart")
         
-        app.tabBars.buttons["Notes"].tap()
-        XCTAssertTrue(app.navigationBars["Brewing History"].waitForExistence(timeout: 5), "Notes navigation should work after restart")
+        app.tabBars.buttons["Brewing"].tap()
+        XCTAssertTrue(app.navigationBars["Brewing Notes"].waitForExistence(timeout: 5), "Brewing navigation should work after restart")
         
         // Test basic search functionality exists and works
-        let notesSearchField = app.searchFields["Search notes..."]
+        let notesSearchField = app.searchFields["Search notes, coffee, or recipes..."]
         if notesSearchField.exists {
             notesSearchField.tap()
             notesSearchField.typeText("test")

@@ -4,14 +4,14 @@
 
 SwiftUI iOS app for tracking coffee brewing experiments with Core Data persistence.
 
-**Status: ✅ Production Ready** - All features implemented with stable 33 unit tests and 7 UI tests.
+**Status: ✅ Production Ready** - All features implemented with stable 36 unit tests and 7 UI tests.
 
 ## Architecture
 
 ### Technology Stack
 - **UI**: SwiftUI with MVVM pattern
 - **Data**: Core Data with in-memory preview support  
-- **Testing**: XCTest (33 unit + 7 UI tests)
+- **Testing**: XCTest (36 unit + 7 UI tests)
 - **Target**: iOS 17.0+, Swift 5.0
 
 ### Project Structure
@@ -114,20 +114,24 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 
 ## Testing Strategy
 
-### Unit Tests (33 tests)
+### Unit Tests (36 tests)
 - Data model validation and extensions
 - CRUD operations and persistence
+- **Brewing note editing functionality** - Full edit capabilities for existing sessions
 - PreferencesManager functionality
 - Brewing method detection logic
 
 ### UI Tests (7 tests)
 - End-to-end user workflows
-- Tab navigation and form interactions
+- **Unified brewing tab navigation** and form interactions
 - Coffee creation and basic functionality
 
 ## Code Quality
 
 ### Recent Refactoring (Latest)
+- ✅ **Unified Brewing Interface** - Consolidated separate "Brew" and "Notes" tabs into single "Brewing" tab
+- ✅ **Editable Brewing Notes** - Added tap-to-edit functionality for all brewing session history
+- ✅ **Tab Consolidation** - Reduced from 5 tabs to 4 tabs (Coffees, Recipes, Brewing, Settings)
 - ✅ Removed 6 unused view files
 - ✅ Consolidated brewing method detection (eliminated duplication)
 - ✅ Created reusable UI components (StarRatingView, FormFieldView)  
@@ -135,9 +139,12 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 - ✅ Updated documentation accuracy
 
 ### Architecture Benefits
+- **Unified User Experience** - Single interface for all brewing activities (create, view, edit)
+- **Improved Workflow** - Eliminates tab-switching for brewing-related tasks
 - Single source of truth for brewing method logic
 - Consistent validation across all UI components
 - ~30% reduction in code duplication
+- **Enhanced Data Management** - Full CRUD operations for brewing notes
 - Improved maintainability for future enhancements
 
 ## Development Notes

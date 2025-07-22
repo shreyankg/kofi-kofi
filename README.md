@@ -3,7 +3,7 @@
 [![iOS](https://img.shields.io/badge/iOS-17.0+-blue.svg)](https://developer.apple.com/ios/)
 [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org)
 [![SwiftUI](https://img.shields.io/badge/SwiftUI-Framework-green.svg)](https://developer.apple.com/xcode/swiftui/)
-[![Tests](https://img.shields.io/badge/Tests-40%20passing-brightgreen.svg)](#testing)
+[![Tests](https://img.shields.io/badge/Tests-43%20passing-brightgreen.svg)](#testing)
 
 A comprehensive iOS app for coffee enthusiasts to track brewing experiments, manage coffee inventory, and maintain detailed brewing notes with a 5-star rating system.
 
@@ -29,19 +29,22 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **Usage-based sorting** (most-used recipes appear first)
 - **Comprehensive parameter tracking** (grinder, grind size, water temp, dose, timing)
 
-### 🎯 Brewing Sessions
+### 🎯 Brewing Sessions & Notes
+- **Unified brewing interface** - Create new sessions and manage your brewing history in one place
 - **Flexible pairing** of any coffee with any recipe
 - **Detailed tasting notes** with rich text input
+- **Editable brewing history** - Tap any session to modify coffee, recipe, notes, or ratings
 - **5-star rating system** (optional) for tracking your favorite brews
 - **Automatic recipe usage tracking** for intelligent sorting
-- **Session history** with complete brewing details
+- **Complete session management** with full CRUD operations
 
-### 📊 Notes History & Analytics
-- **Chronological brewing history** with advanced search capabilities
-- **Multi-field search** across coffee names, recipe names, brewing methods, and notes
+### 📊 Brewing Analytics & History
+- **Interactive brewing history** with tap-to-edit functionality for any session
+- **Advanced search capabilities** across coffee names, recipe names, brewing methods, and notes
 - **Rating-based filtering** (1-5 stars or show all sessions)
 - **Visual star ratings** with intuitive display
-- **Swipe-to-delete** for easy session management
+- **Comprehensive session management** - Edit, delete, and organize your brewing data
+- **Streamlined interface** - All brewing activities consolidated into one tab
 
 ### ⚙️ Equipment Preferences
 - **Customizable equipment lists** - enable/disable based on your actual gear
@@ -69,7 +72,7 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **Centralized brewing method detection** - Single source of truth for method validation
 - **Safe Core Data accessors** - Nil-safe property handling throughout
 - **Reusable UI components** - StarRatingView, FormFieldView for consistency
-- **Comprehensive test coverage** - 33 unit tests + 7 UI tests
+- **Comprehensive test coverage** - 36 unit tests + 7 UI tests
 - **Recent refactoring** - 30% reduction in code duplication
 
 ## 🚀 Getting Started
@@ -97,14 +100,14 @@ open CoffeeBrewingNotes.xcodeproj
 1. **Configure your equipment** in Settings - enable your brewing methods and grinders
 2. **Add coffee beans** to build your inventory  
 3. **Create brewing recipes** using your preferred methods
-4. **Start brewing sessions** - select coffee + recipe, add tasting notes
-5. **Review your history** to refine your technique over time
+4. **Manage brewing sessions** in the unified Brewing tab - create new sessions or edit existing ones
+5. **Track and refine** - Tap any session to edit details and improve your technique over time
 
 ## 🧪 Testing
 
 ### Test Coverage
-- **Unit Tests**: 33 tests covering data models, extensions, and business logic
-- **UI Tests**: 7 end-to-end tests for critical user workflows
+- **Unit Tests**: 36 tests covering data models, extensions, brewing note editing, and business logic
+- **UI Tests**: 7 end-to-end tests for critical user workflows including unified brewing interface
 - **All tests passing** with stable, reliable execution
 
 ### Running Tests
@@ -145,6 +148,8 @@ CoffeeBrewingNotes/
 - **Advanced analytics** and brewing trend visualization
 - **Recipe sharing** between users
 - **Brew session reminders** and notifications
+- **Batch editing** for multiple brewing sessions
+- **Advanced filtering** by date ranges and brewing parameters
 
 ## 🤝 Contributing
 

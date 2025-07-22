@@ -311,6 +311,156 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertFalse(brewingNote.matchesSearchText("Jamaica"))
     }
     
+    func testBrewingNoteEditing() throws {
+        // Create initial coffee and recipe
+        let coffee1 = persistenceController.createCoffee(
+            name: "Original Coffee",
+            roaster: "Original Roaster",
+            processing: "Washed",
+            roastLevel: "Medium",
+            origin: "Original Origin"
+        )
+        
+        let recipe1 = persistenceController.createRecipe(
+            name: "Original Recipe",
+            brewingMethod: "V60-01",
+            grinder: "Baratza Encore",
+            grindSize: "20",
+            waterTemp: 93,
+            dose: 20.0,
+            brewTime: 240
+        )
+        
+        // Create brewing note
+        let brewingNote = persistenceController.createBrewingNote(
+            coffee: coffee1,
+            recipe: recipe1,
+            notes: "Original notes",
+            rating: 3
+        )
+        
+        // Create new coffee and recipe for editing
+        let coffee2 = persistenceController.createCoffee(
+            name: "New Coffee",
+            roaster: "New Roaster",
+            processing: "Natural",
+            roastLevel: "Light",
+            origin: "New Origin"
+        )
+        
+        let recipe2 = persistenceController.createRecipe(
+            name: "New Recipe",
+            brewingMethod: "Chemex 6-cup",
+            grinder: "Turin DF64",
+            grindSize: "3.5",
+            waterTemp: 94,
+            dose: 22.0,
+            brewTime: 300
+        )
+        
+        // Edit the brewing note
+        brewingNote.coffee = coffee2
+        brewingNote.recipe = recipe2
+        brewingNote.notes = "Updated notes with new flavor profile"
+        brewingNote.rating = 5
+        
+        try context.save()
+        
+        // Verify the changes
+        XCTAssertEqual(brewingNote.coffee, coffee2)
+        XCTAssertEqual(brewingNote.recipe, recipe2)
+        XCTAssertEqual(brewingNote.notes, "Updated notes with new flavor profile")
+        XCTAssertEqual(brewingNote.rating, 5)
+        XCTAssertEqual(brewingNote.wrappedCoffeeName, "New Coffee")
+        XCTAssertEqual(brewingNote.wrappedRecipeName, "New Recipe")
+        XCTAssertEqual(brewingNote.wrappedBrewingMethod, "Chemex 6-cup")
+        XCTAssertEqual(brewingNote.ratingStars, "★★★★★")
+    }
+    
+    func testBrewingNotePartialEditing() throws {
+        // Create initial data
+        let coffee = persistenceController.createCoffee(
+            name: "Test Coffee",
+            roaster: "Test Roaster",
+            processing: "Washed",
+            roastLevel: "Medium",
+            origin: "Test Origin"
+        )
+        
+        let recipe = persistenceController.createRecipe(
+            name: "Test Recipe",
+            brewingMethod: "V60-01",
+            grinder: "Baratza Encore",
+            grindSize: "20",
+            waterTemp: 93,
+            dose: 20.0,
+            brewTime: 240
+        )
+        
+        // Create brewing note
+        let brewingNote = persistenceController.createBrewingNote(
+            coffee: coffee,
+            recipe: recipe,
+            notes: "Original notes",
+            rating: 3
+        )
+        
+        let originalDateCreated = brewingNote.dateCreated
+        
+        // Edit only notes and rating, keep coffee and recipe the same
+        brewingNote.notes = "Updated notes only"
+        brewingNote.rating = 4
+        
+        try context.save()
+        
+        // Verify selective changes
+        XCTAssertEqual(brewingNote.coffee, coffee)
+        XCTAssertEqual(brewingNote.recipe, recipe)
+        XCTAssertEqual(brewingNote.notes, "Updated notes only")
+        XCTAssertEqual(brewingNote.rating, 4)
+        XCTAssertEqual(brewingNote.dateCreated, originalDateCreated) // Should not change
+        XCTAssertEqual(brewingNote.ratingStars, "★★★★☆")
+    }
+    
+    func testBrewingNoteRatingClearOnEdit() throws {
+        // Create initial data
+        let coffee = persistenceController.createCoffee(
+            name: "Test Coffee",
+            roaster: "Test Roaster",
+            processing: "Washed",
+            roastLevel: "Medium",
+            origin: "Test Origin"
+        )
+        
+        let recipe = persistenceController.createRecipe(
+            name: "Test Recipe",
+            brewingMethod: "V60-01",
+            grinder: "Baratza Encore",
+            grindSize: "20",
+            waterTemp: 93,
+            dose: 20.0,
+            brewTime: 240
+        )
+        
+        // Create brewing note with rating
+        let brewingNote = persistenceController.createBrewingNote(
+            coffee: coffee,
+            recipe: recipe,
+            notes: "Good notes",
+            rating: 4
+        )
+        
+        // Clear the rating
+        brewingNote.rating = 0
+        
+        try context.save()
+        
+        // Verify rating was cleared
+        XCTAssertEqual(brewingNote.rating, 0)
+        XCTAssertFalse(brewingNote.hasRating)
+        XCTAssertEqual(brewingNote.ratingStars, "☆☆☆☆☆")
+    }
+    
     // MARK: - Relationship Tests
     
     // MARK: - Coffee Analysis Tests

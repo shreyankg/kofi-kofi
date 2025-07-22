@@ -16,16 +16,10 @@ struct ContentView: View {
                     Text("Recipes")
                 }
             
-            BrewingTabView()
+            BrewingNotesTabView()
                 .tabItem {
-                    Image(systemName: "plus.circle")
-                    Text("Brew")
-                }
-            
-            NotesHistoryTabView()
-                .tabItem {
-                    Image(systemName: "book")
-                    Text("Notes")
+                    Image(systemName: "book.pages")
+                    Text("Brewing")
                 }
             
             PreferencesView()
@@ -599,8 +593,114 @@ struct EditRecipeTabView: View {
     }
 }
 
-struct BrewingTabView: View {
+struct BrewingNotesTabView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \BrewingNote.dateCreated, ascending: false)],
+        animation: .default)
+    private var brewingNotes: FetchedResults<BrewingNote>
+    
+    @State private var showingAddNote = false
+    @State private var showingEditNote = false
+    @State private var selectedNote: BrewingNote? = nil
+    @State private var searchText = ""
+    @State private var selectedRatingFilter: Int = 0 // 0 = all ratings
+    @State private var showingFilterOptions = false
+    
+    var filteredNotes: [BrewingNote] {
+        var notes = Array(brewingNotes)
+        
+        // Filter by search text
+        if !searchText.isEmpty {
+            notes = notes.filter { note in
+                (note.coffee?.name ?? "").localizedCaseInsensitiveContains(searchText) ||
+                (note.recipe?.wrappedName ?? "").localizedCaseInsensitiveContains(searchText) ||
+                (note.recipe?.brewingMethod ?? "").localizedCaseInsensitiveContains(searchText) ||
+                (note.notes ?? "").localizedCaseInsensitiveContains(searchText)
+            }
+        }
+        
+        // Filter by rating
+        if selectedRatingFilter > 0 {
+            notes = notes.filter { $0.rating == selectedRatingFilter }
+        }
+        
+        return notes
+    }
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                if brewingNotes.isEmpty {
+                    ContentUnavailableView {
+                        Label("No Brewing Notes", systemImage: "book.pages")
+                    } description: {
+                        Text("Start brewing and rating your coffee to see your history here.")
+                    } actions: {
+                        Button("Start Brewing") {
+                            showingAddNote = true
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                } else {
+                    List {
+                        ForEach(filteredNotes, id: \.self) { note in
+                            BrewingNoteRowView(note: note)
+                                .onTapGesture {
+                                    selectedNote = note
+                                    showingEditNote = true
+                                }
+                        }
+                        .onDelete(perform: deleteNotes)
+                    }
+                    .searchable(text: $searchText, prompt: "Search notes, coffee, or recipes...")
+                }
+            }
+            .navigationTitle("Brewing Notes")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { showingFilterOptions = true }) {
+                        Image(systemName: selectedRatingFilter > 0 ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showingAddNote = true }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingFilterOptions) {
+                FilterOptionsView(selectedRating: $selectedRatingFilter)
+            }
+            .sheet(isPresented: $showingAddNote) {
+                AddBrewingNoteView()
+            }
+            .sheet(isPresented: $showingEditNote) {
+                if let note = selectedNote {
+                    EditBrewingNoteView(note: note)
+                }
+            }
+        }
+    }
+    
+    private func deleteNotes(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { filteredNotes[$0] }.forEach(viewContext.delete)
+            
+            do {
+                try viewContext.save()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+}
+
+struct AddBrewingNoteView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.dismiss) private var dismiss
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Coffee.name, ascending: true)],
         animation: .default)
@@ -695,21 +795,22 @@ struct BrewingTabView: View {
                         }
                     }
                 }
+            }
+            .navigationTitle("New Brew Session")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
                 
-                Section {
-                    Button("Save Brewing Session") {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
                         saveBrewingSession()
                     }
                     .disabled(selectedCoffee == nil || selectedRecipe == nil)
                 }
-            }
-            .navigationTitle("New Brew Session")
-            .alert("Session Saved", isPresented: $showingAlert) {
-                Button("OK") {
-                    resetForm()
-                }
-            } message: {
-                Text(alertMessage)
             }
         }
     }
@@ -726,15 +827,161 @@ struct BrewingTabView: View {
             rating: Int16(rating)
         )
         
-        alertMessage = "Brewing session saved successfully!"
-        showingAlert = true
+        dismiss()
+    }
+}
+
+struct EditBrewingNoteView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.dismiss) private var dismiss
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Coffee.name, ascending: true)],
+        animation: .default)
+    private var coffees: FetchedResults<Coffee>
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Recipe.usageCount, ascending: false)],
+        animation: .default)
+    private var recipes: FetchedResults<Recipe>
+    
+    let note: BrewingNote
+    
+    @State private var selectedCoffee: Coffee?
+    @State private var selectedRecipe: Recipe?
+    @State private var notes = ""
+    @State private var rating: Int = 0
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Select Coffee")) {
+                    if coffees.isEmpty {
+                        Text("No coffees available. Add some coffees first!")
+                            .foregroundColor(.secondary)
+                    } else {
+                        Picker("Coffee", selection: $selectedCoffee) {
+                            Text("Select a coffee").tag(Coffee?.none)
+                            ForEach(Array(coffees), id: \.self) { coffee in
+                                Text("\(coffee.name ?? "Unknown") - \(coffee.roaster ?? "Unknown")")
+                                    .tag(Coffee?.some(coffee))
+                            }
+                        }
+                    }
+                }
+                
+                Section(header: Text("Select Recipe")) {
+                    if recipes.isEmpty {
+                        Text("No recipes available. Add some recipes first!")
+                            .foregroundColor(.secondary)
+                    } else {
+                        Picker("Recipe", selection: $selectedRecipe) {
+                            Text("Select a recipe").tag(Recipe?.none)
+                            ForEach(Array(recipes), id: \.self) { recipe in
+                                VStack(alignment: .leading) {
+                                    Text(recipe.wrappedName)
+                                        .font(.headline)
+                                    Text("\(recipe.brewingMethod ?? "Unknown") - Used \(recipe.usageCount) times")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                                .tag(Recipe?.some(recipe))
+                            }
+                        }
+                    }
+                }
+                
+                if let recipe = selectedRecipe {
+                    RecipeDetailsTabSection(recipe: recipe)
+                }
+                
+                Section(header: Text("Brewing Notes")) {
+                    TextEditor(text: $notes)
+                        .frame(minHeight: 100)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Rating (Optional)")
+                            .font(.headline)
+                        
+                        HStack {
+                            ForEach(1...5, id: \.self) { star in
+                                Button(action: {
+                                    // If tapping the same star that's already selected, clear the rating
+                                    if rating == star {
+                                        rating = 0
+                                    } else {
+                                        rating = star
+                                    }
+                                }) {
+                                    Image(systemName: star <= rating ? "star.fill" : "star")
+                                        .foregroundColor(star <= rating ? .yellow : .gray)
+                                        .font(.title2)
+                                }
+                            }
+                            
+                            if rating > 0 {
+                                Button("Clear") {
+                                    rating = 0
+                                }
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                }
+                
+                Section(header: Text("Session Info")) {
+                    HStack {
+                        Text("Created:")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text(note.formattedDate)
+                            .foregroundColor(.secondary)
+                    }
+                    .font(.caption)
+                }
+            }
+            .navigationTitle("Edit Brew Session")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                // Load note values
+                selectedCoffee = note.coffee
+                selectedRecipe = note.recipe
+                notes = note.notes ?? ""
+                rating = Int(note.rating)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        saveBrewingNote()
+                    }
+                    .disabled(selectedCoffee == nil || selectedRecipe == nil)
+                }
+            }
+        }
     }
     
-    private func resetForm() {
-        selectedCoffee = nil
-        selectedRecipe = nil
-        notes = ""
-        rating = 0
+    private func saveBrewingNote() {
+        guard let coffee = selectedCoffee,
+              let recipe = selectedRecipe else { return }
+        
+        note.coffee = coffee
+        note.recipe = recipe
+        note.notes = notes
+        note.rating = Int16(rating)
+        
+        do {
+            try viewContext.save()
+            dismiss()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
     }
 }
 
@@ -1091,84 +1338,6 @@ struct AeropressTabSection: View {
     }
 }
 
-struct NotesHistoryTabView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \BrewingNote.dateCreated, ascending: false)],
-        animation: .default)
-    private var brewingNotes: FetchedResults<BrewingNote>
-    
-    @State private var searchText = ""
-    @State private var selectedRatingFilter: Int = 0 // 0 = all ratings
-    @State private var showingFilterOptions = false
-    
-    var filteredNotes: [BrewingNote] {
-        var notes = Array(brewingNotes)
-        
-        // Filter by search text
-        if !searchText.isEmpty {
-            notes = notes.filter { note in
-                (note.coffee?.name ?? "").localizedCaseInsensitiveContains(searchText) ||
-                (note.recipe?.wrappedName ?? "").localizedCaseInsensitiveContains(searchText) ||
-                (note.recipe?.brewingMethod ?? "").localizedCaseInsensitiveContains(searchText) ||
-                (note.notes ?? "").localizedCaseInsensitiveContains(searchText)
-            }
-        }
-        
-        // Filter by rating
-        if selectedRatingFilter > 0 {
-            notes = notes.filter { $0.rating == selectedRatingFilter }
-        }
-        
-        return notes
-    }
-    
-    var body: some View {
-        NavigationView {
-            VStack {
-                if brewingNotes.isEmpty {
-                    ContentUnavailableView {
-                        Label("No Brewing Notes", systemImage: "book")
-                    } description: {
-                        Text("Start brewing and rating your coffee to see your history here.")
-                    }
-                } else {
-                    List {
-                        ForEach(filteredNotes, id: \.self) { note in
-                            BrewingNoteRowView(note: note)
-                        }
-                        .onDelete(perform: deleteNotes)
-                    }
-                    .searchable(text: $searchText, prompt: "Search notes, coffee, or recipes...")
-                }
-            }
-            .navigationTitle("Brewing History")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingFilterOptions = true }) {
-                        Image(systemName: selectedRatingFilter > 0 ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                    }
-                }
-            }
-            .sheet(isPresented: $showingFilterOptions) {
-                FilterOptionsView(selectedRating: $selectedRatingFilter)
-            }
-        }
-    }
-    
-    private func deleteNotes(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { filteredNotes[$0] }.forEach(viewContext.delete)
-            
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-}
 
 struct BrewingNoteRowView: View {
     let note: BrewingNote
