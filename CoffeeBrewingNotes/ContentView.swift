@@ -180,19 +180,19 @@ struct AddRecipeTabView: View {
     }
     
     private var isPourOver: Bool {
-        selectedMethod.contains("V60") || selectedMethod.contains("Kalita")
+        Recipe.isPourOverMethod(selectedMethod)
     }
     
     private var isEspresso: Bool {
-        selectedMethod.contains("Espresso")
+        Recipe.isEspressoMethod(selectedMethod)
     }
     
     private var isFrenchPress: Bool {
-        selectedMethod.contains("French Press")
+        Recipe.isFrenchPressMethod(selectedMethod)
     }
     
     private var isAeropress: Bool {
-        selectedMethod.contains("Aeropress")
+        Recipe.isAeropressMethod(selectedMethod)
     }
     
     var body: some View {
@@ -325,7 +325,7 @@ struct AddRecipeTabView: View {
     }
     
     private var supportsPours: Bool {
-        isPourOver || isFrenchPress || isAeropress
+        Recipe.supportsPours(selectedMethod)
     }
     
     private func saveRecipe() {
@@ -405,19 +405,19 @@ struct EditRecipeTabView: View {
     }
     
     private var isPourOver: Bool {
-        selectedMethod.contains("V60") || selectedMethod.contains("Kalita")
+        Recipe.isPourOverMethod(selectedMethod)
     }
     
     private var isEspresso: Bool {
-        selectedMethod.contains("Espresso")
+        Recipe.isEspressoMethod(selectedMethod)
     }
     
     private var isFrenchPress: Bool {
-        selectedMethod.contains("French Press")
+        Recipe.isFrenchPressMethod(selectedMethod)
     }
     
     private var isAeropress: Bool {
-        selectedMethod.contains("Aeropress")
+        Recipe.isAeropressMethod(selectedMethod)
     }
     
     var body: some View {
@@ -557,7 +557,7 @@ struct EditRecipeTabView: View {
     }
     
     private var supportsPours: Bool {
-        isPourOver || isFrenchPress || isAeropress
+        Recipe.supportsPours(selectedMethod)
     }
     
     private func saveRecipe() {
@@ -750,20 +750,19 @@ struct RecipeDetailsTabSection: View {
     }
     
     private var isPourOver: Bool {
-        let method = wrappedBrewingMethod.lowercased()
-        return method.contains("v60") || method.contains("kalita") || method.contains("chemex")
+        Recipe.isPourOverMethod(wrappedBrewingMethod)
     }
     
     private var isEspresso: Bool {
-        wrappedBrewingMethod.lowercased().contains("espresso")
+        Recipe.isEspressoMethod(wrappedBrewingMethod)
     }
     
     private var isAeropress: Bool {
-        wrappedBrewingMethod.lowercased().contains("aeropress")
+        Recipe.isAeropressMethod(wrappedBrewingMethod)
     }
     
     private var supportsPours: Bool {
-        isPourOver || wrappedBrewingMethod.lowercased().contains("french press") || isAeropress
+        Recipe.supportsPours(wrappedBrewingMethod)
     }
     
     var body: some View {

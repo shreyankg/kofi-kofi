@@ -31,20 +31,46 @@ extension Recipe {
     // MARK: - Method Detection
     
     var isPourOver: Bool {
-        let method = wrappedBrewingMethod.lowercased()
-        return method.contains("v60") || method.contains("kalita") || method.contains("chemex")
+        Recipe.isPourOverMethod(wrappedBrewingMethod)
     }
     
     var isEspresso: Bool {
-        wrappedBrewingMethod.lowercased().contains("espresso")
+        Recipe.isEspressoMethod(wrappedBrewingMethod)
     }
     
     var isFrenchPress: Bool {
-        wrappedBrewingMethod.lowercased().contains("french press")
+        Recipe.isFrenchPressMethod(wrappedBrewingMethod)
     }
     
     var isAeropress: Bool {
-        wrappedBrewingMethod.lowercased().contains("aeropress")
+        Recipe.isAeropressMethod(wrappedBrewingMethod)
+    }
+    
+    // MARK: - Static Method Detection (for use with strings)
+    
+    static func isPourOverMethod(_ method: String) -> Bool {
+        let lowercased = method.lowercased()
+        return lowercased.contains("v60") || lowercased.contains("kalita") || lowercased.contains("chemex")
+    }
+    
+    static func isEspressoMethod(_ method: String) -> Bool {
+        method.lowercased().contains("espresso")
+    }
+    
+    static func isFrenchPressMethod(_ method: String) -> Bool {
+        method.lowercased().contains("french press")
+    }
+    
+    static func isAeropressMethod(_ method: String) -> Bool {
+        method.lowercased().contains("aeropress")
+    }
+    
+    static func supportsPours(_ method: String) -> Bool {
+        isPourOverMethod(method) || isFrenchPressMethod(method) || isAeropressMethod(method)
+    }
+    
+    static func supportsBloom(_ method: String) -> Bool {
+        supportsPours(method)
     }
     
     var supportsPours: Bool {

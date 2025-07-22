@@ -65,7 +65,7 @@ class PreferencesManager: ObservableObject {
     // MARK: - Initialization
     private func initializeDefaultsIfNeeded() {
         if !UserDefaults.standard.bool(forKey: Keys.hasInitializedDefaults) {
-            // Set default enabled equipment to user's actual equipment
+            // Set default enabled equipment to user's actual equipment  
             UserDefaults.standard.set(["V60-01", "V60-02", "Kalita Wave 155", "Espresso (Gaggia Classic Pro)", "French Press", "Aeropress"], forKey: Keys.enabledBrewingMethods)
             UserDefaults.standard.set(["Baratza Encore", "Turin DF64", "1Zpresso J-Ultra", "Other"], forKey: Keys.enabledGrinders)
             UserDefaults.standard.set(93, forKey: Keys.defaultWaterTemp)

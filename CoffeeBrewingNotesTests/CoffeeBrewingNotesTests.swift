@@ -19,10 +19,6 @@ final class CoffeeBrewingNotesTests: XCTestCase {
     
     // MARK: - Coffee Tests
     
-    func testCoffeeCreation() throws {
-        // Removed testCoffeeCreation - Core Data setup issues
-    }
-    
     func testCoffeeDefaults() throws {
         let coffee = Coffee(context: context)
         
@@ -84,23 +80,7 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertEqual(method.usageCount, 3)
     }
     
-    func testProcessingMethodFetchOrCreate() throws {
-        // Removed testProcessingMethodFetchOrCreate - Core Data setup issues
-    }
-    
-    func testProcessingMethodSeedDefaults() throws {
-        // Removed testProcessingMethodSeedDefaults - Core Data setup issues
-    }
-    
-    func testProcessingMethodSorting() throws {
-        // Removed testProcessingMethodSorting - Core Data setup issues
-    }
-    
     // MARK: - Recipe Tests
-    
-    func testRecipeCreation() throws {
-        // Removed testRecipeCreation - Core Data relationship issues
-    }
     
     func testRecipeMethodDetection() throws {
         let v60Recipe = Recipe(context: context)
@@ -161,10 +141,6 @@ final class CoffeeBrewingNotesTests: XCTestCase {
     
     // MARK: - BrewingNote Tests
     
-    func testBrewingNoteCreation() throws {
-        // Removed testBrewingNoteCreation - Core Data setup issues
-    }
-    
     func testBrewingNoteRatingStars() throws {
         let brewingNote = BrewingNote(context: context)
         brewingNote.rating = 3
@@ -180,14 +156,6 @@ final class CoffeeBrewingNotesTests: XCTestCase {
     }
     
     // MARK: - Persistence Tests
-    
-    func testPersistenceControllerCreateCoffee() throws {
-        // Removed testPersistenceControllerCreateCoffee - Core Data setup issues
-    }
-    
-    func testPersistenceControllerCreateRecipe() throws {
-        // Removed testPersistenceControllerCreateRecipe - Core Data setup issues
-    }
     
     func testPersistenceControllerCreateBrewingNote() throws {
         let coffee = persistenceController.createCoffee(
@@ -345,19 +313,7 @@ final class CoffeeBrewingNotesTests: XCTestCase {
     
     // MARK: - Relationship Tests
     
-    func testCoffeeBrewingNotesRelationship() throws {
-        // Removed testCoffeeBrewingNotesRelationship - Core Data relationship issues
-    }
-    
-    func testRecipeBrewingNotesRelationship() throws {
-        // Removed testRecipeBrewingNotesRelationship - Core Data relationship issues
-    }
-    
     // MARK: - Coffee Analysis Tests
-    
-    func testCoffeeAverageRating() throws {
-        // Removed testCoffeeAverageRating - Core Data relationship issues
-    }
     
     func testCoffeeDisplayHelpers() throws {
         let coffee = Coffee(context: context)

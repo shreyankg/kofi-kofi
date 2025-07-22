@@ -15,10 +15,8 @@ Kofi Kofi is a SwiftUI iOS app for tracking coffee brewing experiments. The app 
 
 ### Testing
 - **Run All Tests**: `⌘+U` in Xcode or run "xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest'" on the terminal
-- **Unit Tests**: CoffeeBrewingNotesTests target (25 tests)
-- **UI Tests**: CoffeeBrewingNotesUITests target (13 tests)
-- **Performance Tests**: CoffeeBrewingNotesPerformanceTests (13 benchmarks)
-- **Error Tests**: CoffeeBrewingNotesErrorTests (22 edge case tests)
+- **Unit Tests**: CoffeeBrewingNotesTests target (33 tests) - Core functionality, data models, extensions, and PreferencesManager
+- **UI Tests**: CoffeeBrewingNotesUITests target (7 tests) - End-to-end workflows and user interactions
 
 ### Requirements
 - iOS 17.0+ deployment target
@@ -48,15 +46,20 @@ CoffeeBrewingNotes/
 │   ├── CoffeeBrewingNotes.xcdatamodeld
 │   ├── Coffee+Extensions.swift
 │   ├── Recipe+Extensions.swift
-│   └── BrewingNote+Extensions.swift
+│   ├── BrewingNote+Extensions.swift
+│   └── ProcessingMethod+Extensions.swift
 └── Views/
-    └── SimpleCoffeeListView.swift # Only active view file
+    ├── SimpleCoffeeListView.swift # Only active view file
+    ├── StarRatingView.swift # Reusable star rating components  
+    └── FormFieldView.swift # Reusable form field components
 ```
 
 ## Key Implementation Details
 
 ### View Architecture
-**Important**: Due to Xcode build target issues, all main UI is consolidated in `ContentView.swift`. Individual view files in `Views/` folder exist but are not in build target except `SimpleCoffeeListView.swift`.
+**Important**: Due to Xcode build target issues, all main UI is consolidated in `ContentView.swift`. 
+
+**Active View Files**: Only `SimpleCoffeeListView.swift` is actively used from the Views/ directory. Additional reusable components (`StarRatingView.swift`, `FormFieldView.swift`) provide shared UI elements.
 
 ### Core Data Integration
 - `PersistenceController` singleton manages Core Data stack
@@ -91,10 +94,9 @@ The app supports user-configurable brewing methods with dynamic forms:
 - Relationship integrity maintained through bidirectional associations
 
 ### Testing Strategy
-- **Unit tests**: Model validation, extensions, CRUD operations
-- **UI tests**: End-to-end workflows across all tabs
-- **Performance tests**: Large dataset operations (1000+ entities)
-- **Error tests**: Nil handling, edge cases, validation
+- **Unit tests**: Model validation, extensions, CRUD operations, PreferencesManager functionality (33 tests)
+- **UI tests**: End-to-end workflows across all tabs (7 tests)
+- **Test Coverage**: Core functionality, data persistence, user interactions, and equipment management
 
 ### Code Patterns
 - Property wrappers: `@State`, `@FetchRequest`, `@Environment`
@@ -135,3 +137,7 @@ The app supports user-configurable brewing methods with dynamic forms:
 - Reset forms after successful saves
 
 Kofi Kofi prioritizes data integrity, comprehensive testing, and user experience through method-specific brewing guidance.
+
+## Development Best Practices
+
+- Don't blindly create new files since it's hard to get those added to the Xcode project
