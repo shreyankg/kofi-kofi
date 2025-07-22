@@ -14,7 +14,7 @@ Kofi Kofi is a SwiftUI iOS app for tracking coffee brewing experiments. The app 
 - **Clean Build**: `⌘+Shift+K` or Product → Clean Build Folder
 
 ### Testing
-- **Run All Tests**: `⌘+U` in Xcode
+- **Run All Tests**: `⌘+U` in Xcode or run "xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest'" on the terminal
 - **Unit Tests**: CoffeeBrewingNotesTests target (25 tests)
 - **UI Tests**: CoffeeBrewingNotesUITests target (13 tests)
 - **Performance Tests**: CoffeeBrewingNotesPerformanceTests (13 benchmarks)

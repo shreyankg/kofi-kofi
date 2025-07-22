@@ -19,16 +19,33 @@
 		34C11CB92E2E69AA00FBA17E /* CoffeeBrewingNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C11CBA2E2E69AA00FBA17E /* CoffeeBrewingNotesTests.swift */; };
 		34C11CBF2E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C11CC02E2E69BA00FBA17E /* CoffeeBrewingNotesUITests.swift */; };
 		34C11CC12E2E69BA00FBA17E /* CoffeeBrewingNotesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C11CC22E2E69BA00FBA17E /* CoffeeBrewingNotesUITestsLaunchTests.swift */; };
-		A10000010000000000000013T /* CoffeeBrewingNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */; };
-		A10000010000000000000040T /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000010 /* Persistence.swift */; };
 		A10000010000000000000001 /* CoffeeBrewingNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* CoffeeBrewingNotesApp.swift */; };
 		A10000010000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* ContentView.swift */; };
 		A10000010000000000000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* Assets.xcassets */; };
 		A10000010000000000000008 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000008 /* Preview Assets.xcassets */; };
 		A10000010000000000000010 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000010 /* Persistence.swift */; };
 		A10000010000000000000013 /* CoffeeBrewingNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */; };
+		A10000010000000000000013T /* CoffeeBrewingNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000011 /* CoffeeBrewingNotes.xcdatamodeld */; };
 		A10000010000000000000036 /* SimpleCoffeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000036 /* SimpleCoffeeListView.swift */; };
+		A10000010000000000000040T /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000010 /* Persistence.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		34C11CD12E2E69AA00FBA17E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000700 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000500;
+			remoteInfo = CoffeeBrewingNotes;
+		};
+		34C11CD22E2E69BA00FBA17E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000700 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000500;
+			remoteInfo = CoffeeBrewingNotes;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		34B439032E2E1E63000F6166 /* PreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
@@ -76,14 +93,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A10000000000000000000007 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				A10000000000000000000008 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
 		34C11CC52E2E69AA00FBA17E /* CoffeeBrewingNotesTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +108,14 @@
 				34C11CC22E2E69BA00FBA17E /* CoffeeBrewingNotesUITestsLaunchTests.swift */,
 			);
 			path = CoffeeBrewingNotesUITests;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000007 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000008 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		A10000000000000000000200 = {
@@ -255,23 +272,6 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXContainerItemProxy section */
-		34C11CD12E2E69AA00FBA17E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A10000000000000000000700 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A10000000000000000000500;
-			remoteInfo = CoffeeBrewingNotes;
-		};
-		34C11CD22E2E69BA00FBA17E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A10000000000000000000700 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A10000000000000000000500;
-			remoteInfo = CoffeeBrewingNotes;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		34C11CCA2E2E69AA00FBA17E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -355,6 +355,76 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		34C11CD32E2E69AA00FBA17E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoffeeBrewingNotes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CoffeeBrewingNotes";
+			};
+			name = Debug;
+		};
+		34C11CD42E2E69AA00FBA17E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoffeeBrewingNotes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CoffeeBrewingNotes";
+			};
+			name = Release;
+		};
+		34C11CD52E2E69BA00FBA17E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CoffeeBrewingNotes;
+			};
+			name = Debug;
+		};
+		34C11CD62E2E69BA00FBA17E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CoffeeBrewingNotes;
+			};
+			name = Release;
+		};
 		A10000000000000000000900 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -482,6 +552,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CoffeeBrewingNotes/Preview Content\"";
+				DEVELOPMENT_TEAM = 8FT3C8C4WS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Kofi Kofi";
@@ -511,6 +582,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CoffeeBrewingNotes/Preview Content\"";
+				DEVELOPMENT_TEAM = 8FT3C8C4WS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Kofi Kofi";
@@ -532,97 +604,9 @@
 			};
 			name = Release;
 		};
-		34C11CD32E2E69AA00FBA17E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoffeeBrewingNotes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CoffeeBrewingNotes";
-			};
-			name = Debug;
-		};
-		34C11CD42E2E69AA00FBA17E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoffeeBrewingNotes.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CoffeeBrewingNotes";
-			};
-			name = Release;
-		};
-		34C11CD52E2E69BA00FBA17E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = CoffeeBrewingNotes;
-			};
-			name = Debug;
-		};
-		34C11CD62E2E69BA00FBA17E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.CoffeeBrewingNotesUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = CoffeeBrewingNotes;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A10000000000000000000600 /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotes" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A10000000000000000000902 /* Debug */,
-				A10000000000000000000903 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A10000000000000000000800 /* Build configuration list for PBXProject "CoffeeBrewingNotes" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A10000000000000000000900 /* Debug */,
-				A10000000000000000000901 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		34C11CC82E2E69AA00FBA17E /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotesTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -637,6 +621,24 @@
 			buildConfigurations = (
 				34C11CD52E2E69BA00FBA17E /* Debug */,
 				34C11CD62E2E69BA00FBA17E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000600 /* Build configuration list for PBXNativeTarget "CoffeeBrewingNotes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000902 /* Debug */,
+				A10000000000000000000903 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000800 /* Build configuration list for PBXProject "CoffeeBrewingNotes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000900 /* Debug */,
+				A10000000000000000000901 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
