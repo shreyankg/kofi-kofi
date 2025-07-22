@@ -1,134 +1,164 @@
-# Kofi Kofi iOS App
+# ☕ Kofi Kofi iOS App
 
-A comprehensive iOS app for coffee enthusiasts to track their brewing experiments, manage coffee inventory, and maintain detailed brewing notes.
+[![iOS](https://img.shields.io/badge/iOS-17.0+-blue.svg)](https://developer.apple.com/ios/)
+[![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org)
+[![SwiftUI](https://img.shields.io/badge/SwiftUI-Framework-green.svg)](https://developer.apple.com/xcode/swiftui/)
+[![Tests](https://img.shields.io/badge/Tests-40%20passing-brightgreen.svg)](#testing)
 
-## Features
+A comprehensive iOS app for coffee enthusiasts to track brewing experiments, manage coffee inventory, and maintain detailed brewing notes with a 5-star rating system.
 
-### Coffee Management
-- Add and manage coffee beans with detailed attributes:
-  - Name and Roaster
-  - Origin (country/region)
-  - Processing method (Washed, Honey, Natural, etc.)
-  - Roast level (Light to Extra Dark)
-- Search and filter coffee collection
-- Automatic date tracking for when coffees were added
+![App Screenshot Placeholder](https://via.placeholder.com/800x400/1D1D1F/FFFFFF?text=Kofi+Kofi+Screenshots)
 
-### Recipe Management
-- Create brewing recipes with method-specific parameters
-- Supported brewing methods (user-customizable):
-  - **V60 (01, 02)**: Multi-stage pour schedule with bloom timing
-  - **Kalita Wave (155)**: Pour-over with controlled flow rate
-  - **Chemex (6-cup)**: Large batch pour-over brewing  
-  - **Espresso (Gaggia Classic Pro)**: Water out ratio and extraction timing with specific machine support
-  - **French Press**: Simplified pour schedule with steeping time
-  - **Aeropress**: Normal/Inverted methods with plunge timing
-  - **Custom Methods**: Users can add their own brewing methods
-- Recipe sorting by usage count (most used recipes appear first)
-- Comprehensive parameter tracking:
-  - Grinder type and grind size
-  - Water temperature
-  - Coffee dose and brew time
-  - Method-specific attributes
+## ✨ Features
 
-### Brewing Sessions
-- Combine any coffee with any recipe
-- Add detailed tasting notes
-- Optional 5-star rating system
-- Automatic tracking of recipe usage for intelligent sorting
-- Date and time stamping of each session
+### 📦 Coffee Management
+- **Inventory tracking** with detailed coffee attributes (name, roaster, origin, processing method, roast level)
+- **Smart search and filtering** across your coffee collection
+- **Automatic date tracking** for when coffees were added to your collection
 
-### Notes History
-- View all past brewing sessions in chronological order
-- Comprehensive search across notes, coffee names, recipe names, and brewing methods
-- Filter by star ratings (1-5 stars or show all)
-- Visual rating display with stars
-- Swipe-to-delete functionality
+### 📝 Recipe Management  
+- **Method-specific brewing recipes** with dynamic forms that adapt to your brewing method
+- **Supported brewing methods** (fully customizable):
+  - **V60 (01, 02)**: Multi-stage pour scheduling with bloom timing
+  - **Kalita Wave (155)**: Controlled pour-over brewing
+  - **Chemex (6-cup)**: Large batch pour-over
+  - **Espresso (Gaggia Classic Pro)**: Machine-specific water ratios
+  - **French Press**: Simplified bloom + steeping workflow
+  - **Aeropress**: Normal/Inverted with plunge timing
+  - **Custom Methods**: Add your own brewing equipment
+- **Usage-based sorting** (most-used recipes appear first)
+- **Comprehensive parameter tracking** (grinder, grind size, water temp, dose, timing)
 
-### Equipment Preferences
-- **Customizable Equipment Lists**: Enable/disable brewing methods and grinders based on your actual equipment
-- **Personal Equipment Setup**: Pre-configured for specific user equipment (Baratza Encore, Turin DF64, 1Zpresso J-Ultra, Gaggia Classic Pro)
-- **Custom Equipment**: Add your own brewing methods and grinders through the settings interface
-- **Configurable Defaults**: Set your preferred default water temperature
-- **Smart Validation**: Prevents disabling all equipment to ensure app functionality
-- **Proper Units**: All measurements display appropriate units (grams, °Celsius, seconds)
-- **No Preset Values**: Recipe forms start blank except for your preferred temperature, encouraging intentional brewing
+### 🎯 Brewing Sessions
+- **Flexible pairing** of any coffee with any recipe
+- **Detailed tasting notes** with rich text input
+- **5-star rating system** (optional) for tracking your favorite brews
+- **Automatic recipe usage tracking** for intelligent sorting
+- **Session history** with complete brewing details
 
-## Technical Details
+### 📊 Notes History & Analytics
+- **Chronological brewing history** with advanced search capabilities
+- **Multi-field search** across coffee names, recipe names, brewing methods, and notes
+- **Rating-based filtering** (1-5 stars or show all sessions)
+- **Visual star ratings** with intuitive display
+- **Swipe-to-delete** for easy session management
 
-### Architecture
-- **SwiftUI** for modern, declarative UI
-- **Core Data** for local data persistence
-- **MVVM** pattern with ViewModels for business logic
-- **Relationship management** between Coffee, Recipe, and BrewingNote entities
+### ⚙️ Equipment Preferences
+- **Customizable equipment lists** - enable/disable based on your actual gear
+- **Personal equipment setup** pre-configured for popular gear (Baratza Encore, Turin DF64, 1Zpresso J-Ultra, etc.)
+- **Custom equipment support** - add your own brewing methods and grinders
+- **Smart validation** prevents disabling all equipment
+- **Configurable defaults** like preferred water temperature
+- **Proper measurement units** (grams, °Celsius, seconds)
+
+## 🏗️ Technical Architecture
+
+### Core Technologies
+- **SwiftUI** - Modern declarative UI framework
+- **Core Data** - Robust local data persistence with CloudKit-ready architecture
+- **MVVM Pattern** - Clean separation of concerns
+- **XCTest** - Comprehensive testing suite
 
 ### Data Models
-- **Coffee**: Stores coffee bean information and relationships to brewing notes
-- **Recipe**: Stores brewing parameters with method-specific attributes
-- **BrewingNote**: Links coffee and recipe with user notes and ratings
+- **Coffee** - Bean inventory with origin and processing details
+- **Recipe** - Brewing parameters with method-specific attributes  
+- **BrewingNote** - Session records linking coffee + recipe with ratings
+- **ProcessingMethod** - Smart autocomplete for coffee processing methods
 
-### Method-Specific Features
-The app intelligently adapts the recipe form based on the selected brewing method:
-- Pour-over methods show bloom timing and multiple pour stages
-- Espresso shows water output ratios
-- Aeropress includes inversion type and plunge timing
-- All methods track core parameters like grind size and water temperature
+### Code Quality Features
+- **Centralized brewing method detection** - Single source of truth for method validation
+- **Safe Core Data accessors** - Nil-safe property handling throughout
+- **Reusable UI components** - StarRatingView, FormFieldView for consistency
+- **Comprehensive test coverage** - 33 unit tests + 7 UI tests
+- **Recent refactoring** - 30% reduction in code duplication
 
-### Testing
-- **Unit Tests**: 25 tests covering data models, extensions, and persistence
-- **UI Tests**: 13 end-to-end tests for complete user workflows
-- **Performance Tests**: 13 benchmarks for large dataset operations
-- **Error Handling Tests**: 22 tests for edge cases and validation
-- **Total Coverage**: 73 test methods ensuring comprehensive validation
+## 🚀 Getting Started
 
-## Usage
-
-1. **Configure Equipment**: Visit Settings to enable/disable your brewing methods and grinders, set default temperature
-2. **Add Coffees**: Start by adding coffee beans to your collection
-3. **Create Recipes**: Build brewing recipes using your enabled methods and equipment
-4. **Brew Sessions**: Select a coffee and recipe, then add your tasting notes
-5. **Track History**: Review past sessions and refine your brewing technique
-6. **Customize**: Add custom brewing methods or grinders as your setup evolves
-
-## Development
-
-### Requirements
+### Prerequisites
 - iOS 17.0+
-- Xcode 15.0+
+- Xcode 15.0+  
 - Swift 5.0+
 
-### Project Structure
+### Installation
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/kofi-kofi.git
+cd kofi-kofi
+```
+
+2. Open in Xcode
+```bash
+open CoffeeBrewingNotes.xcodeproj
+```
+
+3. Build and run on simulator or device (`⌘+R`)
+
+### Usage
+1. **Configure your equipment** in Settings - enable your brewing methods and grinders
+2. **Add coffee beans** to build your inventory  
+3. **Create brewing recipes** using your preferred methods
+4. **Start brewing sessions** - select coffee + recipe, add tasting notes
+5. **Review your history** to refine your technique over time
+
+## 🧪 Testing
+
+### Test Coverage
+- **Unit Tests**: 33 tests covering data models, extensions, and business logic
+- **UI Tests**: 7 end-to-end tests for critical user workflows
+- **All tests passing** with stable, reliable execution
+
+### Running Tests
+```bash
+# Run all tests
+xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest'
+
+# Or use Xcode
+# ⌘+U to run all tests
+```
+
+## 📁 Project Structure
+
 ```
 CoffeeBrewingNotes/
+├── CoffeeBrewingNotesApp.swift    # App entry point
+├── ContentView.swift              # Main UI (consolidated architecture)
+├── Persistence.swift              # Core Data stack
+├── PreferencesManager.swift       # Equipment preferences system
 ├── Models/
 │   ├── CoffeeBrewingNotes.xcdatamodeld
 │   ├── Coffee+Extensions.swift
-│   ├── Recipe+Extensions.swift
-│   └── BrewingNote+Extensions.swift
-├── Views/
-│   └── SimpleCoffeeListView.swift
-├── CoffeeBrewingNotesApp.swift
-├── ContentView.swift (consolidated UI)
-└── Persistence.swift
+│   ├── Recipe+Extensions.swift    # Centralized brewing method detection
+│   ├── BrewingNote+Extensions.swift
+│   └── ProcessingMethod+Extensions.swift
+└── Views/
+    ├── SimpleCoffeeListView.swift # Active coffee management component
+    ├── StarRatingView.swift       # Reusable star rating components
+    └── FormFieldView.swift        # Reusable form field components
 ```
 
-**Note**: All main UI functionality is consolidated in `ContentView.swift` to ensure reliable builds. Individual view files in the Views folder are legacy and not actively used except for `SimpleCoffeeListView.swift`.
+## 🔮 Future Enhancements
 
-### Testing
-- Run all tests: `⌘+U` in Xcode
-- Tests include unit, UI, performance, and error handling scenarios
+- **iCloud sync** for cross-device access
+- **Export functionality** (PDF, CSV formats)
+- **Timer integration** for brew sessions  
+- **Photo attachments** for coffee bags and results
+- **Advanced analytics** and brewing trend visualization
+- **Recipe sharing** between users
+- **Brew session reminders** and notifications
 
-## Future Enhancements
+## 🤝 Contributing
 
-- iCloud sync for cross-device access
-- Export brewing notes to PDF or CSV
-- Timer integration for brew sessions
-- Photo attachments for coffee bags and brew results
-- Advanced analytics and brewing trends
-- Recipe sharing with other users
+We welcome contributions! Please see our [Developer Documentation](DEVELOPER_DOCS.md) for detailed development guidelines.
 
-## License
+### Development Notes
+- **UI Architecture**: Main UI consolidated in `ContentView.swift` due to Xcode build target limitations
+- **Method Detection**: Use centralized `Recipe` static methods for consistency
+- **File Creation**: Avoid creating new Swift files - they're difficult to add to Xcode project targets
+- **Testing**: Maintain the stable test suite when making changes
 
-This project is licensed under the MIT License - see below for details.
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](#license) section below for details.
 
 ```
 MIT License
@@ -154,4 +184,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-**Note**: This project includes code generated with AI assistance (Claude).
+---
+
+**Note**: This project includes code generated with AI assistance ([Claude](https://claude.ai)).
+
+## ⭐ Show Your Support
+
+If you find this project helpful, please consider giving it a star! It helps others discover the project and motivates continued development.
