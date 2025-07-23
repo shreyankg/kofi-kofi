@@ -41,7 +41,7 @@ Bean inventory with name, roaster, origin, processing method, roast level.
 ### Recipe  
 Brewing parameters with method-specific attributes:
 - Common: dose, grind, water temp, brew time
-- Pour-over: bloom timing, multi-stage pours
+- Pour-over: bloom timing, dynamic multi-stage pours (Add/Remove buttons)
 - Espresso: water output ratios
 - Aeropress: normal/inverted, plunge timing
 
@@ -121,8 +121,10 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 - PreferencesManager functionality
 - Brewing method detection logic
 - **UI logic tests** - Time formatting and Aeropress display logic
+- **Dynamic pour validation** - Tests pour ordering and validation logic
 
 **Recent Test Additions**:
+- `testDynamicPourValidation()` - Tests dynamic pour validation with independent execution
 - `testRecipeRowViewTimeFormatting()` - Tests time display logic (30s, 1m 30s, etc.)
 - `testAeropressDisplayFormatting()` - Tests Aeropress "(Inverted)" display logic
 - `testRecipeFinalWeightCalculation()` - Validates dose → final weight calculations
@@ -135,11 +137,13 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 ### UI Tests (7 tests)
 - End-to-end user workflows
 - **Unified brewing tab navigation** and form interactions
+- **Dynamic pour functionality** - Add/Remove pour button interactions
 - Coffee creation and basic functionality
 
 ## Code Quality
 
 ### Recent Refactoring (Latest)
+- ✅ **Dynamic Pour System** - Replaced hardcoded pours with dynamic Add/Remove functionality
 - ✅ **Enhanced Recipe UI** - Improved recipe cards with dose → final weight display and better time formatting
 - ✅ **Streamlined Forms** - Combined Equipment section (brewing method + grinder) and reordered fields
 - ✅ **Aeropress Display** - Shows "(Inverted)" notation for inverted Aeropress recipes

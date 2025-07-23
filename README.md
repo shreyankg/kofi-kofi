@@ -18,6 +18,7 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 
 ### 📝 Recipe Management  
 - **Method-specific brewing recipes** with dynamic forms that adapt to your brewing method
+- **Dynamic pour scheduling** - Start with 2 pours and add more as needed with Add/Remove buttons
 - **Supported brewing methods** (fully customizable):
   - **V60 (01, 02)**: Multi-stage pour scheduling with bloom timing
   - **Kalita Wave (155)**: Controlled pour-over brewing
@@ -73,7 +74,7 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **Centralized brewing method detection** - Single source of truth for method validation
 - **Safe Core Data accessors** - Nil-safe property handling throughout
 - **Reusable UI components** - StarRatingView, FormFieldView for consistency
-- **Comprehensive test coverage** - 36 unit tests + 7 UI tests including new UI logic tests
+- **Comprehensive test coverage** - 36 unit tests + 7 UI tests including dynamic pour functionality
 - **Recent refactoring** - 30% reduction in code duplication
 
 ## 🚀 Getting Started

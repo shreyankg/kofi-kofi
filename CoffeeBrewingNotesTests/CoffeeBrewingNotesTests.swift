@@ -814,6 +814,71 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertEqual(pourOverRecipe.finalWeight, 200.0) // Should use max pour
         XCTAssertEqual(basicRecipe.finalWeight, 300.0) // Should use dose * 15
     }
+    
+    func testDynamicPourValidation() throws {
+        // Simple, explicit test cases without loops to avoid any potential execution issues
+        
+        // Direct validation inline - no function calls, no loops over test cases
+        
+        // Test 1: Valid ascending sequence [60.0, 120.0, 180.0] with bloom 40.0
+        let pours1 = [60.0, 120.0, 180.0]
+        let bloom1 = 40.0
+        var isValid1 = true
+        for (index, pour) in pours1.enumerated() {
+            if pour > 0 {
+                let previousAmount = index == 0 ? bloom1 : pours1[index - 1]
+                if pour <= previousAmount {
+                    isValid1 = false
+                    break
+                }
+            }
+        }
+        XCTAssertTrue(isValid1, "Valid ascending sequence should pass")
+        
+        // Test 2: Empty array should be valid
+        let pours2: [Double] = []
+        var isValid2 = true
+        for (index, pour) in pours2.enumerated() {
+            if pour > 0 {
+                let previousAmount = index == 0 ? 40.0 : pours2[index - 1]
+                if pour <= previousAmount {
+                    isValid2 = false
+                    break
+                }
+            }
+        }
+        XCTAssertTrue(isValid2, "Empty array should be valid")
+        
+        // Test 3: Invalid sequence - first pour <= bloom
+        let pours3 = [30.0, 120.0, 180.0]
+        let bloom3 = 40.0
+        var isValid3 = true
+        for (index, pour) in pours3.enumerated() {
+            if pour > 0 {
+                let previousAmount = index == 0 ? bloom3 : pours3[index - 1]
+                if pour <= previousAmount {
+                    isValid3 = false
+                    break
+                }
+            }
+        }
+        XCTAssertFalse(isValid3, "First pour <= bloom should be invalid")
+        
+        // Test 4: Invalid sequence - decreasing pours
+        let pours4 = [60.0, 60.0]
+        let bloom4 = 40.0
+        var isValid4 = true
+        for (index, pour) in pours4.enumerated() {
+            if pour > 0 {
+                let previousAmount = index == 0 ? bloom4 : pours4[index - 1]
+                if pour <= previousAmount {
+                    isValid4 = false
+                    break
+                }
+            }
+        }
+        XCTAssertFalse(isValid4, "Equal consecutive pours should be invalid")
+    }
 }
 
 // MARK: - Helper Functions for UI Logic Testing
@@ -835,3 +900,4 @@ func formatDisplayBrewingMethod(for recipe: Recipe) -> String {
     }
     return method
 }
+

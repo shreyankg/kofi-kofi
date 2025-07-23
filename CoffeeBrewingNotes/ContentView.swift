@@ -1,6 +1,16 @@
 import SwiftUI
 import CoreData
 
+// Global helper function for ordinal suffixes
+func getOrdinalSuffix(_ number: Int) -> String {
+    switch number {
+    case 1, 21, 31: return "st"
+    case 2, 22, 32: return "nd"
+    case 3, 23, 33: return "rd"
+    default: return "th"
+    }
+}
+
 struct ContentView: View {
     var body: some View {
         TabView {
@@ -174,9 +184,7 @@ struct AddRecipeTabView: View {
     // Pour-over specific
     @State private var bloomAmount: Double = 0.0
     @State private var bloomTime: Int = 0
-    @State private var secondPour: Double = 0.0
-    @State private var thirdPour: Double = 0.0
-    @State private var fourthPour: Double = 0.0
+    @State private var pours: [Double] = [0.0] // Start with 2nd pour
     
     // Espresso specific
     @State private var waterOut: Double = 0.0
@@ -264,9 +272,7 @@ struct AddRecipeTabView: View {
                     PourOverTabSection(
                         bloomAmount: $bloomAmount,
                         bloomTime: $bloomTime,
-                        secondPour: $secondPour,
-                        thirdPour: $thirdPour,
-                        fourthPour: $fourthPour
+                        pours: $pours
                     )
                 } else if isEspresso {
                     EspressoTabSection(waterOut: $waterOut)
@@ -274,14 +280,32 @@ struct AddRecipeTabView: View {
                     FrenchPressTabSection(
                         bloomAmount: $bloomAmount,
                         bloomTime: $bloomTime,
-                        secondPour: $secondPour
+                        secondPour: Binding(
+                            get: { pours.first ?? 0.0 },
+                            set: { newValue in
+                                if pours.isEmpty {
+                                    pours = [newValue]
+                                } else {
+                                    pours[0] = newValue
+                                }
+                            }
+                        )
                     )
                 } else if isAeropress {
                     AeropressTabSection(
                         aeropressType: $aeropressType,
                         bloomAmount: $bloomAmount,
                         bloomTime: $bloomTime,
-                        secondPour: $secondPour,
+                        secondPour: Binding(
+                            get: { pours.first ?? 0.0 },
+                            set: { newValue in
+                                if pours.isEmpty {
+                                    pours = [newValue]
+                                } else {
+                                    pours[0] = newValue
+                                }
+                            }
+                        ),
                         plungeTime: $plungeTime
                     )
                 }
@@ -298,6 +322,10 @@ struct AddRecipeTabView: View {
                 }
                 if waterTemp == 0 {
                     waterTemp = preferencesManager.defaultWaterTemp
+                }
+                // Ensure we have at least one pour for pour-over methods
+                if pours.isEmpty {
+                    pours = [0.0]
                 }
             }
             .toolbar {
@@ -326,10 +354,15 @@ struct AddRecipeTabView: View {
     }
     
     private var hasValidationErrors: Bool {
-        if supportsPours {
-            if secondPour > 0 && secondPour <= bloomAmount { return true }
-            if thirdPour > 0 && thirdPour <= secondPour { return true }
-            if fourthPour > 0 && fourthPour <= thirdPour { return true }
+        if supportsPours && isPourOver {
+            for (index, pour) in pours.enumerated() {
+                if pour > 0 {
+                    let previousAmount = index == 0 ? bloomAmount : pours[index - 1]
+                    if pour <= previousAmount {
+                        return true
+                    }
+                }
+            }
         }
         return false
     }
@@ -355,12 +388,13 @@ struct AddRecipeTabView: View {
         if isPourOver || isFrenchPress || isAeropress {
             recipe.bloomAmount = bloomAmount
             recipe.bloomTime = Int32(bloomTime)
-            recipe.secondPour = secondPour
-        }
-        
-        if isPourOver {
-            recipe.thirdPour = thirdPour
-            recipe.fourthPour = fourthPour
+            
+            // Set pours from dynamic array
+            recipe.secondPour = pours.indices.contains(0) ? pours[0] : 0.0
+            if isPourOver {
+                recipe.thirdPour = pours.indices.contains(1) ? pours[1] : 0.0
+                recipe.fourthPour = pours.indices.contains(2) ? pours[2] : 0.0
+            }
         }
         
         if isEspresso {
@@ -399,9 +433,7 @@ struct EditRecipeTabView: View {
     // Pour-over specific
     @State private var bloomAmount: Double = 0.0
     @State private var bloomTime: Int = 0
-    @State private var secondPour: Double = 0.0
-    @State private var thirdPour: Double = 0.0
-    @State private var fourthPour: Double = 0.0
+    @State private var pours: [Double] = []
     
     // Espresso specific
     @State private var waterOut: Double = 0.0
@@ -489,9 +521,7 @@ struct EditRecipeTabView: View {
                     PourOverTabSection(
                         bloomAmount: $bloomAmount,
                         bloomTime: $bloomTime,
-                        secondPour: $secondPour,
-                        thirdPour: $thirdPour,
-                        fourthPour: $fourthPour
+                        pours: $pours
                     )
                 } else if isEspresso {
                     EspressoTabSection(waterOut: $waterOut)
@@ -499,14 +529,32 @@ struct EditRecipeTabView: View {
                     FrenchPressTabSection(
                         bloomAmount: $bloomAmount,
                         bloomTime: $bloomTime,
-                        secondPour: $secondPour
+                        secondPour: Binding(
+                            get: { pours.first ?? 0.0 },
+                            set: { newValue in
+                                if pours.isEmpty {
+                                    pours = [newValue]
+                                } else {
+                                    pours[0] = newValue
+                                }
+                            }
+                        )
                     )
                 } else if isAeropress {
                     AeropressTabSection(
                         aeropressType: $aeropressType,
                         bloomAmount: $bloomAmount,
                         bloomTime: $bloomTime,
-                        secondPour: $secondPour,
+                        secondPour: Binding(
+                            get: { pours.first ?? 0.0 },
+                            set: { newValue in
+                                if pours.isEmpty {
+                                    pours = [newValue]
+                                } else {
+                                    pours[0] = newValue
+                                }
+                            }
+                        ),
                         plungeTime: $plungeTime
                     )
                 }
@@ -525,9 +573,24 @@ struct EditRecipeTabView: View {
                 // Method-specific values
                 bloomAmount = recipe.bloomAmount
                 bloomTime = Int(recipe.bloomTime)
-                secondPour = recipe.secondPour
-                thirdPour = recipe.thirdPour
-                fourthPour = recipe.fourthPour
+                
+                // Load pours into dynamic array
+                var loadedPours: [Double] = []
+                if recipe.secondPour > 0 {
+                    loadedPours.append(recipe.secondPour)
+                }
+                if recipe.thirdPour > 0 {
+                    loadedPours.append(recipe.thirdPour)
+                }
+                if recipe.fourthPour > 0 {
+                    loadedPours.append(recipe.fourthPour)
+                }
+                // Ensure at least one pour for pour-over methods
+                if loadedPours.isEmpty {
+                    loadedPours = [0.0]
+                }
+                pours = loadedPours
+                
                 waterOut = recipe.waterOut
                 aeropressType = recipe.aeropressType ?? "Normal"
                 plungeTime = Int(recipe.plungeTime)
@@ -558,10 +621,15 @@ struct EditRecipeTabView: View {
     }
     
     private var hasValidationErrors: Bool {
-        if supportsPours {
-            if secondPour > 0 && secondPour <= bloomAmount { return true }
-            if thirdPour > 0 && thirdPour <= secondPour { return true }
-            if fourthPour > 0 && fourthPour <= thirdPour { return true }
+        if supportsPours && isPourOver {
+            for (index, pour) in pours.enumerated() {
+                if pour > 0 {
+                    let previousAmount = index == 0 ? bloomAmount : pours[index - 1]
+                    if pour <= previousAmount {
+                        return true
+                    }
+                }
+            }
         }
         return false
     }
@@ -582,12 +650,13 @@ struct EditRecipeTabView: View {
         if isPourOver || isFrenchPress || isAeropress {
             recipe.bloomAmount = bloomAmount
             recipe.bloomTime = Int32(bloomTime)
-            recipe.secondPour = secondPour
-        }
-        
-        if isPourOver {
-            recipe.thirdPour = thirdPour
-            recipe.fourthPour = fourthPour
+            
+            // Set pours from dynamic array
+            recipe.secondPour = pours.indices.contains(0) ? pours[0] : 0.0
+            if isPourOver {
+                recipe.thirdPour = pours.indices.contains(1) ? pours[1] : 0.0
+                recipe.fourthPour = pours.indices.contains(2) ? pours[2] : 0.0
+            }
         }
         
         if isEspresso {
@@ -1028,6 +1097,7 @@ struct RecipeDetailsTabSection: View {
         Recipe.supportsPours(wrappedBrewingMethod)
     }
     
+    
     var body: some View {
         Section(header: Text("Recipe Details")) {
             VStack(spacing: 8) {
@@ -1081,12 +1151,10 @@ struct RecipeDetailsTabSection: View {
                             .fontWeight(.semibold)
                         Spacer()
                         VStack(alignment: .trailing) {
-                            Text("2nd: \(recipe.secondPour, specifier: "%.1f")g")
-                            if recipe.thirdPour > 0 {
-                                Text("3rd: \(recipe.thirdPour, specifier: "%.1f")g")
-                            }
-                            if recipe.fourthPour > 0 {
-                                Text("4th: \(recipe.fourthPour, specifier: "%.1f")g")
+                            // Show dynamic pours
+                            let pours = [recipe.secondPour, recipe.thirdPour, recipe.fourthPour].filter { $0 > 0 }
+                            ForEach(Array(pours.enumerated()), id: \.offset) { index, pour in
+                                Text("\(index + 2)\(getOrdinalSuffix(index + 2)): \(pour, specifier: "%.1f")g")
                             }
                         }
                         .font(.caption)
@@ -1129,23 +1197,20 @@ struct RecipeDetailsTabSection: View {
 struct PourOverTabSection: View {
     @Binding var bloomAmount: Double
     @Binding var bloomTime: Int
-    @Binding var secondPour: Double
-    @Binding var thirdPour: Double
-    @Binding var fourthPour: Double
+    @Binding var pours: [Double]
     
     private var validationErrors: [String] {
         var errors: [String] = []
         
-        if secondPour > 0 && secondPour <= bloomAmount {
-            errors.append("2nd pour must be greater than bloom (\(String(format: "%.0f", bloomAmount))g)")
-        }
-        
-        if thirdPour > 0 && thirdPour <= secondPour {
-            errors.append("3rd pour must be greater than 2nd pour (\(String(format: "%.0f", secondPour))g)")
-        }
-        
-        if fourthPour > 0 && fourthPour <= thirdPour {
-            errors.append("4th pour must be greater than 3rd pour (\(String(format: "%.0f", thirdPour))g)")
+        for (index, pour) in pours.enumerated() {
+            if pour > 0 {
+                let previousAmount = index == 0 ? bloomAmount : pours[index - 1]
+                let previousName = index == 0 ? "bloom (\(String(format: "%.0f", bloomAmount))g)" : "\(index + 1)\(getOrdinalSuffix(index + 1)) pour (\(String(format: "%.0f", previousAmount))g)"
+                
+                if pour <= previousAmount {
+                    errors.append("\(index + 2)\(getOrdinalSuffix(index + 2)) pour must be greater than \(previousName)")
+                }
+            }
         }
         
         return errors
@@ -1171,31 +1236,41 @@ struct PourOverTabSection: View {
                     .frame(width: 80)
             }
             
-            HStack {
-                Text("2nd Pour (g)")
-                Spacer()
-                TextField("Grams", value: $secondPour, format: .number)
-                    .keyboardType(.decimalPad)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 80)
+            // Dynamic pour fields
+            ForEach(pours.indices, id: \.self) { index in
+                HStack {
+                    Text("\(index + 2)\(getOrdinalSuffix(index + 2)) Pour (g)")
+                    Spacer()
+                    TextField("Grams", value: $pours[index], format: .number)
+                        .keyboardType(.decimalPad)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 80)
+                    
+                    // Show remove button for pours beyond the first (2nd pour is required)
+                    if index > 0 {
+                        Button(action: {
+                            pours.remove(at: index)
+                        }) {
+                            Image(systemName: "minus.circle.fill")
+                                .foregroundColor(.red)
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
+                }
             }
             
-            HStack {
-                Text("3rd Pour (g)")
-                Spacer()
-                TextField("Grams", value: $thirdPour, format: .number)
-                    .keyboardType(.decimalPad)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 80)
-            }
-            
-            HStack {
-                Text("4th Pour (g)")
-                Spacer()
-                TextField("Grams", value: $fourthPour, format: .number)
-                    .keyboardType(.decimalPad)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 80)
+            // Add Pour button (limit to reasonable number of pours)
+            if pours.count < 6 {
+                Button(action: {
+                    pours.append(0.0)
+                }) {
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(.blue)
+                        Text("Add Pour")
+                    }
+                }
+                .buttonStyle(BorderlessButtonStyle())
             }
             
             // Display validation errors
@@ -1203,6 +1278,12 @@ struct PourOverTabSection: View {
                 Text(error)
                     .font(.caption)
                     .foregroundColor(.red)
+            }
+        }
+        .onAppear {
+            // Ensure we have at least one pour (2nd pour)
+            if pours.isEmpty {
+                pours = [0.0]
             }
         }
     }
