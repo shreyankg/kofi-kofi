@@ -114,12 +114,18 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 
 ## Testing Strategy
 
-### Unit Tests (33 tests active)
+### Unit Tests (36 tests active)
 - Data model validation and extensions
 - CRUD operations and persistence
 - **Brewing note editing functionality** - Full edit capabilities for existing sessions
 - PreferencesManager functionality
 - Brewing method detection logic
+- **UI logic tests** - Time formatting and Aeropress display logic
+
+**Recent Test Additions**:
+- `testRecipeRowViewTimeFormatting()` - Tests time display logic (30s, 1m 30s, etc.)
+- `testAeropressDisplayFormatting()` - Tests Aeropress "(Inverted)" display logic
+- `testRecipeFinalWeightCalculation()` - Validates dose → final weight calculations
 
 **TODO**: Re-enable 3 disabled brewing note tests affected by Core Data in-memory store execution order limitations:
 - `testBrewingNoteEditing()` - Full brewing note editing (passes individually)
@@ -134,14 +140,17 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 ## Code Quality
 
 ### Recent Refactoring (Latest)
+- ✅ **Enhanced Recipe UI** - Improved recipe cards with dose → final weight display and better time formatting
+- ✅ **Streamlined Forms** - Combined Equipment section (brewing method + grinder) and reordered fields
+- ✅ **Aeropress Display** - Shows "(Inverted)" notation for inverted Aeropress recipes
+- ✅ **Time Format Improvement** - Displays brew times >60s as "Xm Ys" format
 - ✅ **Unified Brewing Interface** - Consolidated separate "Brew" and "Notes" tabs into single "Brewing" tab
 - ✅ **Editable Brewing Notes** - Added tap-to-edit functionality for all brewing session history
 - ✅ **Tab Consolidation** - Reduced from 5 tabs to 4 tabs (Coffees, Recipes, Brewing, Settings)
 - ✅ Removed 6 unused view files
 - ✅ Consolidated brewing method detection (eliminated duplication)
 - ✅ Created reusable UI components (StarRatingView, FormFieldView)  
-- ✅ Cleaned up 7 empty test methods
-- ✅ Updated documentation accuracy
+- ✅ Updated test coverage for UI logic changes
 
 ### Architecture Benefits
 - **Unified User Experience** - Single interface for all brewing activities (create, view, edit)

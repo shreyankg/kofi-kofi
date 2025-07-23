@@ -26,8 +26,9 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
   - **French Press**: Simplified bloom + steeping workflow
   - **Aeropress**: Normal/Inverted with plunge timing
   - **Custom Methods**: Add your own brewing equipment
+- **Enhanced recipe cards** with improved time formatting (mins:secs) and dose → final weight display
 - **Usage-based sorting** (most-used recipes appear first)
-- **Comprehensive parameter tracking** (grinder, grind size, water temp, dose, timing)
+- **Streamlined Equipment section** combines brewing method and grinder selection
 
 ### 🎯 Brewing Sessions & Notes
 - **Unified brewing interface** - Create new sessions and manage your brewing history in one place
@@ -72,7 +73,7 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **Centralized brewing method detection** - Single source of truth for method validation
 - **Safe Core Data accessors** - Nil-safe property handling throughout
 - **Reusable UI components** - StarRatingView, FormFieldView for consistency
-- **Comprehensive test coverage** - 36 unit tests + 7 UI tests
+- **Comprehensive test coverage** - 36 unit tests + 7 UI tests including new UI logic tests
 - **Recent refactoring** - 30% reduction in code duplication
 
 ## 🚀 Getting Started
@@ -141,14 +142,14 @@ CoffeeBrewingNotes/
 
 ## 🔮 Future Enhancements
 
+- **Photo attachments** for coffee bags and results
+- **AI powered data loading** from pics of coffee bags
 - **iCloud sync** for cross-device access
+- **Share feature** (Instagram, Facebook, X, etc.)
 - **Export functionality** (PDF, CSV formats)
 - **Timer integration** for brew sessions  
-- **Photo attachments** for coffee bags and results
 - **Advanced analytics** and brewing trend visualization
 - **Recipe sharing** between users
-- **Brew session reminders** and notifications
-- **Batch editing** for multiple brewing sessions
 - **Advanced filtering** by date ranges and brewing parameters
 
 ## 🤝 Contributing

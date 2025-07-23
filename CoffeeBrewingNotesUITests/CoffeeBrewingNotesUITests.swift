@@ -427,6 +427,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         XCTAssertTrue(saveButton.waitForExistence(timeout: 3), "Save button not found")
         
         if !saveButton.isEnabled {
+            // Equipment section now contains both brewing method and grinder
             // Ensure brewing method is set
             let brewingMethodButton = app.buttons["Brewing Method"]
             if brewingMethodButton.exists && brewingMethodButton.label.contains("Brewing Method") {
@@ -438,7 +439,7 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
                 methodOptions.first?.tap()
             }
             
-            // Ensure grinder is set
+            // Ensure grinder is set (now in Equipment section)
             let grinderButton = app.buttons["Grinder"]
             if grinderButton.exists && grinderButton.label.contains("Grinder") {
                 grinderButton.tap()

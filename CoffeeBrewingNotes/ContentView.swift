@@ -104,10 +104,29 @@ struct RecipeTabView: View {
 struct RecipeRowView: View {
     let recipe: Recipe
     
+    private var displayBrewingMethod: String {
+        let method = recipe.wrappedBrewingMethod
+        if Recipe.isAeropressMethod(method) && recipe.wrappedAeropressType == "Inverted" {
+            return "\(method) (Inverted)"
+        }
+        return method
+    }
+    
+    private var formattedBrewTime: String {
+        let totalSeconds = Int(recipe.brewTime)
+        if totalSeconds >= 60 {
+            let minutes = totalSeconds / 60
+            let seconds = totalSeconds % 60
+            return "\(minutes)m \(seconds)s"
+        } else {
+            return "\(totalSeconds)s"
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(recipe.wrappedBrewingMethod)
+                Text(displayBrewingMethod)
                     .font(.headline)
                     .lineLimit(1)
                 Spacer()
@@ -124,19 +143,16 @@ struct RecipeRowView: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                 Spacer()
-                Text("\(recipe.dose, specifier: "%.1f")g")
+                Text(formattedBrewTime)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
             
             HStack {
-                Text("→ \(recipe.finalWeightString)")
+                Text("\(recipe.dose, specifier: "%.1f")g → \(recipe.finalWeightString)")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                 Spacer()
-                Text("\(recipe.brewTime)s")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
             }
         }
         .padding(.vertical, 4)
@@ -192,21 +208,21 @@ struct AddRecipeTabView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Recipe Details")) {
+                Section(header: Text("Equipment")) {
                     Picker("Brewing Method", selection: $brewingMethod) {
                         ForEach(brewingMethods, id: \.self) { method in
                             Text(method).tag(method)
                         }
                     }
-                }
-                
-                Section(header: Text("Basic Parameters")) {
+                    
                     Picker("Grinder", selection: $grinder) {
                         ForEach(grinders, id: \.self) { grinder in
                             Text(grinder).tag(grinder)
                         }
                     }
-                    
+                }
+                
+                Section(header: Text("Basic Parameters")) {
                     HStack {
                         Text("Grind Size")
                         Spacer()
@@ -417,21 +433,21 @@ struct EditRecipeTabView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Recipe Details")) {
+                Section(header: Text("Equipment")) {
                     Picker("Brewing Method", selection: $brewingMethod) {
                         ForEach(brewingMethods, id: \.self) { method in
                             Text(method).tag(method)
                         }
                     }
-                }
-                
-                Section(header: Text("Basic Parameters")) {
+                    
                     Picker("Grinder", selection: $grinder) {
                         ForEach(grinders, id: \.self) { grinder in
                             Text(grinder).tag(grinder)
                         }
                     }
-                    
+                }
+                
+                Section(header: Text("Basic Parameters")) {
                     HStack {
                         Text("Grind Size")
                         Spacer()

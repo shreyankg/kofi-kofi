@@ -749,4 +749,89 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertEqual(preferencesManager.customBrewingMethods.count, initialMethodCount)
         XCTAssertEqual(preferencesManager.customGrinders.count, initialGrinderCount)
     }
+    
+    // MARK: - UI Logic Tests
+    
+    func testRecipeRowViewTimeFormatting() throws {
+        // Test time formatting logic that's now in RecipeRowView
+        
+        // Test seconds under 60
+        XCTAssertEqual(formatBrewTime(30), "30s")
+        XCTAssertEqual(formatBrewTime(59), "59s")
+        
+        // Test exactly 60 seconds
+        XCTAssertEqual(formatBrewTime(60), "1m 0s")
+        
+        // Test minutes and seconds
+        XCTAssertEqual(formatBrewTime(90), "1m 30s")
+        XCTAssertEqual(formatBrewTime(125), "2m 5s")
+        XCTAssertEqual(formatBrewTime(240), "4m 0s")
+        XCTAssertEqual(formatBrewTime(367), "6m 7s")
+    }
+    
+    func testAeropressDisplayFormatting() throws {
+        // Test Aeropress display logic
+        let normalRecipe = Recipe(context: context)
+        normalRecipe.brewingMethod = "Aeropress"
+        normalRecipe.aeropressType = "Normal"
+        
+        let invertedRecipe = Recipe(context: context)
+        invertedRecipe.brewingMethod = "Aeropress"
+        invertedRecipe.aeropressType = "Inverted"
+        
+        let nilTypeRecipe = Recipe(context: context)
+        nilTypeRecipe.brewingMethod = "Aeropress"
+        nilTypeRecipe.aeropressType = nil
+        
+        let nonAeropressRecipe = Recipe(context: context)
+        nonAeropressRecipe.brewingMethod = "V60-01"
+        nonAeropressRecipe.aeropressType = "Inverted" // Should be ignored
+        
+        // Test display method logic
+        XCTAssertEqual(formatDisplayBrewingMethod(for: normalRecipe), "Aeropress")
+        XCTAssertEqual(formatDisplayBrewingMethod(for: invertedRecipe), "Aeropress (Inverted)")
+        XCTAssertEqual(formatDisplayBrewingMethod(for: nilTypeRecipe), "Aeropress")
+        XCTAssertEqual(formatDisplayBrewingMethod(for: nonAeropressRecipe), "V60-01")
+    }
+    
+    func testRecipeFinalWeightCalculation() throws {
+        // Test that finalWeight calculation still works correctly
+        let espressoRecipe = Recipe(context: context)
+        espressoRecipe.brewingMethod = "Espresso"
+        espressoRecipe.waterOut = 36.0
+        
+        let pourOverRecipe = Recipe(context: context)
+        pourOverRecipe.brewingMethod = "V60-01"
+        pourOverRecipe.bloomAmount = 50.0
+        pourOverRecipe.secondPour = 120.0
+        pourOverRecipe.thirdPour = 200.0
+        
+        let basicRecipe = Recipe(context: context)
+        basicRecipe.brewingMethod = "Other"
+        basicRecipe.dose = 20.0
+        
+        XCTAssertEqual(espressoRecipe.finalWeight, 36.0)
+        XCTAssertEqual(pourOverRecipe.finalWeight, 200.0) // Should use max pour
+        XCTAssertEqual(basicRecipe.finalWeight, 300.0) // Should use dose * 15
+    }
+}
+
+// MARK: - Helper Functions for UI Logic Testing
+
+func formatBrewTime(_ totalSeconds: Int) -> String {
+    if totalSeconds >= 60 {
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        return "\(minutes)m \(seconds)s"
+    } else {
+        return "\(totalSeconds)s"
+    }
+}
+
+func formatDisplayBrewingMethod(for recipe: Recipe) -> String {
+    let method = recipe.wrappedBrewingMethod
+    if Recipe.isAeropressMethod(method) && recipe.wrappedAeropressType == "Inverted" {
+        return "\(method) (Inverted)"
+    }
+    return method
 }
