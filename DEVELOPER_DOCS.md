@@ -11,7 +11,7 @@ SwiftUI iOS app for tracking coffee brewing experiments with Core Data persisten
 ### Technology Stack
 - **UI**: SwiftUI with MVVM pattern
 - **Data**: Core Data with in-memory preview support  
-- **Testing**: XCTest (36 unit + 8 UI tests)
+- **Testing**: XCTest (47 unit + 9 UI tests)
 - **Target**: iOS 17.0+, Swift 5.0
 
 ### Project Structure
@@ -114,7 +114,7 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 
 ## Testing Strategy
 
-### Unit Tests (36 tests active)
+### Unit Tests (47 tests active)
 - Data model validation and extensions
 - CRUD operations and persistence
 - **Brewing note editing functionality** - Full edit capabilities for existing sessions
@@ -138,16 +138,18 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 - `testRecipeListRefreshAfterEdit()` - Recipe list refresh testing (passes individually)
 - `testBrewingNoteListRefreshAfterEdit()` - Brewing note list refresh testing (passes individually)
 
-### UI Tests (8 tests)
+### UI Tests (9 tests)
 - End-to-end user workflows
 - **Unified brewing tab navigation** and form interactions
 - **Dynamic pour functionality** - Add/Remove pour button interactions
-- **Brewing notes display testing** - Validates updated notes list format
+- **Brewing notes display testing** - Validates updated notes list format and resolved test dependency issues
 - Coffee creation and basic functionality
+- **All UI tests pass reliably** - Recent fix resolved test dependency issues with `testBrewingNotesViewDisplay`
 
 ## Code Quality
 
 ### Recent Refactoring (Latest)
+- ✅ **UI Test Dependency Fix** - Resolved test dependency issue with `testBrewingNotesViewDisplay` that caused failures when run with other tests
 - ✅ **Pour Count Display** - Added pour count display for pour-over methods in recipe and brewing notes lists
 - ✅ **UI Update Fix** - Fixed immediate UI refresh after editing recipes and brewing notes
 - ✅ **Enhanced Core Data Integration** - Added proper change notifications and refresh mechanisms

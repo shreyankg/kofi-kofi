@@ -3,7 +3,7 @@
 [![iOS](https://img.shields.io/badge/iOS-17.0+-blue.svg)](https://developer.apple.com/ios/)
 [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org)
 [![SwiftUI](https://img.shields.io/badge/SwiftUI-Framework-green.svg)](https://developer.apple.com/xcode/swiftui/)
-[![Tests](https://img.shields.io/badge/Tests-43%20passing-brightgreen.svg)](#testing)
+[![Tests](https://img.shields.io/badge/Tests-56%20passing-brightgreen.svg)](#testing)
 
 A comprehensive iOS app for coffee enthusiasts to track brewing experiments, manage coffee inventory, and maintain detailed brewing notes with a 5-star rating system.
 
@@ -74,7 +74,7 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **Centralized brewing method detection** - Single source of truth for method validation
 - **Safe Core Data accessors** - Nil-safe property handling throughout
 - **Reusable UI components** - StarRatingView, FormFieldView for consistency
-- **Comprehensive test coverage** - 36 unit tests + 7 UI tests including dynamic pour functionality
+- **Comprehensive test coverage** - 47 unit tests + 9 UI tests including dynamic pour functionality
 - **Recent refactoring** - 30% reduction in code duplication
 
 ## 🚀 Getting Started
@@ -108,8 +108,8 @@ open CoffeeBrewingNotes.xcodeproj
 ## 🧪 Testing
 
 ### Test Coverage
-- **Unit Tests**: 36 tests covering data models, extensions, brewing note editing, and business logic
-- **UI Tests**: 7 end-to-end tests for critical user workflows including unified brewing interface
+- **Unit Tests**: 47 tests covering data models, extensions, brewing note editing, and business logic
+- **UI Tests**: 9 end-to-end tests for critical user workflows including unified brewing interface
 - **All tests passing** with stable, reliable execution
 
 ### Running Tests
