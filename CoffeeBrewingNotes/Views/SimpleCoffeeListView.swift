@@ -107,7 +107,7 @@ struct SimpleAddCoffeeView: View {
             } else {
                 Picker("Processing Method", selection: $selectedProcessingMethod) {
                     ForEach(processingMethods, id: \.self) { method in
-                        Text("\(method.name ?? "Unknown") \(method.usageCount > 0 ? "(\(method.usageCount))" : "")")
+                        Text(method.name ?? "Unknown")
                             .tag(method as ProcessingMethod?)
                     }
                 }
@@ -183,7 +183,10 @@ struct SimpleAddCoffeeView: View {
             .onAppear {
                 seedProcessingMethodsIfNeeded()
                 if selectedProcessingMethod == nil && !processingMethods.isEmpty {
-                    selectedProcessingMethod = processingMethods.first { $0.name == "Washed" } ?? processingMethods.first
+                    // Select most common method (first in sorted list), fallback to "Natural"
+                    selectedProcessingMethod = processingMethods.first { $0.usageCount > 0 } ?? 
+                                             processingMethods.first { $0.name == "Natural" } ?? 
+                                             processingMethods.first
                 }
             }
         }
@@ -308,7 +311,7 @@ struct EditCoffeeView: View {
             } else {
                 Picker("Processing Method", selection: $selectedProcessingMethod) {
                     ForEach(processingMethods, id: \.self) { method in
-                        Text("\(method.name ?? "Unknown") \(method.usageCount > 0 ? "(\(method.usageCount))" : "")")
+                        Text(method.name ?? "Unknown")
                             .tag(method as ProcessingMethod?)
                     }
                 }
