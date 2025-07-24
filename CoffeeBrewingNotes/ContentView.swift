@@ -45,13 +45,14 @@ struct RecipeTabView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Recipe.usageCount, ascending: false)],
-        animation: .default)
+        animation: .easeInOut(duration: 0.3))
     private var recipes: FetchedResults<Recipe>
     
     @State private var showingAddRecipe = false
     @State private var showingEditRecipe = false
     @State private var selectedRecipe: Recipe? = nil
     @State private var searchText = ""
+    @State private var refreshID = UUID()
     
     var filteredRecipes: [Recipe] {
         if searchText.isEmpty {
@@ -77,6 +78,7 @@ struct RecipeTabView: View {
                 }
                 .onDelete(perform: deleteRecipes)
             }
+            .id(refreshID)
             .navigationTitle("Recipes")
             .searchable(text: $searchText, prompt: "Search recipes...")
             .toolbar {
@@ -86,10 +88,16 @@ struct RecipeTabView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showingAddRecipe) {
+            .sheet(isPresented: $showingAddRecipe, onDismiss: {
+                // Trigger UI refresh when add sheet dismisses
+                refreshID = UUID()
+            }) {
                 AddRecipeTabView()
             }
-            .sheet(isPresented: $showingEditRecipe) {
+            .sheet(isPresented: $showingEditRecipe, onDismiss: {
+                // Trigger UI refresh when edit sheet dismisses
+                refreshID = UUID()
+            }) {
                 if let recipe = selectedRecipe {
                     EditRecipeTabView(recipe: recipe)
                 }
@@ -670,6 +678,15 @@ struct EditRecipeTabView: View {
         
         do {
             try viewContext.save()
+            
+            // Ensure UI reflects changes by processing pending changes and refreshing
+            viewContext.processPendingChanges()
+            
+            // Post notification to force UI refresh
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .NSManagedObjectContextDidSave, object: viewContext)
+            }
+            
             dismiss()
         } catch {
             let nsError = error as NSError
@@ -682,7 +699,7 @@ struct BrewingNotesTabView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \BrewingNote.dateCreated, ascending: false)],
-        animation: .default)
+        animation: .easeInOut(duration: 0.3))
     private var brewingNotes: FetchedResults<BrewingNote>
     
     @State private var showingAddNote = false
@@ -691,6 +708,7 @@ struct BrewingNotesTabView: View {
     @State private var searchText = ""
     @State private var selectedRatingFilter: Int = 0 // 0 = all ratings
     @State private var showingFilterOptions = false
+    @State private var refreshID = UUID()
     
     var filteredNotes: [BrewingNote] {
         var notes = Array(brewingNotes)
@@ -738,6 +756,7 @@ struct BrewingNotesTabView: View {
                         }
                         .onDelete(perform: deleteNotes)
                     }
+                    .id(refreshID)
                     .searchable(text: $searchText, prompt: "Search notes, coffee, or recipes...")
                 }
             }
@@ -758,10 +777,16 @@ struct BrewingNotesTabView: View {
             .sheet(isPresented: $showingFilterOptions) {
                 FilterOptionsView(selectedRating: $selectedRatingFilter)
             }
-            .sheet(isPresented: $showingAddNote) {
+            .sheet(isPresented: $showingAddNote, onDismiss: {
+                // Trigger UI refresh when add sheet dismisses
+                refreshID = UUID()
+            }) {
                 AddBrewingNoteView()
             }
-            .sheet(isPresented: $showingEditNote) {
+            .sheet(isPresented: $showingEditNote, onDismiss: {
+                // Trigger UI refresh when edit sheet dismisses
+                refreshID = UUID()
+            }) {
                 if let note = selectedNote {
                     EditBrewingNoteView(note: note)
                 }
@@ -1062,6 +1087,15 @@ struct EditBrewingNoteView: View {
         
         do {
             try viewContext.save()
+            
+            // Ensure UI reflects changes by processing pending changes and refreshing
+            viewContext.processPendingChanges()
+            
+            // Post notification to force UI refresh
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .NSManagedObjectContextDidSave, object: viewContext)
+            }
+            
             dismiss()
         } catch {
             let nsError = error as NSError
