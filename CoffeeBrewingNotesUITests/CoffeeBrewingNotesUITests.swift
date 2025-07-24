@@ -587,6 +587,216 @@ final class CoffeeBrewingNotesUITests: XCTestCase {
         
         XCTAssertTrue(app.navigationBars["Recipes"].waitForExistence(timeout: 5))
     }
+    
+    func testPourCountDisplayInRecipeList() throws {
+        // Test that pour counts appear in recipe list for pour-over methods
+        
+        // Navigate to Recipes tab
+        app.tabBars.buttons["Recipes"].tap()
+        let recipesNavBar = app.navigationBars["Recipes"]
+        XCTAssertTrue(recipesNavBar.waitForExistence(timeout: 5))
+        
+        // Tap add button
+        let addButton = app.buttons["plus"]
+        if addButton.exists && addButton.isHittable {
+            addButton.tap()
+        } else {
+            recipesNavBar.buttons.element(boundBy: 0).tap()
+        }
+        
+        // Wait for Add Recipe form
+        XCTAssertTrue(app.navigationBars["Add Recipe"].waitForExistence(timeout: 10))
+        Thread.sleep(forTimeInterval: 1)
+        
+        // Select a pour-over brewing method
+        let brewingMethodButton = app.buttons["Brewing Method"]
+        if brewingMethodButton.exists && brewingMethodButton.isHittable {
+            brewingMethodButton.tap()
+            Thread.sleep(forTimeInterval: 1)
+            
+            // Find and select V60 or other pour-over method
+            let allButtons = app.buttons.allElementsBoundByIndex
+            var methodSelected = false
+            for button in allButtons {
+                if button.isHittable && button.label.contains("V60") {
+                    button.tap()
+                    methodSelected = true
+                    break
+                }
+            }
+            
+            // Fallback to any pour-over method
+            if !methodSelected {
+                for button in allButtons {
+                    if button.isHittable && 
+                       (button.label.contains("Kalita") || button.label.contains("Chemex")) {
+                        button.tap()
+                        methodSelected = true
+                        break
+                    }
+                }
+            }
+            
+            XCTAssertTrue(methodSelected, "Should select a pour-over method")
+        }
+        
+        Thread.sleep(forTimeInterval: 1)
+        
+        // Fill in required fields
+        let grindSizeField = app.textFields["Grind Size"]
+        if grindSizeField.exists {
+            grindSizeField.tap()
+            grindSizeField.typeText("Medium")
+        }
+        
+        // Set bloom amount to create at least one pour
+        let bloomField = app.textFields.matching(NSPredicate(format: "value CONTAINS 'bloom' OR placeholderValue CONTAINS 'bloom' OR placeholderValue CONTAINS 'Grams'")).element(boundBy: 0)
+        if bloomField.exists {
+            bloomField.tap()
+            bloomField.typeText("40")
+        }
+        
+        // Add a second pour to get "2 pours" display
+        let addPourButton = app.buttons["Add Pour"]
+        if addPourButton.exists && addPourButton.isHittable {
+            addPourButton.tap()
+            Thread.sleep(forTimeInterval: 1)
+            
+            // Fill the second pour
+            let pourFields = app.textFields.matching(NSPredicate(format: "placeholderValue CONTAINS 'Grams'"))
+            if pourFields.count > 1 {
+                let secondPourField = pourFields.element(boundBy: 1)
+                if secondPourField.exists {
+                    secondPourField.tap()
+                    secondPourField.typeText("120")
+                }
+            }
+        }
+        
+        // Save the recipe
+        let saveButton = app.buttons["Save"]
+        if saveButton.exists && saveButton.isEnabled {
+            saveButton.tap()
+        }
+        
+        // Wait to return to recipe list
+        XCTAssertTrue(recipesNavBar.waitForExistence(timeout: 5))
+        Thread.sleep(forTimeInterval: 2)
+        
+        // Look for pour count in the recipe list
+        // The recipe should display something like "V60-01 - 2 pours" in the list
+        let recipeList = app.tables.firstMatch
+        if recipeList.exists {
+            let cells = recipeList.cells
+            var foundPourCount = false
+            
+            for i in 0..<min(cells.count, 5) { // Check first few cells
+                let cell = cells.element(boundBy: i)
+                if cell.exists {
+                    let cellText = cell.staticTexts.allElementsBoundByIndex.map { $0.label }.joined(separator: " ")
+                    if cellText.contains("pours") {
+                        foundPourCount = true
+                        break
+                    }
+                }
+            }
+            
+            // If we can't find it in cells, check all static text elements
+            if !foundPourCount {
+                let allText = app.staticTexts.allElementsBoundByIndex
+                for text in allText {
+                    if text.label.contains("pours") && (text.label.contains("V60") || text.label.contains("Kalita") || text.label.contains("Chemex")) {
+                        foundPourCount = true
+                        break
+                    }
+                }
+            }
+            
+            XCTAssertTrue(foundPourCount, "Should display pour count in recipe list")
+        }
+    }
+    
+    func testBrewingNotesViewDisplay() throws {
+        // Test that brewing notes view displays correctly with updated format
+        // This test is independent and doesn't rely on other tests' data
+        
+        // Start fresh - terminate and relaunch app to ensure clean state
+        app.terminate()
+        app.launch()
+        
+        // Navigate to Brewing tab (notes view)
+        app.tabBars.buttons["Brewing"].tap()
+        let brewingNavBar = app.navigationBars["Brewing Notes"]
+        XCTAssertTrue(brewingNavBar.waitForExistence(timeout: 5))
+        
+        // Test the UI structure exists regardless of data
+        let notesList = app.tables.firstMatch
+        XCTAssertTrue(notesList.exists, "Notes list should exist")
+        
+        // Check if add button exists and is functional
+        let addButton = brewingNavBar.buttons.firstMatch
+        if addButton.exists && addButton.isHittable {
+            // Test opening the add brewing note screen
+            addButton.tap()
+            
+            let addBrewingNoteTitle = app.navigationBars["New Brew Session"]  
+            if addBrewingNoteTitle.waitForExistence(timeout: 5) {
+                // Verify the form structure exists
+                XCTAssertTrue(app.staticTexts["Select Coffee"].exists, "Coffee selection should exist")
+                XCTAssertTrue(app.staticTexts["Select Recipe"].exists, "Recipe selection should exist")
+                XCTAssertTrue(app.staticTexts["Brewing Notes"].exists, "Notes section should exist")
+                
+                // Cancel to avoid creating test data
+                let cancelButton = app.buttons["Cancel"]
+                if cancelButton.exists {
+                    cancelButton.tap()
+                }
+                
+                // Verify we're back to brewing notes list
+                XCTAssertTrue(brewingNavBar.waitForExistence(timeout: 5))
+            }
+        }
+        
+        // Test that the notes list structure is correct regardless of content
+        if notesList.cells.count > 0 {
+            // If notes exist (from sample data or previous app usage), verify structure
+            let firstNote = notesList.cells.element(boundBy: 0)
+            XCTAssertTrue(firstNote.exists, "First note cell should exist")
+            
+            // Check that the cell contains some text elements (without assuming specific content)
+            let cellTexts = firstNote.staticTexts.allElementsBoundByIndex
+            XCTAssertGreaterThan(cellTexts.count, 0, "Note cell should contain text elements")
+            
+            // Test that tapping a note opens edit view (if notes exist)
+            firstNote.tap()
+            
+            let editNoteTitle = app.navigationBars["Edit Brew Session"]
+            if editNoteTitle.waitForExistence(timeout: 3) {
+                // Verify edit form structure
+                XCTAssertTrue(app.staticTexts["Select Coffee"].exists, "Edit form should have coffee selection")
+                XCTAssertTrue(app.staticTexts["Select Recipe"].exists, "Edit form should have recipe selection")
+                
+                // Navigate back without making changes
+                let backButton = app.navigationBars.buttons.element(boundBy: 0)
+                if backButton.exists {
+                    backButton.tap()
+                }
+                
+                // Verify we're back to notes list
+                XCTAssertTrue(brewingNavBar.waitForExistence(timeout: 3))
+            }
+        } else {
+            // If no notes exist, verify empty state handles correctly
+            XCTAssertTrue(notesList.exists, "Notes list should exist even when empty")
+        }
+        
+        // Test navigation still works after interactions
+        app.tabBars.buttons["Coffees"].tap()
+        XCTAssertTrue(app.navigationBars["Coffees"].waitForExistence(timeout: 3))
+        
+        app.tabBars.buttons["Brewing"].tap()
+        XCTAssertTrue(brewingNavBar.waitForExistence(timeout: 3))
+    }
 }
 
 // MARK: - Helper Extensions

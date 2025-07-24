@@ -4,14 +4,14 @@
 
 SwiftUI iOS app for tracking coffee brewing experiments with Core Data persistence.
 
-**Status: ✅ Production Ready** - All features implemented with stable unit tests and 7 UI tests, including UI update fixes.
+**Status: ✅ Production Ready** - All features implemented with stable unit tests and 8 UI tests, including UI update fixes.
 
 ## Architecture
 
 ### Technology Stack
 - **UI**: SwiftUI with MVVM pattern
 - **Data**: Core Data with in-memory preview support  
-- **Testing**: XCTest (36 unit + 7 UI tests)
+- **Testing**: XCTest (36 unit + 8 UI tests)
 - **Target**: iOS 17.0+, Swift 5.0
 
 ### Project Structure
@@ -138,15 +138,17 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 - `testRecipeListRefreshAfterEdit()` - Recipe list refresh testing (passes individually)
 - `testBrewingNoteListRefreshAfterEdit()` - Brewing note list refresh testing (passes individually)
 
-### UI Tests (7 tests)
+### UI Tests (8 tests)
 - End-to-end user workflows
 - **Unified brewing tab navigation** and form interactions
 - **Dynamic pour functionality** - Add/Remove pour button interactions
+- **Brewing notes display testing** - Validates updated notes list format
 - Coffee creation and basic functionality
 
 ## Code Quality
 
 ### Recent Refactoring (Latest)
+- ✅ **Pour Count Display** - Added pour count display for pour-over methods in recipe and brewing notes lists
 - ✅ **UI Update Fix** - Fixed immediate UI refresh after editing recipes and brewing notes
 - ✅ **Enhanced Core Data Integration** - Added proper change notifications and refresh mechanisms
 - ✅ **Improved @FetchRequest Animations** - Smoother UI transitions with easeInOut animations

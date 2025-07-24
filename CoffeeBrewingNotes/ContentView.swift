@@ -126,6 +126,9 @@ struct RecipeRowView: View {
         let method = recipe.wrappedBrewingMethod
         if Recipe.isAeropressMethod(method) && recipe.wrappedAeropressType == "Inverted" {
             return "\(method) (Inverted)"
+        } else if recipe.isPourOver && recipe.pourCount > 0 {
+            let pourText = recipe.pourCount == 1 ? "pour" : "pours"
+            return "\(method) - \(recipe.pourCount) \(pourText)"
         }
         return method
     }
@@ -855,9 +858,9 @@ struct AddBrewingNoteView: View {
                             Text("Select a recipe").tag(Recipe?.none)
                             ForEach(Array(recipes), id: \.self) { recipe in
                                 VStack(alignment: .leading) {
-                                    Text(recipe.wrappedName)
+                                    Text(formatRecipeDisplayName(for: recipe))
                                         .font(.headline)
-                                    Text("\(recipe.brewingMethod ?? "Unknown") - Used \(recipe.usageCount) times")
+                                    Text("Used \(recipe.usageCount) times")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                 }
@@ -988,9 +991,9 @@ struct EditBrewingNoteView: View {
                             Text("Select a recipe").tag(Recipe?.none)
                             ForEach(Array(recipes), id: \.self) { recipe in
                                 VStack(alignment: .leading) {
-                                    Text(recipe.wrappedName)
+                                    Text(formatRecipeDisplayName(for: recipe))
                                         .font(.headline)
-                                    Text("\(recipe.brewingMethod ?? "Unknown") - Used \(recipe.usageCount) times")
+                                    Text("Used \(recipe.usageCount) times")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                 }
@@ -1482,11 +1485,12 @@ struct BrewingNoteRowView: View {
     }
     
     private var recipeName: String {
-        note.recipe?.wrappedName ?? "Unknown Recipe"
+        guard let recipe = note.recipe else { return "Unknown Recipe" }
+        return formatRecipeDisplayName(for: recipe)
     }
     
-    private var brewingMethod: String {
-        note.recipe?.brewingMethod ?? "Unknown Method"
+    private var grinder: String {
+        note.recipe?.wrappedGrinder ?? "Unknown Grinder"
     }
     
     private var formattedDate: String {
@@ -1553,11 +1557,21 @@ struct BrewingNoteRowView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
-                Text(brewingMethod)
+                Text(grinder)
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
                 Spacer()
+            }
+            
+            // Dose and final weight
+            if let recipe = note.recipe {
+                HStack {
+                    Text("\(recipe.dose, specifier: "%.1f")g → \(recipe.finalWeightString)")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                }
             }
             
             // Notes preview (if available)
@@ -1749,6 +1763,19 @@ struct PreferencesView: View {
             }
         }
     }
+}
+
+// MARK: - Helper Functions
+
+private func formatRecipeDisplayName(for recipe: Recipe) -> String {
+    let method = recipe.wrappedBrewingMethod
+    if Recipe.isAeropressMethod(method) && recipe.wrappedAeropressType == "Inverted" {
+        return "\(method) (Inverted)"
+    } else if recipe.isPourOver && recipe.pourCount > 0 {
+        let pourText = recipe.pourCount == 1 ? "pour" : "pours"
+        return "\(method) - \(recipe.pourCount) \(pourText)"
+    }
+    return method
 }
 
 #Preview {

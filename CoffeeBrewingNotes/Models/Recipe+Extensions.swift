@@ -81,6 +81,28 @@ extension Recipe {
         supportsPours
     }
     
+    // MARK: - Pour Count Calculation
+    
+    var pourCount: Int {
+        guard isPourOver else { return 0 }
+        
+        var count = 0
+        
+        // Count bloom as first pour if it exists
+        if bloomAmount > 0 { count += 1 }
+        
+        // Count all additional pours (Core Data model supports up to 4 total pours)
+        if secondPour > 0 { count += 1 }
+        if thirdPour > 0 { count += 1 }
+        if fourthPour > 0 { count += 1 }
+        
+        // Note: The dynamic UI can show more than 4 pours during entry,
+        // but only the first 4 pours are persisted to Core Data fields:
+        // bloomAmount, secondPour, thirdPour, fourthPour
+        
+        return count
+    }
+    
     // MARK: - Calculated Properties
     
     var finalWeight: Double {

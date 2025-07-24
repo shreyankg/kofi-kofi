@@ -280,6 +280,70 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertEqual(recipe.plungeTime, 30)
     }
     
+    func testRecipePourCount() throws {
+        // Test V60 with progressive pour counts (up to model limit of 4)
+        let v60Recipe = Recipe(context: context)
+        v60Recipe.brewingMethod = "V60-01"
+        
+        // Test 0 pours
+        XCTAssertTrue(v60Recipe.isPourOver)
+        XCTAssertEqual(v60Recipe.pourCount, 0) // No pours set
+        
+        // Test 1 pour (bloom only)
+        v60Recipe.bloomAmount = 40.0
+        XCTAssertEqual(v60Recipe.pourCount, 1) // bloom only
+        
+        // Test 2 pours (bloom + second)
+        v60Recipe.secondPour = 100.0
+        XCTAssertEqual(v60Recipe.pourCount, 2) // bloom + 1 pour
+        
+        // Test 3 pours (bloom + second + third)
+        v60Recipe.thirdPour = 180.0
+        XCTAssertEqual(v60Recipe.pourCount, 3) // bloom + 2 pours
+        
+        // Test 4 pours (bloom + second + third + fourth - maximum)
+        v60Recipe.fourthPour = 240.0
+        XCTAssertEqual(v60Recipe.pourCount, 4) // bloom + 3 pours (maximum)
+        
+        // Test Chemex with different pour pattern
+        let chemexRecipe = Recipe(context: context)
+        chemexRecipe.brewingMethod = "Chemex 6-cup"
+        chemexRecipe.bloomAmount = 50.0
+        chemexRecipe.secondPour = 150.0
+        chemexRecipe.fourthPour = 300.0 // Skip third pour
+        
+        XCTAssertTrue(chemexRecipe.isPourOver)
+        XCTAssertEqual(chemexRecipe.pourCount, 3) // bloom + second + fourth (skipped third)
+        
+        // Test Kalita Wave with all pours
+        let kalitaRecipe = Recipe(context: context)
+        kalitaRecipe.brewingMethod = "Kalita Wave 155"
+        kalitaRecipe.bloomAmount = 35.0
+        kalitaRecipe.secondPour = 80.0
+        kalitaRecipe.thirdPour = 140.0
+        kalitaRecipe.fourthPour = 200.0
+        
+        XCTAssertTrue(kalitaRecipe.isPourOver)
+        XCTAssertEqual(kalitaRecipe.pourCount, 4) // All 4 pours
+        
+        // Test non-pour-over method
+        let espressoRecipe = Recipe(context: context)
+        espressoRecipe.brewingMethod = "Espresso"
+        espressoRecipe.bloomAmount = 40.0 // Should be ignored for espresso
+        
+        XCTAssertFalse(espressoRecipe.isPourOver)
+        XCTAssertEqual(espressoRecipe.pourCount, 0) // No pour count for espresso
+        
+        // Test with only higher pours set (no bloom)
+        let nobloomRecipe = Recipe(context: context)
+        nobloomRecipe.brewingMethod = "V60-02"
+        nobloomRecipe.secondPour = 120.0
+        nobloomRecipe.thirdPour = 200.0
+        
+        XCTAssertTrue(nobloomRecipe.isPourOver)
+        XCTAssertEqual(nobloomRecipe.pourCount, 2) // second + third (no bloom)
+    }
+    
     // MARK: - BrewingNote Extension Tests
     
     func testBrewingNoteExtensions() throws {
@@ -794,6 +858,59 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertEqual(formatDisplayBrewingMethod(for: nonAeropressRecipe), "V60-01")
     }
     
+    func testPourOverDisplayFormatting() throws {
+        // Test pour-over display logic with complete pour count range (0-4)
+        
+        // Test 0 pours
+        let emptyPourOverRecipe = Recipe(context: context)
+        emptyPourOverRecipe.brewingMethod = "V60-02"
+        XCTAssertEqual(formatDisplayBrewingMethod(for: emptyPourOverRecipe), "V60-02") // No pours, no suffix
+        
+        // Test 1 pour (bloom only)
+        let onePourRecipe = Recipe(context: context)
+        onePourRecipe.brewingMethod = "V60-01"
+        onePourRecipe.bloomAmount = 40.0
+        XCTAssertEqual(formatDisplayBrewingMethod(for: onePourRecipe), "V60-01 - 1 pour")
+        
+        // Test 2 pours
+        let twoPourRecipe = Recipe(context: context)
+        twoPourRecipe.brewingMethod = "Chemex 6-cup"
+        twoPourRecipe.bloomAmount = 50.0
+        twoPourRecipe.secondPour = 150.0
+        XCTAssertEqual(formatDisplayBrewingMethod(for: twoPourRecipe), "Chemex 6-cup - 2 pours")
+        
+        // Test 3 pours
+        let threePourRecipe = Recipe(context: context)
+        threePourRecipe.brewingMethod = "V60-01"
+        threePourRecipe.bloomAmount = 40.0
+        threePourRecipe.secondPour = 100.0
+        threePourRecipe.thirdPour = 180.0
+        XCTAssertEqual(formatDisplayBrewingMethod(for: threePourRecipe), "V60-01 - 3 pours")
+        
+        // Test 4 pours (maximum)
+        let fourPourRecipe = Recipe(context: context)
+        fourPourRecipe.brewingMethod = "Kalita Wave 155"
+        fourPourRecipe.bloomAmount = 35.0
+        fourPourRecipe.secondPour = 80.0
+        fourPourRecipe.thirdPour = 140.0
+        fourPourRecipe.fourthPour = 200.0
+        XCTAssertEqual(formatDisplayBrewingMethod(for: fourPourRecipe), "Kalita Wave 155 - 4 pours")
+        
+        // Test non-pour-over method (should not show pour count)
+        let nonPourOverRecipe = Recipe(context: context)
+        nonPourOverRecipe.brewingMethod = "Espresso"
+        nonPourOverRecipe.bloomAmount = 40.0 // Should be ignored
+        XCTAssertEqual(formatDisplayBrewingMethod(for: nonPourOverRecipe), "Espresso") // Non-pour-over, no suffix
+        
+        // Test Aeropress (should show inverted but not pour count since we test Aeropress separately)
+        let aeropressRecipe = Recipe(context: context)
+        aeropressRecipe.brewingMethod = "Aeropress"
+        aeropressRecipe.aeropressType = "Inverted"
+        aeropressRecipe.bloomAmount = 30.0
+        // Note: Aeropress has "Inverted" priority over pour count in display logic
+        XCTAssertEqual(formatDisplayBrewingMethod(for: aeropressRecipe), "Aeropress (Inverted)")
+    }
+    
     func testRecipeFinalWeightCalculation() throws {
         // Test that finalWeight calculation still works correctly
         let espressoRecipe = Recipe(context: context)
@@ -1146,6 +1263,9 @@ func formatDisplayBrewingMethod(for recipe: Recipe) -> String {
     let method = recipe.wrappedBrewingMethod
     if Recipe.isAeropressMethod(method) && recipe.wrappedAeropressType == "Inverted" {
         return "\(method) (Inverted)"
+    } else if recipe.isPourOver && recipe.pourCount > 0 {
+        let pourText = recipe.pourCount == 1 ? "pour" : "pours"
+        return "\(method) - \(recipe.pourCount) \(pourText)"
     }
     return method
 }
