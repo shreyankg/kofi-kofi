@@ -301,9 +301,21 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         v60Recipe.thirdPour = 180.0
         XCTAssertEqual(v60Recipe.pourCount, 3) // bloom + 2 pours
         
-        // Test 4 pours (bloom + second + third + fourth - maximum)
+        // Test 4 pours (bloom + second + third + fourth)
         v60Recipe.fourthPour = 240.0
-        XCTAssertEqual(v60Recipe.pourCount, 4) // bloom + 3 pours (maximum)
+        XCTAssertEqual(v60Recipe.pourCount, 4) // bloom + 3 pours
+        
+        // Test 6 pours (extended support)
+        v60Recipe.fifthPour = 280.0
+        v60Recipe.sixthPour = 320.0
+        XCTAssertEqual(v60Recipe.pourCount, 6) // bloom + 5 pours
+        
+        // Test 10 pours (maximum supported)
+        v60Recipe.seventhPour = 350.0
+        v60Recipe.eighthPour = 380.0
+        v60Recipe.ninthPour = 400.0
+        v60Recipe.tenthPour = 420.0
+        XCTAssertEqual(v60Recipe.pourCount, 10) // All 10 pours
         
         // Test Chemex with different pour pattern
         let chemexRecipe = Recipe(context: context)
@@ -887,7 +899,7 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         threePourRecipe.thirdPour = 180.0
         XCTAssertEqual(formatDisplayBrewingMethod(for: threePourRecipe), "V60-01 - 3 pours")
         
-        // Test 4 pours (maximum)
+        // Test 4 pours
         let fourPourRecipe = Recipe(context: context)
         fourPourRecipe.brewingMethod = "Kalita Wave 155"
         fourPourRecipe.bloomAmount = 35.0
@@ -895,6 +907,33 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         fourPourRecipe.thirdPour = 140.0
         fourPourRecipe.fourthPour = 200.0
         XCTAssertEqual(formatDisplayBrewingMethod(for: fourPourRecipe), "Kalita Wave 155 - 4 pours")
+        
+        // Test 7 pours (extended range)
+        let sevenPourRecipe = Recipe(context: context)
+        sevenPourRecipe.brewingMethod = "V60-01"
+        sevenPourRecipe.bloomAmount = 40.0
+        sevenPourRecipe.secondPour = 80.0
+        sevenPourRecipe.thirdPour = 120.0
+        sevenPourRecipe.fourthPour = 160.0
+        sevenPourRecipe.fifthPour = 200.0
+        sevenPourRecipe.sixthPour = 240.0
+        sevenPourRecipe.seventhPour = 280.0
+        XCTAssertEqual(formatDisplayBrewingMethod(for: sevenPourRecipe), "V60-01 - 7 pours")
+        
+        // Test 10 pours (maximum supported)
+        let tenPourRecipe = Recipe(context: context)
+        tenPourRecipe.brewingMethod = "Chemex 6-cup"
+        tenPourRecipe.bloomAmount = 50.0
+        tenPourRecipe.secondPour = 90.0
+        tenPourRecipe.thirdPour = 130.0
+        tenPourRecipe.fourthPour = 170.0
+        tenPourRecipe.fifthPour = 210.0
+        tenPourRecipe.sixthPour = 250.0
+        tenPourRecipe.seventhPour = 290.0
+        tenPourRecipe.eighthPour = 330.0
+        tenPourRecipe.ninthPour = 370.0
+        tenPourRecipe.tenthPour = 400.0
+        XCTAssertEqual(formatDisplayBrewingMethod(for: tenPourRecipe), "Chemex 6-cup - 10 pours")
         
         // Test non-pour-over method (should not show pour count)
         let nonPourOverRecipe = Recipe(context: context)
@@ -923,12 +962,22 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         pourOverRecipe.secondPour = 120.0
         pourOverRecipe.thirdPour = 200.0
         
+        // Test extended pours (5-10)
+        let extendedPourRecipe = Recipe(context: context)
+        extendedPourRecipe.brewingMethod = "V60-02"
+        extendedPourRecipe.bloomAmount = 40.0
+        extendedPourRecipe.secondPour = 100.0
+        extendedPourRecipe.fifthPour = 250.0
+        extendedPourRecipe.eighthPour = 350.0  // Highest pour
+        extendedPourRecipe.tenthPour = 320.0
+        
         let basicRecipe = Recipe(context: context)
         basicRecipe.brewingMethod = "Other"
         basicRecipe.dose = 20.0
         
         XCTAssertEqual(espressoRecipe.finalWeight, 36.0)
         XCTAssertEqual(pourOverRecipe.finalWeight, 200.0) // Should use max pour
+        XCTAssertEqual(extendedPourRecipe.finalWeight, 350.0) // Should use highest pour (8th)
         XCTAssertEqual(basicRecipe.finalWeight, 300.0) // Should use dose * 15
     }
     
@@ -995,6 +1044,21 @@ final class CoffeeBrewingNotesTests: XCTestCase {
             }
         }
         XCTAssertFalse(isValid4, "Equal consecutive pours should be invalid")
+        
+        // Test 5: Valid longer sequence (7 pours)
+        let pours5 = [60.0, 100.0, 140.0, 180.0, 220.0, 260.0, 300.0]
+        let bloom5 = 40.0
+        var isValid5 = true
+        for (index, pour) in pours5.enumerated() {
+            if pour > 0 {
+                let previousAmount = index == 0 ? bloom5 : pours5[index - 1]
+                if pour <= previousAmount {
+                    isValid5 = false
+                    break
+                }
+            }
+        }
+        XCTAssertTrue(isValid5, "Valid long ascending sequence should pass")
     }
     
     // MARK: - UI Update Tests (Corner Cases)

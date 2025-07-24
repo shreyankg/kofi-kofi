@@ -91,14 +91,16 @@ extension Recipe {
         // Count bloom as first pour if it exists
         if bloomAmount > 0 { count += 1 }
         
-        // Count all additional pours (Core Data model supports up to 4 total pours)
+        // Count all additional pours (Core Data model supports up to 10 total pours)
         if secondPour > 0 { count += 1 }
         if thirdPour > 0 { count += 1 }
         if fourthPour > 0 { count += 1 }
-        
-        // Note: The dynamic UI can show more than 4 pours during entry,
-        // but only the first 4 pours are persisted to Core Data fields:
-        // bloomAmount, secondPour, thirdPour, fourthPour
+        if fifthPour > 0 { count += 1 }
+        if sixthPour > 0 { count += 1 }
+        if seventhPour > 0 { count += 1 }
+        if eighthPour > 0 { count += 1 }
+        if ninthPour > 0 { count += 1 }
+        if tenthPour > 0 { count += 1 }
         
         return count
     }
@@ -109,11 +111,17 @@ extension Recipe {
         if isEspresso {
             return waterOut
         } else if supportsPours {
-            // Find the maximum (final) pour weight
+            // Find the maximum (final) pour weight across all 10 possible pours
             var maxWeight: Double = bloomAmount
             if secondPour > 0 { maxWeight = max(maxWeight, secondPour) }
             if thirdPour > 0 { maxWeight = max(maxWeight, thirdPour) }
             if fourthPour > 0 { maxWeight = max(maxWeight, fourthPour) }
+            if fifthPour > 0 { maxWeight = max(maxWeight, fifthPour) }
+            if sixthPour > 0 { maxWeight = max(maxWeight, sixthPour) }
+            if seventhPour > 0 { maxWeight = max(maxWeight, seventhPour) }
+            if eighthPour > 0 { maxWeight = max(maxWeight, eighthPour) }
+            if ninthPour > 0 { maxWeight = max(maxWeight, ninthPour) }
+            if tenthPour > 0 { maxWeight = max(maxWeight, tenthPour) }
             return maxWeight
         } else {
             // For other methods, use dose * ratio assumption

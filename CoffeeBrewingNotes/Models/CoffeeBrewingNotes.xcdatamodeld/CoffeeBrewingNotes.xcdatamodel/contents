@@ -28,6 +28,12 @@
         <attribute name="secondPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="thirdPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="fourthPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fifthPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="sixthPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="seventhPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="eighthPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="ninthPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="tenthPour" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         
         <!-- Espresso specific -->
         <attribute name="waterOut" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
