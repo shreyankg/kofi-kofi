@@ -400,11 +400,17 @@ struct AddRecipeTabView: View {
             recipe.bloomAmount = bloomAmount
             recipe.bloomTime = Int32(bloomTime)
             
-            // Set pours from dynamic array
+            // Set pours from dynamic array (support up to 10 pours)
             recipe.secondPour = pours.indices.contains(0) ? pours[0] : 0.0
             if isPourOver {
                 recipe.thirdPour = pours.indices.contains(1) ? pours[1] : 0.0
                 recipe.fourthPour = pours.indices.contains(2) ? pours[2] : 0.0
+                recipe.fifthPour = pours.indices.contains(3) ? pours[3] : 0.0
+                recipe.sixthPour = pours.indices.contains(4) ? pours[4] : 0.0
+                recipe.seventhPour = pours.indices.contains(5) ? pours[5] : 0.0
+                recipe.eighthPour = pours.indices.contains(6) ? pours[6] : 0.0
+                recipe.ninthPour = pours.indices.contains(7) ? pours[7] : 0.0
+                recipe.tenthPour = pours.indices.contains(8) ? pours[8] : 0.0
             }
         }
         
@@ -585,7 +591,7 @@ struct EditRecipeTabView: View {
                 bloomAmount = recipe.bloomAmount
                 bloomTime = Int(recipe.bloomTime)
                 
-                // Load pours into dynamic array
+                // Load pours into dynamic array (support up to 10 pours)
                 var loadedPours: [Double] = []
                 if recipe.secondPour > 0 {
                     loadedPours.append(recipe.secondPour)
@@ -595,6 +601,24 @@ struct EditRecipeTabView: View {
                 }
                 if recipe.fourthPour > 0 {
                     loadedPours.append(recipe.fourthPour)
+                }
+                if recipe.fifthPour > 0 {
+                    loadedPours.append(recipe.fifthPour)
+                }
+                if recipe.sixthPour > 0 {
+                    loadedPours.append(recipe.sixthPour)
+                }
+                if recipe.seventhPour > 0 {
+                    loadedPours.append(recipe.seventhPour)
+                }
+                if recipe.eighthPour > 0 {
+                    loadedPours.append(recipe.eighthPour)
+                }
+                if recipe.ninthPour > 0 {
+                    loadedPours.append(recipe.ninthPour)
+                }
+                if recipe.tenthPour > 0 {
+                    loadedPours.append(recipe.tenthPour)
                 }
                 // Ensure at least one pour for pour-over methods
                 if loadedPours.isEmpty {
@@ -662,11 +686,17 @@ struct EditRecipeTabView: View {
             recipe.bloomAmount = bloomAmount
             recipe.bloomTime = Int32(bloomTime)
             
-            // Set pours from dynamic array
+            // Set pours from dynamic array (support up to 10 pours)
             recipe.secondPour = pours.indices.contains(0) ? pours[0] : 0.0
             if isPourOver {
                 recipe.thirdPour = pours.indices.contains(1) ? pours[1] : 0.0
                 recipe.fourthPour = pours.indices.contains(2) ? pours[2] : 0.0
+                recipe.fifthPour = pours.indices.contains(3) ? pours[3] : 0.0
+                recipe.sixthPour = pours.indices.contains(4) ? pours[4] : 0.0
+                recipe.seventhPour = pours.indices.contains(5) ? pours[5] : 0.0
+                recipe.eighthPour = pours.indices.contains(6) ? pours[6] : 0.0
+                recipe.ninthPour = pours.indices.contains(7) ? pours[7] : 0.0
+                recipe.tenthPour = pours.indices.contains(8) ? pours[8] : 0.0
             }
         }
         

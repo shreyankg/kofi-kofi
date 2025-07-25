@@ -128,6 +128,12 @@ extension PersistenceController {
         secondPour: Double? = nil,
         thirdPour: Double? = nil,
         fourthPour: Double? = nil,
+        fifthPour: Double? = nil,
+        sixthPour: Double? = nil,
+        seventhPour: Double? = nil,
+        eighthPour: Double? = nil,
+        ninthPour: Double? = nil,
+        tenthPour: Double? = nil,
         waterOut: Double? = nil,
         aeropressType: String? = nil,
         plungeTime: Int32? = nil
@@ -160,6 +166,24 @@ extension PersistenceController {
         }
         if let fourthPour = fourthPour {
             recipe.fourthPour = fourthPour
+        }
+        if let fifthPour = fifthPour {
+            recipe.fifthPour = fifthPour
+        }
+        if let sixthPour = sixthPour {
+            recipe.sixthPour = sixthPour
+        }
+        if let seventhPour = seventhPour {
+            recipe.seventhPour = seventhPour
+        }
+        if let eighthPour = eighthPour {
+            recipe.eighthPour = eighthPour
+        }
+        if let ninthPour = ninthPour {
+            recipe.ninthPour = ninthPour
+        }
+        if let tenthPour = tenthPour {
+            recipe.tenthPour = tenthPour
         }
         if let waterOut = waterOut {
             recipe.waterOut = waterOut

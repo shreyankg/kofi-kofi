@@ -41,7 +41,7 @@ Bean inventory with name, roaster, origin, processing method, roast level.
 ### Recipe  
 Brewing parameters with method-specific attributes:
 - Common: dose, grind, water temp, brew time
-- Pour-over: bloom timing, dynamic multi-stage pours (Add/Remove buttons)
+- Pour-over: bloom timing, dynamic multi-stage pours (Add/Remove buttons) - **supports up to 10 pours**
 - Espresso: water output ratios
 - Aeropress: normal/inverted, plunge timing
 
@@ -149,6 +149,9 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 ## Code Quality
 
 ### Recent Refactoring (Latest)
+- ✅ **Extended Pour Support** - Upgraded Core Data model and UI to support up to 10 pours (previously limited to 4)
+- ✅ **Enhanced Pour Persistence** - Fixed UI persistence logic to save and load all 10 pours correctly
+- ✅ **Extended Test Coverage** - Updated UI tests to verify functionality with more than 4 pours
 - ✅ **UI Test Dependency Fix** - Resolved test dependency issue with `testBrewingNotesViewDisplay` that caused failures when run with other tests
 - ✅ **Pour Count Display** - Added pour count display for pour-over methods in recipe and brewing notes lists
 - ✅ **UI Update Fix** - Fixed immediate UI refresh after editing recipes and brewing notes
