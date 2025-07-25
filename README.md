@@ -7,7 +7,20 @@
 
 A comprehensive iOS app for coffee enthusiasts to track brewing experiments, manage coffee inventory, and maintain detailed brewing notes with a 5-star rating system.
 
-![App Screenshot Placeholder](https://via.placeholder.com/800x400/1D1D1F/FFFFFF?text=Kofi+Kofi+Screenshots)
+## 📱 Screenshots
+
+<div align="center">
+<table>
+<tr>
+<td><img src="screenshots/app_startup_20250726_000651.png" width="200" alt="Coffee Collection"/><br/><b>Coffee Collection</b></td>
+<td><img src="screenshots/recipes_with_sample_data_20250726_000739.png" width="200" alt="Brewing Recipes"/><br/><b>Brewing Recipes</b></td>
+</tr>
+<tr>
+<td><img src="screenshots/brewing_notes_list_20250726_000755.png" width="200" alt="Brewing Notes"/><br/><b>Brewing Notes</b></td>
+<td><img src="screenshots/settings_menu_20250726_000817.png" width="200" alt="Settings Menu"/><br/><b>Settings Menu</b></td>
+</tr>
+</table>
+</div>
 
 ## ✨ Features
 

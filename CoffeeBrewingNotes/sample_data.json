@@ -1,0 +1,399 @@
+{
+  "coffees": [
+    {
+      "name": "Ethiopian Yirgacheffe Gedeb",
+      "roaster": "Blue Bottle Coffee",
+      "origin": "Gedeb, Yirgacheffe, Ethiopia",
+      "processingMethod": "Washed",
+      "roastLevel": "Light"
+    },
+    {
+      "name": "Colombian Huila",
+      "roaster": "Intelligentsia Coffee",
+      "origin": "Huila, Colombia",
+      "processingMethod": "Washed",
+      "roastLevel": "Medium"
+    },
+    {
+      "name": "Kenya AA Kiambu",
+      "roaster": "Counter Culture Coffee",
+      "origin": "Kiambu County, Kenya",
+      "processingMethod": "Washed",
+      "roastLevel": "Medium-Light"
+    },
+    {
+      "name": "Guatemala Antigua",
+      "roaster": "Stumptown Coffee Roasters",
+      "origin": "Antigua, Guatemala",
+      "processingMethod": "Fully Washed",
+      "roastLevel": "Medium"
+    },
+    {
+      "name": "Brazil Fazenda Santa Ines",
+      "roaster": "George Howell Coffee",
+      "origin": "Carmo de Minas, Brazil",
+      "processingMethod": "Pulped Natural",
+      "roastLevel": "Medium"
+    },
+    {
+      "name": "Costa Rica Tarrazú",
+      "roaster": "La Colombe Coffee Roasters",
+      "origin": "Tarrazú, Costa Rica",
+      "processingMethod": "Honey Process",
+      "roastLevel": "Medium-Light"
+    },
+    {
+      "name": "Panama Geisha Boquete",
+      "roaster": "Verve Coffee Roasters",
+      "origin": "Boquete, Panama",
+      "processingMethod": "Washed",
+      "roastLevel": "Light"
+    },
+    {
+      "name": "Peru Cajamarca",
+      "roaster": "Ritual Coffee Roasters",
+      "origin": "Cajamarca, Peru",
+      "processingMethod": "Washed",
+      "roastLevel": "Medium"
+    },
+    {
+      "name": "Rwanda Huye Mountain",
+      "roaster": "Sweet Maria's Coffee Supply",
+      "origin": "Huye District, Rwanda",
+      "processingMethod": "Fully Washed",
+      "roastLevel": "Light-Medium"
+    },
+    {
+      "name": "Honduras Marcala",
+      "roaster": "Onyx Coffee Lab",
+      "origin": "Marcala, La Paz, Honduras",
+      "processingMethod": "Washed",
+      "roastLevel": "Medium"
+    },
+    {
+      "name": "Jamaica Blue Mountain",
+      "roaster": "Joe Coffee Company",
+      "origin": "Blue Mountain, Jamaica",
+      "processingMethod": "Wet Process",
+      "roastLevel": "Medium"
+    },
+    {
+      "name": "Yemen Mocha Matari",
+      "roaster": "Klatch Coffee",
+      "origin": "Matari, Yemen",
+      "processingMethod": "Natural",
+      "roastLevel": "Medium-Dark"
+    }
+  ],
+  "recipes": [
+    {
+      "name": "Morning V60 Classic",
+      "brewingMethod": "V60-01",
+      "grinder": "Baratza Encore",
+      "dose": 22.0,
+      "finalWeight": 350.0,
+      "grindSetting": "20",
+      "waterTemp": 93,
+      "bloomTime": 30,
+      "totalBrewTime": 270,
+      "notes": "Classic morning routine with medium grind",
+      "pours": [
+        {"amount": 44.0, "time": 0},
+        {"amount": 100.0, "time": 45},
+        {"amount": 103.0, "time": 105},
+        {"amount": 103.0, "time": 165}
+      ]
+    },
+    {
+      "name": "Light Roast V60 Extended",
+      "brewingMethod": "V60-02",
+      "grinder": "1Zpresso J-Ultra",
+      "dose": 30.0,
+      "finalWeight": 500.0,
+      "grindSetting": "3.2.0",
+      "waterTemp": 96,
+      "bloomTime": 45,
+      "totalBrewTime": 360,
+      "notes": "Extended extraction for light roasts with fine grind",
+      "pours": [
+        {"amount": 60.0, "time": 0},
+        {"amount": 110.0, "time": 50},
+        {"amount": 110.0, "time": 120},
+        {"amount": 110.0, "time": 190},
+        {"amount": 110.0, "time": 260}
+      ]
+    },
+    {
+      "name": "Kalita Wave Daily",
+      "brewingMethod": "Kalita Wave 155",
+      "grinder": "Turin DF64",
+      "dose": 21.0,
+      "finalWeight": 315.0,
+      "grindSetting": "35",
+      "waterTemp": 94,
+      "bloomTime": 30,
+      "totalBrewTime": 300,
+      "notes": "Consistent daily driver with medium-fine grind",
+      "pours": [
+        {"amount": 42.0, "time": 0},
+        {"amount": 91.0, "time": 45},
+        {"amount": 91.0, "time": 120},
+        {"amount": 91.0, "time": 195}
+      ]
+    },
+    {
+      "name": "Chemex Weekend Special",
+      "brewingMethod": "Chemex 6-cup",
+      "grinder": "Comandante C40",
+      "dose": 40.0,
+      "finalWeight": 640.0,
+      "grindSetting": "25",
+      "waterTemp": 95,
+      "bloomTime": 45,
+      "totalBrewTime": 450,
+      "notes": "Weekend batch brew for sharing",
+      "pours": [
+        {"amount": 80.0, "time": 0},
+        {"amount": 140.0, "time": 50},
+        {"amount": 140.0, "time": 140},
+        {"amount": 140.0, "time": 230},
+        {"amount": 140.0, "time": 320}
+      ]
+    },
+    {
+      "name": "Espresso Balanced",
+      "brewingMethod": "Espresso (Gaggia Classic Pro)",
+      "grinder": "Eureka Mignon Specialità",
+      "dose": 18.0,
+      "finalWeight": 36.0,
+      "grindSetting": "2.5",
+      "waterTemp": 93,
+      "totalBrewTime": 28,
+      "notes": "1:2 ratio for balanced extraction",
+      "waterOutputRatio": "1:2"
+    },
+    {
+      "name": "Espresso Intense",
+      "brewingMethod": "Espresso (Gaggia Classic Pro)",
+      "grinder": "Eureka Mignon Specialità",
+      "dose": 20.0,
+      "finalWeight": 30.0,
+      "grindSetting": "2.0",
+      "waterTemp": 92,
+      "totalBrewTime": 32,
+      "notes": "Shorter ratio for intense flavor",
+      "waterOutputRatio": "1:1.5"
+    },
+    {
+      "name": "French Press Coarse",
+      "brewingMethod": "French Press",
+      "grinder": "Baratza Virtuoso+",
+      "dose": 30.0,
+      "finalWeight": 500.0,
+      "grindSetting": "28",
+      "waterTemp": 96,
+      "bloomTime": 30,
+      "totalBrewTime": 240,
+      "notes": "Coarse grind for clean extraction"
+    },
+    {
+      "name": "Aeropress Classic",
+      "brewingMethod": "Aeropress",
+      "grinder": "Hario Mini Mill",
+      "dose": 17.0,
+      "finalWeight": 200.0,
+      "grindSetting": "Fine",
+      "waterTemp": 85,
+      "totalBrewTime": 120,
+      "notes": "Standard upright method",
+      "isInverted": false,
+      "steepTime": 60,
+      "plungeTime": 30
+    },
+    {
+      "name": "Aeropress Inverted",
+      "brewingMethod": "Aeropress",
+      "grinder": "Timemore C2",
+      "dose": 18.0,
+      "finalWeight": 180.0,
+      "grindSetting": "12",
+      "waterTemp": 88,
+      "totalBrewTime": 150,
+      "notes": "Inverted method for longer steep",
+      "isInverted": true,
+      "steepTime": 90,
+      "plungeTime": 30
+    },
+    {
+      "name": "V60 Competition Style",
+      "brewingMethod": "V60-01",
+      "grinder": "EK43",
+      "dose": 20.0,
+      "finalWeight": 300.0,
+      "grindSetting": "6.5",
+      "waterTemp": 94,
+      "bloomTime": 30,
+      "totalBrewTime": 240,
+      "notes": "Competition brewing technique with precise timing",
+      "pours": [
+        {"amount": 40.0, "time": 0},
+        {"amount": 80.0, "time": 35},
+        {"amount": 60.0, "time": 75},
+        {"amount": 60.0, "time": 115},
+        {"amount": 60.0, "time": 155}
+      ]
+    }
+  ],
+  "brewingNotes": [
+    {
+      "coffeeName": "Ethiopian Yirgacheffe Gedeb",
+      "recipeName": "Morning V60 Classic",
+      "notes": "Bright acidity with floral notes. Perfect extraction with no astringency. Notes of jasmine and lemon zest.",
+      "rating": 5
+    },
+    {
+      "coffeeName": "Colombian Huila",
+      "recipeName": "Light Roast V60 Extended",
+      "notes": "Sweet and balanced with chocolate undertones. Smooth finish. Could use slightly coarser grind next time.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Kenya AA Kiambu",
+      "recipeName": "Kalita Wave Daily",
+      "notes": "Wine-like acidity with blackcurrant notes. Very clean cup. The Kalita Wave brought out the body nicely.",
+      "rating": 5
+    },
+    {
+      "coffeeName": "Guatemala Antigua",
+      "recipeName": "Chemex Weekend Special",
+      "notes": "Rich and full-bodied with spice notes. Perfect for the weekend morning. Shared with friends who loved it.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Brazil Fazenda Santa Ines",
+      "recipeName": "Espresso Balanced",
+      "notes": "Nutty and sweet with caramel notes. Excellent crema. Perfect for milk drinks. Very consistent shot.",
+      "rating": 5
+    },
+    {
+      "coffeeName": "Costa Rica Tarrazú",
+      "recipeName": "French Press Coarse",
+      "notes": "Clean and bright with honey sweetness. The French press highlighted the body without muddiness.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Panama Geisha Boquete",
+      "recipeName": "V60 Competition Style",
+      "notes": "Exceptional cup with tea-like delicacy. Floral and complex with bergamot notes. Worth the premium price.",
+      "rating": 5
+    },
+    {
+      "coffeeName": "Peru Cajamarca",
+      "recipeName": "Aeropress Classic",
+      "notes": "Smooth and mild with chocolate notes. Great for afternoon coffee. No bitterness at all.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Rwanda Huye Mountain",
+      "recipeName": "Aeropress Inverted",
+      "notes": "Bright and fruity with red fruit notes. The inverted method brought out more complexity than expected.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Honduras Marcala",
+      "recipeName": "Morning V60 Classic",
+      "notes": "Well-balanced with caramel sweetness. Good daily drinker. Consistent results with this recipe.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Ethiopian Yirgacheffe Gedeb",
+      "recipeName": "Light Roast V60 Extended",
+      "notes": "Even brighter than the classic method. More floral notes came through. Almost perfume-like aroma.",
+      "rating": 5
+    },
+    {
+      "coffeeName": "Jamaica Blue Mountain",
+      "recipeName": "Kalita Wave Daily",
+      "notes": "Incredibly smooth and mild. Lives up to the reputation. Very expensive but worth trying once.",
+      "rating": 5
+    },
+    {
+      "coffeeName": "Yemen Mocha Matari",
+      "recipeName": "French Press Coarse",
+      "notes": "Unique and complex with wine-like notes. Very different from other coffees. Earthy and mysterious.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Colombian Huila",
+      "recipeName": "Espresso Intense",
+      "notes": "Rich and intense with chocolate notes. Good for cortados. Slightly too intense for straight espresso.",
+      "rating": 3
+    },
+    {
+      "coffeeName": "Kenya AA Kiambu",
+      "recipeName": "Chemex Weekend Special",
+      "notes": "The acidity was too bright for the large batch. Better suited for smaller pour-over methods.",
+      "rating": 3
+    },
+    {
+      "coffeeName": "Guatemala Antigua",
+      "recipeName": "V60 Competition Style",
+      "notes": "Good extraction but the precision didn't add much to this particular coffee. Stick with simpler methods.",
+      "rating": 3
+    },
+    {
+      "coffeeName": "Brazil Fazenda Santa Ines",
+      "recipeName": "Aeropress Classic",
+      "notes": "Nutty and sweet. Good alternative when espresso machine isn't available. Clean cup.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Costa Rica Tarrazú",
+      "recipeName": "Morning V60 Classic",
+      "notes": "Honey sweetness came through nicely. Good morning coffee with pleasant acidity. Will repeat this pairing.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Panama Geisha Boquete",
+      "recipeName": "Aeropress Inverted",
+      "notes": "Interesting experiment but the Aeropress compressed the delicate flavors. Better with pour-over methods.",
+      "rating": 3
+    },
+    {
+      "coffeeName": "Peru Cajamarca",
+      "recipeName": "French Press Coarse",
+      "notes": "Smooth and chocolatey. The French press brought out the body well. Comfort coffee for rainy days.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Rwanda Huye Mountain",
+      "recipeName": "V60 Competition Style",
+      "notes": "Precision paid off here. Clean and bright with excellent clarity. Red fruit notes were prominent.",
+      "rating": 5
+    },
+    {
+      "coffeeName": "Honduras Marcala",
+      "recipeName": "Espresso Balanced",
+      "notes": "Decent espresso but lacks the complexity of single-origin specialists. Good for milk drinks.",
+      "rating": 3
+    },
+    {
+      "coffeeName": "Ethiopian Yirgacheffe Gedeb",
+      "recipeName": "Chemex Weekend Special",
+      "notes": "The paper filter cleaned up the cup but removed some of the floral complexity. Prefer V60 for this coffee.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Colombian Huila",
+      "recipeName": "Kalita Wave Daily",
+      "notes": "Reliable and consistent results. Good balance of sweetness and acidity. Perfect daily driver combination.",
+      "rating": 4
+    },
+    {
+      "coffeeName": "Kenya AA Kiambu",
+      "recipeName": "Aeropress Inverted",
+      "notes": "The longer steep time brought out more sweetness while maintaining the bright acidity. Surprisingly good match.",
+      "rating": 4
+    }
+  ]
+}
