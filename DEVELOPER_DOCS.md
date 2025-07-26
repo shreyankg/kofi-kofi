@@ -56,6 +56,12 @@ Autocomplete system for coffee processing methods with usage tracking.
 ### View Architecture
 **Important**: All main UI consolidated in `ContentView.swift` due to Xcode build target limitations. Only `SimpleCoffeeListView.swift` is separate and active.
 
+#### New Detailed View System
+- **BrewingNoteView** - Comprehensive detail view for brewing sessions that appears on tap gesture
+- **RecipeDetailView** - Reusable component displaying complete recipe information within BrewingNoteView
+- **View-First Navigation** - Tap brewing sessions to view details first, then edit if needed
+- **Unified Detail Display** - Coffee information, complete recipe details, and session notes in one view
+
 ### Equipment Preferences System
 - UserDefaults-based preferences via `PreferencesManager`
 - Configurable brewing methods and grinders
@@ -105,6 +111,11 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 - Recipe forms adapt dynamically based on `selectedBrewingMethod`
 - Use `Recipe.supportsPours()` to show/hide pour-specific fields
 - Validate required fields before enabling save buttons
+- **Brew Time Positioning** - Brew time field positioned as last parameter in all recipe forms for logical flow
+
+#### Navigation Flow
+- **Brewing Notes List** → **BrewingNoteView** (tap gesture) → **EditBrewingNoteView** (Edit button)
+- **Data Refresh** - BrewingNoteView refreshes automatically after editing using @State refreshID mechanism
 
 #### Search & Filtering
 - Coffee: name, roaster, origin
@@ -149,6 +160,14 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 ## Code Quality
 
 ### Recent Refactoring (Latest)
+- ✅ **Optimized Font Sizes** - Reduced font sizes in BrewingNoteView to fit all content (coffee info, recipe details, notes) on one screen without scrolling
+- ✅ **Space Efficiency** - Changed main spacing from 20 to 12 points, navigation title to inline mode, reduced internal spacing from 12/8 to 8/4 points
+- ✅ **Consistent Typography** - Standardized all section titles to .headline and content text to .caption for compact yet readable display
+- ✅ **Component Consistency** - Applied unified padding (8 points) and corner radius (8 points) across all BrewingNoteView components
+- ✅ **Enhanced Detail Views** - New BrewingNoteView provides comprehensive brewing session details with view-first navigation
+- ✅ **Reusable Components** - RecipeDetailView component provides consistent recipe display across views
+- ✅ **Improved Navigation Flow** - View brewing sessions first, then edit - better UX than edit-first approach
+- ✅ **Logical Form Ordering** - Brew time field repositioned as last parameter in all recipe forms
 - ✅ **Extended Pour Support** - Upgraded Core Data model and UI to support up to 10 pours (previously limited to 4)
 - ✅ **Enhanced Pour Persistence** - Fixed UI persistence logic to save and load all 10 pours correctly
 - ✅ **Extended Test Coverage** - Updated UI tests to verify functionality with more than 4 pours
@@ -173,10 +192,16 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 - ✅ Updated test coverage for UI logic changes
 
 ### Architecture Benefits
+- **Optimized Screen Real Estate** - All brewing session information fits on one screen without scrolling, improving usability
+- **Consistent Typography Hierarchy** - Uniform font sizing creates clear information hierarchy while maximizing content density
+- **Enhanced User Experience** - View-first navigation provides better information discovery before editing
+- **Comprehensive Detail Views** - Complete brewing session information displayed in unified interface
+- **Reusable Components** - RecipeDetailView ensures consistent recipe display across all contexts
 - **Immediate UI Updates** - Changes to recipes and brewing notes are instantly reflected in the UI
 - **Robust Core Data Integration** - Proper change notifications and refresh mechanisms ensure data consistency
 - **Unified User Experience** - Single interface for all brewing activities (create, view, edit)
 - **Improved Workflow** - Eliminates tab-switching for brewing-related tasks
+- **Logical Form Design** - Brew time positioning creates intuitive parameter flow
 - Single source of truth for brewing method logic
 - Consistent validation across all UI components
 - ~30% reduction in code duplication

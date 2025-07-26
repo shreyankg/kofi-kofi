@@ -41,25 +41,29 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
   - **Aeropress**: Normal/Inverted with plunge timing
   - **Custom Methods**: Add your own brewing equipment
 - **Enhanced recipe cards** with improved time formatting (mins:secs) and dose → final weight display
+- **Logical field ordering** - Brew time positioned as final parameter for intuitive form flow
 - **Usage-based sorting** (most-used recipes appear first)
 - **Streamlined Equipment section** combines brewing method and grinder selection
 
 ### 🎯 Brewing Sessions & Notes
-- **Unified brewing interface** - Create new sessions and manage your brewing history in one place
+- **Comprehensive session details** - View complete brewing information with coffee, recipe, and notes in one place
+- **Optimized detail view** - All session information fits on one screen without scrolling for improved usability
+- **View-first navigation** - Tap sessions to see detailed brewing information before editing
+- **Complete coffee information** - Name, roaster, origin, processing method, and roast level
+- **Full recipe display** - Method-specific parameters, timing, and pour schedules
 - **Flexible pairing** of any coffee with any recipe
-- **Detailed tasting notes** with rich text input
-- **Editable brewing history** - Tap any session to modify coffee, recipe, notes, or ratings
-- **5-star rating system** (optional) for tracking your favorite brews
+- **Detailed tasting notes** - with rich text input and 5-star rating system
+- **Easy editing** - Edit button in detail view provides quick access to modify sessions
 - **Automatic recipe usage tracking** for intelligent sorting
-- **Complete session management** with full CRUD operations
 
 ### 📊 Brewing Analytics & History
-- **Interactive brewing history** with tap-to-edit functionality for any session
+- **Space-optimized detail views** - Comprehensive brewing session information displayed efficiently on one screen
 - **Advanced search capabilities** across coffee names, recipe names, brewing methods, and notes
 - **Rating-based filtering** (1-5 stars or show all sessions)
 - **Visual star ratings** with intuitive display
-- **Comprehensive session management** - Edit, delete, and organize your brewing data
-- **Streamlined interface** - All brewing activities consolidated into one tab
+- **Streamlined navigation** - View details first, edit when needed
+- **Complete session management** - View, edit, delete, and organize your brewing data
+- **Unified interface** - All brewing activities consolidated into one tab
 
 ### ⚙️ Equipment Preferences
 - **Customizable equipment lists** - enable/disable based on your actual gear

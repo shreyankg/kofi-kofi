@@ -267,15 +267,6 @@ struct AddRecipeTabView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 80)
                     }
-                    
-                    HStack {
-                        Text("Brew Time (s)")
-                        Spacer()
-                        TextField("Seconds", value: $brewTime, format: .number)
-                            .keyboardType(.numberPad)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 80)
-                    }
                 }
                 
                 // Method-specific sections
@@ -320,6 +311,18 @@ struct AddRecipeTabView: View {
                         plungeTime: $plungeTime
                     )
                 }
+                
+                // Brew Time Section - Always last
+                Section(header: Text("Timing")) {
+                    HStack {
+                        Text("Brew Time (s)")
+                        Spacer()
+                        TextField("Seconds", value: $brewTime, format: .number)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 80)
+                    }
+                }
             }
             .navigationTitle("Add Recipe")
             .navigationBarTitleDisplayMode(.inline)
@@ -339,7 +342,8 @@ struct AddRecipeTabView: View {
                     pours = [0.0]
                 }
             }
-            .toolbar {
+        }
+        .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
@@ -353,7 +357,6 @@ struct AddRecipeTabView: View {
                     .disabled(brewingMethod.isEmpty || grinder.isEmpty || grindSize.isEmpty || dose <= 0 || hasValidationErrors)
                 }
             }
-        }
     }
     
     private var brewingMethods: [String] {
@@ -522,15 +525,6 @@ struct EditRecipeTabView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 80)
                     }
-                    
-                    HStack {
-                        Text("Brew Time (s)")
-                        Spacer()
-                        TextField("Seconds", value: $brewTime, format: .number)
-                            .keyboardType(.numberPad)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 80)
-                    }
                 }
                 
                 // Method-specific sections
@@ -574,6 +568,18 @@ struct EditRecipeTabView: View {
                         ),
                         plungeTime: $plungeTime
                     )
+                }
+                
+                // Brew Time Section - Always last
+                Section(header: Text("Timing")) {
+                    HStack {
+                        Text("Brew Time (s)")
+                        Spacer()
+                        TextField("Seconds", value: $brewTime, format: .number)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 80)
+                    }
                 }
             }
             .navigationTitle("Edit Recipe")
@@ -630,7 +636,8 @@ struct EditRecipeTabView: View {
                 aeropressType = recipe.aeropressType ?? "Normal"
                 plungeTime = Int(recipe.plungeTime)
             }
-            .toolbar {
+        }
+        .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
@@ -644,7 +651,6 @@ struct EditRecipeTabView: View {
                     .disabled(brewingMethod.isEmpty || grinder.isEmpty || grindSize.isEmpty || dose <= 0 || hasValidationErrors)
                 }
             }
-        }
     }
     
     private var brewingMethods: [String] {
@@ -737,6 +743,7 @@ struct BrewingNotesTabView: View {
     
     @State private var showingAddNote = false
     @State private var showingEditNote = false
+    @State private var showingNoteDetail = false
     @State private var selectedNote: BrewingNote? = nil
     @State private var searchText = ""
     @State private var selectedRatingFilter: Int = 0 // 0 = all ratings
@@ -784,7 +791,7 @@ struct BrewingNotesTabView: View {
                             BrewingNoteRowView(note: note)
                                 .onTapGesture {
                                     selectedNote = note
-                                    showingEditNote = true
+                                    showingNoteDetail = true
                                 }
                         }
                         .onDelete(perform: deleteNotes)
@@ -822,6 +829,14 @@ struct BrewingNotesTabView: View {
             }) {
                 if let note = selectedNote {
                     EditBrewingNoteView(note: note)
+                }
+            }
+            .sheet(isPresented: $showingNoteDetail, onDismiss: {
+                // Trigger UI refresh when detail sheet dismisses
+                refreshID = UUID()
+            }) {
+                if let note = selectedNote {
+                    BrewingNoteView(note: note)
                 }
             }
         }
@@ -901,7 +916,9 @@ struct AddBrewingNoteView: View {
                 }
                 
                 if let recipe = selectedRecipe {
-                    RecipeDetailsTabSection(recipe: recipe)
+                    Section(header: Text("Recipe Details")) {
+                        RecipeDetailView(recipe: recipe)
+                    }
                 }
                 
                 Section(header: Text("Brewing Notes")) {
@@ -1034,7 +1051,9 @@ struct EditBrewingNoteView: View {
                 }
                 
                 if let recipe = selectedRecipe {
-                    RecipeDetailsTabSection(recipe: recipe)
+                    Section(header: Text("Recipe Details")) {
+                        RecipeDetailView(recipe: recipe)
+                    }
                 }
                 
                 Section(header: Text("Brewing Notes")) {
@@ -1137,128 +1156,348 @@ struct EditBrewingNoteView: View {
     }
 }
 
-struct RecipeDetailsTabSection: View {
-    let recipe: Recipe
+// MARK: - New Detail Views
+
+struct BrewingNoteView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.dismiss) private var dismiss
     
-    private var wrappedBrewingMethod: String {
-        recipe.brewingMethod ?? "Unknown Method"
-    }
-    
-    private var wrappedGrinder: String {
-        recipe.grinder ?? "Unknown Grinder"
-    }
-    
-    private var isPourOver: Bool {
-        Recipe.isPourOverMethod(wrappedBrewingMethod)
-    }
-    
-    private var isEspresso: Bool {
-        Recipe.isEspressoMethod(wrappedBrewingMethod)
-    }
-    
-    private var isAeropress: Bool {
-        Recipe.isAeropressMethod(wrappedBrewingMethod)
-    }
-    
-    private var supportsPours: Bool {
-        Recipe.supportsPours(wrappedBrewingMethod)
-    }
-    
+    let note: BrewingNote
+    @State private var showingEditNote = false
+    @State private var refreshID = UUID()
     
     var body: some View {
-        Section(header: Text("Recipe Details")) {
-            VStack(spacing: 8) {
-                HStack {
-                    Text("Method:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text(wrappedBrewingMethod)
-                }
-                
-                HStack {
-                    Text("Grinder:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text("\(wrappedGrinder) - \(recipe.wrappedGrindSize)")
-                }
-                
-                HStack {
-                    Text("Water Temp:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text("\(recipe.waterTemp)°C")
-                }
-                
-                HStack {
-                    Text("Dose:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text("\(recipe.dose, specifier: "%.1f")g")
-                }
-                
-                HStack {
-                    Text("Brew Time:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text("\(recipe.brewTime)s")
-                }
-                
-                if supportsPours && recipe.bloomAmount > 0 {
-                    HStack {
-                        Text("Bloom:")
-                            .fontWeight(.semibold)
-                        Spacer()
-                        Text("\(recipe.bloomAmount, specifier: "%.1f")g for \(recipe.bloomTime)s")
-                    }
-                }
-                
-                if isPourOver && recipe.secondPour > 0 {
-                    HStack {
-                        Text("Pours:")
-                            .fontWeight(.semibold)
-                        Spacer()
-                        VStack(alignment: .trailing) {
-                            // Show dynamic pours
-                            let pours = [recipe.secondPour, recipe.thirdPour, recipe.fourthPour].filter { $0 > 0 }
-                            ForEach(Array(pours.enumerated()), id: \.offset) { index, pour in
-                                Text("\(index + 2)\(getOrdinalSuffix(index + 2)): \(pour, specifier: "%.1f")g")
-                            }
-                        }
-                        .font(.caption)
-                    }
-                }
-                
-                if isEspresso {
-                    HStack {
-                        Text("Water Out:")
-                            .fontWeight(.semibold)
-                        Spacer()
-                        Text("\(recipe.waterOut, specifier: "%.1f")g")
-                    }
-                }
-                
-                if isAeropress {
-                    HStack {
-                        Text("Type:")
-                            .fontWeight(.semibold)
-                        Spacer()
-                        Text(recipe.aeropressType ?? "Normal")
-                    }
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    // Coffee Information Section
+                    CoffeeInfoSection(coffee: note.coffee)
                     
-                    if recipe.plungeTime > 0 {
-                        HStack {
-                            Text("Plunge Time:")
-                                .fontWeight(.semibold)
-                            Spacer()
-                            Text("\(recipe.plungeTime)s")
-                        }
+                    // Recipe Details Section
+                    RecipeDetailView(recipe: note.recipe)
+                    
+                    // Brewing Notes Section
+                    BrewingNotesSection(note: note)
+                }
+                .padding()
+            }
+            .navigationTitle("Brewing Session")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Close") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Edit") {
+                        showingEditNote = true
                     }
                 }
             }
-            .font(.caption)
+            .sheet(isPresented: $showingEditNote, onDismiss: {
+                refreshID = UUID()
+            }) {
+                EditBrewingNoteView(note: note)
+            }
+        }
+        .id(refreshID)
+    }
+}
+
+struct CoffeeInfoSection: View {
+    let coffee: Coffee?
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Coffee")
+                .font(.headline)
+                .fontWeight(.bold)
+            
+            if let coffee = coffee {
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text("Name:")
+                            .fontWeight(.semibold)
+                            .font(.caption)
+                        Spacer()
+                        Text(coffee.wrappedName)
+                            .font(.caption)
+                    }
+                    
+                    HStack {
+                        Text("Roaster:")
+                            .fontWeight(.semibold)
+                            .font(.caption)
+                        Spacer()
+                        Text(coffee.wrappedRoaster)
+                            .font(.caption)
+                    }
+                    
+                    HStack {
+                        Text("Origin:")
+                            .fontWeight(.semibold)
+                            .font(.caption)
+                        Spacer()
+                        Text(coffee.wrappedOrigin)
+                            .font(.caption)
+                    }
+                    
+                    HStack {
+                        Text("Processing:")
+                            .fontWeight(.semibold)
+                            .font(.caption)
+                        Spacer()
+                        Text(coffee.wrappedProcessing)
+                            .font(.caption)
+                    }
+                    
+                    HStack {
+                        Text("Roast Level:")
+                            .fontWeight(.semibold)
+                            .font(.caption)
+                        Spacer()
+                        Text(coffee.wrappedRoastLevel)
+                            .font(.caption)
+                    }
+                }
+                .padding(8)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+            } else {
+                Text("No coffee information available")
+                    .foregroundColor(.secondary)
+                    .italic()
+            }
         }
     }
 }
+
+struct RecipeDetailView: View {
+    let recipe: Recipe?
+    
+    private var wrappedBrewingMethod: String {
+        recipe?.brewingMethod ?? "Unknown Method"
+    }
+    
+    private var wrappedGrinder: String {
+        recipe?.grinder ?? "Unknown Grinder"
+    }
+    
+    private var isPourOver: Bool {
+        guard let recipe = recipe else { return false }
+        return Recipe.isPourOverMethod(recipe.wrappedBrewingMethod)
+    }
+    
+    private var isFrenchPress: Bool {
+        guard let recipe = recipe else { return false }
+        return Recipe.isFrenchPressMethod(recipe.wrappedBrewingMethod)
+    }
+    
+    private var isEspresso: Bool {
+        guard let recipe = recipe else { return false }
+        return Recipe.isEspressoMethod(recipe.wrappedBrewingMethod)
+    }
+    
+    private var isAeropress: Bool {
+        guard let recipe = recipe else { return false }
+        return Recipe.isAeropressMethod(recipe.wrappedBrewingMethod)
+    }
+    
+    private var supportsPours: Bool {
+        guard let recipe = recipe else { return false }
+        return Recipe.supportsPours(recipe.wrappedBrewingMethod)
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Recipe")
+                .font(.headline)
+                .fontWeight(.bold)
+            
+            if let recipe = recipe {
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text("Method:")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text(wrappedBrewingMethod)
+                    }
+                    
+                    HStack {
+                        Text("Grinder:")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text("\(wrappedGrinder) - \(recipe.wrappedGrindSize)")
+                    }
+                    
+                    HStack {
+                        Text("Water Temp:")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text("\(recipe.waterTemp)°C")
+                    }
+                    
+                    HStack {
+                        Text("Dose:")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text("\(recipe.dose, specifier: "%.1f")g")
+                    }
+                    
+                    // Method-specific details
+                    if supportsPours && recipe.bloomAmount > 0 {
+                        HStack {
+                            Text("Bloom:")
+                                .fontWeight(.semibold)
+                            Spacer()
+                            Text("\(recipe.bloomAmount, specifier: "%.1f")g for \(recipe.bloomTime)s")
+                        }
+                    }
+                    
+                    if isPourOver && recipe.secondPour > 0 {
+                        HStack {
+                            Text("Pours:")
+                                .fontWeight(.semibold)
+                            Spacer()
+                            VStack(alignment: .trailing, spacing: 2) {
+                                if recipe.secondPour > 0 {
+                                    Text("2nd: \(recipe.secondPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                                if recipe.thirdPour > 0 {
+                                    Text("3rd: \(recipe.thirdPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                                if recipe.fourthPour > 0 {
+                                    Text("4th: \(recipe.fourthPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                                if recipe.fifthPour > 0 {
+                                    Text("5th: \(recipe.fifthPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                                if recipe.sixthPour > 0 {
+                                    Text("6th: \(recipe.sixthPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                                if recipe.seventhPour > 0 {
+                                    Text("7th: \(recipe.seventhPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                                if recipe.eighthPour > 0 {
+                                    Text("8th: \(recipe.eighthPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                                if recipe.ninthPour > 0 {
+                                    Text("9th: \(recipe.ninthPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                                if recipe.tenthPour > 0 {
+                                    Text("10th: \(recipe.tenthPour, specifier: "%.1f")g")
+                                        .font(.caption)
+                                }
+                            }
+                        }
+                    }
+                    
+                    if isEspresso && recipe.waterOut > 0 {
+                        HStack {
+                            Text("Water Out:")
+                                .fontWeight(.semibold)
+                            Spacer()
+                            Text("\(recipe.waterOut, specifier: "%.1f")g")
+                        }
+                    }
+                    
+                    if isAeropress {
+                        if !recipe.wrappedAeropressType.isEmpty {
+                            HStack {
+                                Text("Type:")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                Text(recipe.wrappedAeropressType)
+                            }
+                        }
+                        if recipe.plungeTime > 0 {
+                            HStack {
+                                Text("Plunge Time:")
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                Text("\(recipe.plungeTime)s")
+                            }
+                        }
+                    }
+                    
+                    // Brew Time - Always last
+                    HStack {
+                        Text("Brew Time:")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text("\(recipe.brewTime)s")
+                    }
+                }
+                .font(.caption)
+                .padding(8)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+            } else {
+                Text("No recipe information available")
+                    .foregroundColor(.secondary)
+                    .italic()
+            }
+        }
+    }
+}
+
+struct BrewingNotesSection: View {
+    let note: BrewingNote
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Notes")
+                .font(.headline)
+                .fontWeight(.bold)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                if note.rating > 0 {
+                    HStack {
+                        Text("Rating:")
+                            .fontWeight(.semibold)
+                            .font(.caption)
+                        Spacer()
+                        HStack(spacing: 2) {
+                            ForEach(1...5, id: \.self) { star in
+                                Image(systemName: star <= note.rating ? "star.fill" : "star")
+                                    .foregroundColor(star <= note.rating ? .yellow : .gray)
+                                    .font(.caption)
+                            }
+                        }
+                    }
+                }
+                
+                if !note.wrappedNotes.isEmpty {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Notes:")
+                            .fontWeight(.semibold)
+                            .font(.caption)
+                        Text(note.wrappedNotes)
+                            .font(.caption)
+                    }
+                } else {
+                    Text("No notes recorded")
+                        .foregroundColor(.secondary)
+                        .italic()
+                        .font(.caption)
+                }
+            }
+            .padding(8)
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+        }
+    }
+}
+
 
 // Method-specific sections for Add Recipe
 struct PourOverTabSection: View {
@@ -1327,7 +1566,7 @@ struct PourOverTabSection: View {
             }
             
             // Add Pour button (limit to reasonable number of pours)
-            if pours.count < 6 {
+            if pours.count < 9 {
                 Button(action: {
                     pours.append(0.0)
                 }) {
