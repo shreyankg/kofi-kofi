@@ -1164,6 +1164,8 @@ struct BrewingNoteView: View {
     
     let note: BrewingNote
     @State private var showingEditNote = false
+    @State private var showingShareSheet = false
+    @State private var shareImage: UIImage?
     @State private var refreshID = UUID()
     
     var body: some View {
@@ -1190,8 +1192,13 @@ struct BrewingNoteView: View {
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Edit") {
-                        showingEditNote = true
+                    HStack {
+                        Button(action: shareBrewingSession) {
+                            Image(systemName: "square.and.arrow.up")
+                        }
+                        Button("Edit") {
+                            showingEditNote = true
+                        }
                     }
                 }
             }
@@ -1200,8 +1207,37 @@ struct BrewingNoteView: View {
             }) {
                 EditBrewingNoteView(note: note)
             }
+            .sheet(isPresented: $showingShareSheet) {
+                if let shareImage = shareImage {
+                    ShareSheet(activityItems: [shareImage, "My brewing session: \(note.coffee?.wrappedName ?? "Coffee") - \(note.recipe?.wrappedName ?? "Recipe")"])
+                }
+            }
         }
         .id(refreshID)
+    }
+    
+    @MainActor
+    private func shareBrewingSession() {
+        let contentView = VStack(alignment: .leading, spacing: 12) {
+            // Coffee Information Section
+            CoffeeInfoSection(coffee: note.coffee)
+            
+            // Recipe Details Section
+            RecipeDetailView(recipe: note.recipe)
+            
+            // Brewing Notes Section
+            BrewingNotesSection(note: note)
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        
+        let renderer = ImageRenderer(content: contentView)
+        renderer.scale = 3.0 // High resolution for sharing
+        
+        if let uiImage = renderer.uiImage {
+            shareImage = uiImage
+            showingShareSheet = true
+        }
     }
 }
 
@@ -2031,6 +2067,24 @@ struct PreferencesView: View {
                 Text("Enter a new grinder name")
             }
         }
+    }
+}
+
+// MARK: - Share Sheet Component
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+    
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(
+            activityItems: activityItems,
+            applicationActivities: nil
+        )
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+        // No updates needed
     }
 }
 
