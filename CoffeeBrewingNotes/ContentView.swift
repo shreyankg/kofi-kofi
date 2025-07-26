@@ -1227,6 +1227,27 @@ struct BrewingNoteView: View {
             
             // Brewing Notes Section
             BrewingNotesSection(note: note)
+            
+            // Watermark
+            Spacer()
+            HStack {
+                Spacer()
+                HStack(spacing: 4) {
+                    Text("via kofi-kofi iOS app")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                    Text("|")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                    Image(systemName: "camera.circle")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                    Text("@shrink.coffee")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                }
+                .padding(.bottom, 8)
+            }
         }
         .padding()
         .background(Color(.systemBackground))
