@@ -11,7 +11,7 @@ SwiftUI iOS app for tracking coffee brewing experiments with Core Data persisten
 ### Technology Stack
 - **UI**: SwiftUI with MVVM pattern
 - **Data**: Core Data with in-memory preview support  
-- **Testing**: XCTest (47 unit + 9 UI tests)
+- **Testing**: XCTest (47 unit + 10 UI tests)
 - **Target**: iOS 17.0+, Swift 5.0
 
 ### Project Structure
@@ -61,6 +61,14 @@ Autocomplete system for coffee processing methods with usage tracking.
 - **RecipeDetailView** - Reusable component displaying complete recipe information within BrewingNoteView
 - **View-First Navigation** - Tap brewing sessions to view details first, then edit if needed
 - **Unified Detail Display** - Coffee information, complete recipe details, and session notes in one view
+- **Native Sharing Integration** - Share button with high-resolution image rendering and iOS share sheet
+
+#### Sharing System
+- **ShareSheet** - UIViewControllerRepresentable wrapper for native iOS sharing functionality
+- **Image Rendering** - ImageRenderer converts brewing session views to high-resolution images (3x scale)
+- **Visual Sharing** - Complete brewing session details rendered as shareable images
+- **iOS Integration** - Native share sheet supports all iOS sharing options (social media, messaging, email, photos)
+- **Descriptive Content** - Includes coffee and recipe names in share text for context
 
 ### Equipment Preferences System
 - UserDefaults-based preferences via `PreferencesManager`
@@ -149,9 +157,10 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 - `testRecipeListRefreshAfterEdit()` - Recipe list refresh testing (passes individually)
 - `testBrewingNoteListRefreshAfterEdit()` - Brewing note list refresh testing (passes individually)
 
-### UI Tests (9 tests)
+### UI Tests (10 tests)
 - End-to-end user workflows
 - **Unified brewing tab navigation** and form interactions
+- **Sharing functionality testing** - Share button presence and accessibility validation
 - **Dynamic pour functionality** - Add/Remove pour button interactions
 - **Brewing notes display testing** - Validates updated notes list format and resolved test dependency issues
 - Coffee creation and basic functionality

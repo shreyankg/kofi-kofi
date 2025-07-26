@@ -3,7 +3,7 @@
 [![iOS](https://img.shields.io/badge/iOS-17.0+-blue.svg)](https://developer.apple.com/ios/)
 [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org)
 [![SwiftUI](https://img.shields.io/badge/SwiftUI-Framework-green.svg)](https://developer.apple.com/xcode/swiftui/)
-[![Tests](https://img.shields.io/badge/Tests-56%20passing-brightgreen.svg)](#testing)
+[![Tests](https://img.shields.io/badge/Tests-57%20passing-brightgreen.svg)](#testing)
 
 A comprehensive iOS app for coffee enthusiasts to track brewing experiments, manage coffee inventory, and maintain detailed brewing notes with a 5-star rating system.
 
@@ -51,6 +51,8 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **View-first navigation** - Tap sessions to see detailed brewing information before editing
 - **Complete coffee information** - Name, roaster, origin, processing method, and roast level
 - **Full recipe display** - Method-specific parameters, timing, and pour schedules
+- **Native sharing functionality** - Share brewing sessions as high-resolution images with coffee and recipe details
+- **iOS share sheet integration** - Share to social media, messaging, email, or save to photos
 - **Flexible pairing** of any coffee with any recipe
 - **Detailed tasting notes** - with rich text input and 5-star rating system
 - **Easy editing** - Edit button in detail view provides quick access to modify sessions
@@ -91,7 +93,7 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **Centralized brewing method detection** - Single source of truth for method validation
 - **Safe Core Data accessors** - Nil-safe property handling throughout
 - **Reusable UI components** - StarRatingView, FormFieldView for consistency
-- **Comprehensive test coverage** - 47 unit tests + 9 UI tests including dynamic pour functionality
+- **Comprehensive test coverage** - 47 unit tests + 10 UI tests including dynamic pour functionality and sharing features
 - **Recent refactoring** - 30% reduction in code duplication
 
 ## 🚀 Getting Started
@@ -126,7 +128,7 @@ open CoffeeBrewingNotes.xcodeproj
 
 ### Test Coverage
 - **Unit Tests**: 47 tests covering data models, extensions, brewing note editing, and business logic
-- **UI Tests**: 9 end-to-end tests for critical user workflows including unified brewing interface
+- **UI Tests**: 10 end-to-end tests for critical user workflows including unified brewing interface and sharing functionality
 - **All tests passing** with stable, reliable execution
 
 ### Running Tests
@@ -163,12 +165,12 @@ CoffeeBrewingNotes/
 - **Photo attachments** for coffee bags and results
 - **AI powered data loading** from pics of coffee bags
 - **iCloud sync** for cross-device access
-- **Share feature** (Instagram, Facebook, X, etc.)
 - **Export functionality** (PDF, CSV formats)
 - **Timer integration** for brew sessions  
 - **Advanced analytics** and brewing trend visualization
 - **Recipe sharing** between users
 - **Advanced filtering** by date ranges and brewing parameters
+- **Enhanced sharing options** with custom templates and branding
 
 ## 🤝 Contributing
 
