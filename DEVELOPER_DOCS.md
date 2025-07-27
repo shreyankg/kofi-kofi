@@ -69,12 +69,14 @@ Autocomplete system for coffee processing methods with usage tracking.
 - **Visual Sharing** - Complete brewing session details rendered as shareable images
 - **iOS Integration** - Native share sheet supports all iOS sharing options (social media, messaging, email, photos)
 - **Descriptive Content** - Includes coffee and recipe names in share text for context
+- **Configurable Watermark** - User-customizable Instagram handle in shared images via PreferencesManager
 
 ### Equipment Preferences System
 - UserDefaults-based preferences via `PreferencesManager`
 - Configurable brewing methods and grinders
 - Custom equipment addition/removal
 - Smart validation (prevents disabling all equipment)
+- **Instagram Handle Configuration** - User-customizable Instagram handle for shared image watermarks
 
 ### Brewing Method Detection
 Centralized in `Recipe+Extensions.swift` with static methods:
@@ -107,6 +109,11 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 2. Update brewing method detection in `Recipe+Extensions.swift` if needed
 3. Add method-specific UI section in `ContentView.swift`
 4. Add Core Data attributes for method-specific parameters
+
+### Managing User Preferences
+- **Instagram Handle**: Configurable in Settings → Default Settings, stored in UserDefaults via `PreferencesManager.instagramHandle`
+- **Watermark Implementation**: `shareBrewingSession()` reads `PreferencesManager.shared.instagramHandle` for dynamic watermark text
+- **Default Value**: "@shrink.coffee" for new installations, user-customizable through Settings UI
 
 ### Common Tasks
 
@@ -169,6 +176,7 @@ xcodebuild test -scheme CoffeeBrewingNotes -destination 'platform=iOS Simulator,
 ## Code Quality
 
 ### Recent Refactoring (Latest)
+- ✅ **Configurable Instagram Watermark** - Added user-customizable Instagram handle setting in PreferencesManager with UI in Settings tab, watermark displays on shared brewing session images
 - ✅ **Optimized Font Sizes** - Reduced font sizes in BrewingNoteView to fit all content (coffee info, recipe details, notes) on one screen without scrolling
 - ✅ **Space Efficiency** - Changed main spacing from 20 to 12 points, navigation title to inline mode, reduced internal spacing from 12/8 to 8/4 points
 - ✅ **Consistent Typography** - Standardized all section titles to .headline and content text to .caption for compact yet readable display

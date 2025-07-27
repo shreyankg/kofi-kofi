@@ -1242,7 +1242,7 @@ struct BrewingNoteView: View {
                     Image(systemName: "camera.circle")
                         .font(.caption2)
                         .foregroundColor(.secondary)
-                    Text("@shrink.coffee")
+                    Text(PreferencesManager.shared.instagramHandle)
                         .font(.caption2)
                         .foregroundColor(.secondary)
                 }
@@ -1999,6 +1999,17 @@ struct PreferencesView: View {
                             .frame(width: 80)
                             .onChange(of: preferencesManager.defaultWaterTemp) { _ in
                                 preferencesManager.saveDefaultWaterTemp()
+                            }
+                    }
+                    
+                    HStack {
+                        Text("Instagram Handle")
+                        Spacer()
+                        TextField("@username", text: $preferencesManager.instagramHandle)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 120)
+                            .onChange(of: preferencesManager.instagramHandle) { _ in
+                                preferencesManager.saveInstagramHandle()
                             }
                     }
                 }

@@ -53,6 +53,7 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **Full recipe display** - Method-specific parameters, timing, and pour schedules
 - **Native sharing functionality** - Share brewing sessions as high-resolution images with coffee and recipe details
 - **iOS share sheet integration** - Share to social media, messaging, email, or save to photos
+- **Configurable watermark** - Personalize shared images with custom Instagram handle in Settings
 - **Flexible pairing** of any coffee with any recipe
 - **Detailed tasting notes** - with rich text input and 5-star rating system
 - **Easy editing** - Edit button in detail view provides quick access to modify sessions
@@ -72,7 +73,7 @@ A comprehensive iOS app for coffee enthusiasts to track brewing experiments, man
 - **Personal equipment setup** pre-configured for popular gear (Baratza Encore, Turin DF64, 1Zpresso J-Ultra, etc.)
 - **Custom equipment support** - add your own brewing methods and grinders
 - **Smart validation** prevents disabling all equipment
-- **Configurable defaults** like preferred water temperature
+- **Configurable defaults** like preferred water temperature and Instagram handle for shared images
 - **Proper measurement units** (grams, °Celsius, seconds)
 
 ## 🏗️ Technical Architecture
@@ -119,10 +120,11 @@ open CoffeeBrewingNotes.xcodeproj
 
 ### Usage
 1. **Configure your equipment** in Settings - enable your brewing methods and grinders
-2. **Add coffee beans** to build your inventory  
-3. **Create brewing recipes** using your preferred methods
-4. **Manage brewing sessions** in the unified Brewing tab - create new sessions or edit existing ones
-5. **Track and refine** - Tap any session to edit details and improve your technique over time
+2. **Personalize sharing** in Settings - set your Instagram handle for watermarked shared images
+3. **Add coffee beans** to build your inventory  
+4. **Create brewing recipes** using your preferred methods
+5. **Manage brewing sessions** in the unified Brewing tab - create new sessions or edit existing ones
+6. **Track and refine** - Tap any session to edit details and improve your technique over time
 
 ## 🧪 Testing
 

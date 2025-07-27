@@ -11,6 +11,7 @@ class PreferencesManager: ObservableObject {
         static let customBrewingMethods = "customBrewingMethods"
         static let customGrinders = "customGrinders"
         static let hasInitializedDefaults = "hasInitializedDefaults"
+        static let instagramHandle = "instagramHandle"
     }
     
     // MARK: - Default Equipment Lists
@@ -37,6 +38,7 @@ class PreferencesManager: ObservableObject {
     @Published var defaultWaterTemp: Int = 93
     @Published var customBrewingMethods: [String] = []
     @Published var customGrinders: [String] = []
+    @Published var instagramHandle: String = "@shrink.coffee"
     
     // MARK: - Singleton
     static let shared = PreferencesManager()
@@ -56,6 +58,7 @@ class PreferencesManager: ObservableObject {
             defaultWaterTemp = 93
             customBrewingMethods = []
             customGrinders = []
+            instagramHandle = "@shrink.coffee"
         } else {
             initializeDefaultsIfNeeded()
             loadPreferences()
@@ -71,6 +74,7 @@ class PreferencesManager: ObservableObject {
             UserDefaults.standard.set(93, forKey: Keys.defaultWaterTemp)
             UserDefaults.standard.set([], forKey: Keys.customBrewingMethods)
             UserDefaults.standard.set([], forKey: Keys.customGrinders)
+            UserDefaults.standard.set("@shrink.coffee", forKey: Keys.instagramHandle)
             UserDefaults.standard.set(true, forKey: Keys.hasInitializedDefaults)
         }
     }
@@ -82,6 +86,7 @@ class PreferencesManager: ObservableObject {
         defaultWaterTemp = UserDefaults.standard.integer(forKey: Keys.defaultWaterTemp)
         customBrewingMethods = UserDefaults.standard.stringArray(forKey: Keys.customBrewingMethods) ?? []
         customGrinders = UserDefaults.standard.stringArray(forKey: Keys.customGrinders) ?? []
+        instagramHandle = UserDefaults.standard.string(forKey: Keys.instagramHandle) ?? "@shrink.coffee"
         
         // Ensure at least one option is enabled
         if enabledBrewingMethods.isEmpty {
@@ -127,6 +132,10 @@ class PreferencesManager: ObservableObject {
     
     func saveCustomGrinders() {
         UserDefaults.standard.set(customGrinders, forKey: Keys.customGrinders)
+    }
+    
+    func saveInstagramHandle() {
+        UserDefaults.standard.set(instagramHandle, forKey: Keys.instagramHandle)
     }
     
     // MARK: - Computed Properties for UI
