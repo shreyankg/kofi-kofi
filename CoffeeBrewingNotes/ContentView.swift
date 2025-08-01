@@ -92,14 +92,18 @@ struct RecipeTabView: View {
                 // Trigger UI refresh when add sheet dismisses
                 refreshID = UUID()
             }) {
-                AddRecipeTabView()
+                NavigationStack {
+                    AddRecipeTabViewContent()
+                }
             }
             .sheet(isPresented: $showingEditRecipe, onDismiss: {
                 // Trigger UI refresh when edit sheet dismisses
                 refreshID = UUID()
             }) {
                 if let recipe = selectedRecipe {
-                    EditRecipeTabView(recipe: recipe)
+                    NavigationStack {
+                        EditRecipeTabViewContent(recipe: recipe)
+                    }
                 }
             }
         }
@@ -180,7 +184,7 @@ struct RecipeRowView: View {
     }
 }
 
-struct AddRecipeTabView: View {
+struct AddRecipeTabViewContent: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     @StateObject private var preferencesManager = PreferencesManager.shared
@@ -225,7 +229,6 @@ struct AddRecipeTabView: View {
     }
     
     var body: some View {
-        NavigationView {
             Form {
                 Section(header: Text("Equipment")) {
                     Picker("Brewing Method", selection: $brewingMethod) {
@@ -342,7 +345,6 @@ struct AddRecipeTabView: View {
                     pours = [0.0]
                 }
             }
-        }
         .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -436,7 +438,7 @@ struct AddRecipeTabView: View {
     }
 }
 
-struct EditRecipeTabView: View {
+struct EditRecipeTabViewContent: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     @StateObject private var preferencesManager = PreferencesManager.shared
@@ -483,7 +485,6 @@ struct EditRecipeTabView: View {
     }
     
     var body: some View {
-        NavigationView {
             Form {
                 Section(header: Text("Equipment")) {
                     Picker("Brewing Method", selection: $brewingMethod) {
@@ -636,7 +637,6 @@ struct EditRecipeTabView: View {
                 aeropressType = recipe.aeropressType ?? "Normal"
                 plungeTime = Int(recipe.plungeTime)
             }
-        }
         .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
