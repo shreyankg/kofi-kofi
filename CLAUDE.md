@@ -141,3 +141,10 @@ Kofi Kofi prioritizes data integrity, comprehensive testing, and user experience
 ## Development Best Practices
 
 - Don't blindly create new files since it's hard to get those added to the Xcode project
+
+## Development Notes
+
+- **Test Running Strategy**: 
+  - Tests take a while to run and will time out. 
+  - Use the command for running tests in the terminal
+  - Capture output and errors in a log file for review

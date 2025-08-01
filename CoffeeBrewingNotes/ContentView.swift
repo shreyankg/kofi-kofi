@@ -2002,16 +2002,6 @@ struct PreferencesView: View {
                             }
                     }
                     
-                    HStack {
-                        Text("Instagram Handle")
-                        Spacer()
-                        TextField("@username", text: $preferencesManager.instagramHandle)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 120)
-                            .onChange(of: preferencesManager.instagramHandle) { _ in
-                                preferencesManager.saveInstagramHandle()
-                            }
-                    }
                 }
                 
                 // Brewing Methods Section
@@ -2064,6 +2054,20 @@ struct PreferencesView: View {
                         showingAddGrinder = true
                     }
                     .foregroundColor(.blue)
+                }
+                
+                // Instagram Handle Section
+                Section(header: Text("Instagram Handle")) {
+                    HStack {
+                        Text("Instagram Handle")
+                        Spacer()
+                        TextField("@username", text: $preferencesManager.instagramHandle)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 120)
+                            .onChange(of: preferencesManager.instagramHandle) { _ in
+                                preferencesManager.saveInstagramHandle()
+                            }
+                    }
                 }
                 
                 // Information Section
