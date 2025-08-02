@@ -44,6 +44,13 @@ class PreferencesManager: ObservableObject {
     static let shared = PreferencesManager()
     
     private init() {
+        enabledBrewingMethods = []
+        enabledGrinders = []
+        defaultWaterTemp = 0
+        customBrewingMethods = []
+        customGrinders = []
+        instagramHandle = "@shrink.coffee"
+        
         initializeDefaultsIfNeeded()
         loadPreferences()
     }

@@ -148,3 +148,14 @@ Kofi Kofi prioritizes data integrity, comprehensive testing, and user experience
   - Tests take a while to run and will time out. 
   - Use the command for running tests in the terminal
   - Capture output and errors in a log file for review
+
+## Testing Guidelines
+
+- Always run only unit tests or UI tests to debug, not both together
+- Avoid having to do multiple test runs without making any code changes
+- Save the output and error in a log file which you can grep through
+- Test passing individually doesn't mean they pass as a suite, so don't assume that
+- No test or code change should introduce a race condition or data corruption or dependency for another test
+- If tests timeout, don't keep re-running them with hope they suddenly won't time out
+- Immediately ask the user to run the tests in a different terminal session
+- Once the logs are saved after the test, you can grep through them

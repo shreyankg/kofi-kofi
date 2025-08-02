@@ -619,6 +619,7 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         UserDefaults.standard.removeObject(forKey: "defaultWaterTemp")
         UserDefaults.standard.removeObject(forKey: "customBrewingMethods")
         UserDefaults.standard.removeObject(forKey: "customGrinders")
+        UserDefaults.standard.removeObject(forKey: "instagramHandle")
         
         let preferencesManager = PreferencesManager(testing: true)
         
@@ -628,6 +629,7 @@ final class CoffeeBrewingNotesTests: XCTestCase {
         XCTAssertEqual(preferencesManager.defaultWaterTemp, 93)
         XCTAssertTrue(preferencesManager.customBrewingMethods.isEmpty)
         XCTAssertTrue(preferencesManager.customGrinders.isEmpty)
+        XCTAssertEqual(preferencesManager.instagramHandle, "@shrink.coffee")
     }
     
     func testBrewingMethodToggling() throws {
